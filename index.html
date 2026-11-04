@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enterprise IT Budget & Financial Control — 2027</title>
+    <title>Controladoria e Gestão Orçamentária de TI</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- SheetJS (xlsx.full.min.js) para Exportação -->
+    <!-- SheetJS para Exportação Excel -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 13px;
         }
         .font-mono {
             font-family: 'JetBrains Mono', monospace;
@@ -24,8 +25,8 @@
             .card { border: none !important; box-shadow: none !important; }
         }
         .tab-btn.active {
-            color: #1e40af;
-            border-bottom: 2.5px solid #2563eb;
+            color: #1d4ed8;
+            border-bottom: 2px solid #2563eb;
             font-weight: 700;
         }
         .modal {
@@ -36,22 +37,22 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(15, 23, 42, 0.7);
-            backdrop-filter: blur(6px);
+            background-color: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(4px);
             align-items: center;
             justify-content: center;
         }
         .modal-content {
             background-color: #ffffff;
-            border-radius: 20px;
-            width: 640px;
-            max-width: 95%;
-            max-height: 92vh;
+            border-radius: 16px;
+            width: 680px;
+            max-width: 96%;
+            max-height: 94vh;
             overflow-y: auto;
-            box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.35);
+            box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.3);
         }
         .table-container {
-            max-height: 620px;
+            max-height: 640px;
             overflow-x: auto;
             overflow-y: auto;
             position: relative;
@@ -70,10 +71,10 @@
         }
         .sticky-col-fornecedor {
             position: sticky;
-            left: 80px;
+            left: 70px;
             z-index: 20;
             background-color: inherit;
-            box-shadow: 4px 0 6px -2px rgba(0, 0, 0, 0.04);
+            box-shadow: 3px 0 5px -2px rgba(0, 0, 0, 0.05);
         }
         thead .sticky-col-empresa {
             z-index: 40 !important;
@@ -83,10 +84,9 @@
             z-index: 40 !important;
             background-color: #f8fafc !important;
         }
-        /* Custom scrollbar */
         ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
+            width: 5px;
+            height: 5px;
         }
         ::-webkit-scrollbar-track {
             background: #f1f5f9;
@@ -100,187 +100,199 @@
         }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 p-4 md:p-8 min-h-screen">
+<body class="bg-slate-100 text-slate-800 p-2 sm:p-4 min-h-screen">
 
-    <div class="max-w-[1650px] mx-auto space-y-6">
+    <div class="w-full max-w-[1720px] mx-auto space-y-3">
 
-        <!-- Top Header Corporativo -->
-        <header class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
-            <div class="flex items-center gap-4">
-                <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-blue-700 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-blue-500/20">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+        <!-- Top Header Compacto -->
+        <header class="bg-white px-5 py-3.5 rounded-xl shadow-2xs border border-slate-200/90 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-lg bg-blue-600 flex items-center justify-center text-white shadow-sm">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
                 </div>
                 <div>
-                    <div class="flex items-center gap-2.5">
-                        <h1 class="text-xl md:text-2xl font-extrabold text-slate-900 tracking-tight">Controladoria e Gestão Orçamentária de TI</h1>
-                        <span class="bg-slate-100 text-slate-600 text-[11px] font-bold px-2.5 py-0.5 rounded-full border border-slate-200">Exercício 2027</span>
+                    <div class="flex items-center gap-2">
+                        <h1 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight">Controladoria e Gestão Orçamentária de TI</h1>
+                        <span id="badge-exercicio-ano" class="bg-blue-50 text-blue-700 text-[10px] font-bold px-2 py-0.5 rounded border border-blue-200">Exercício 2027</span>
                     </div>
-                    <p class="text-xs text-slate-500 mt-0.5">Visão Gerencial Executiva: Regime de Competência (DRE / OPEX) e Regime de Caixa (Desembolso Efetivo)</p>
+                    <p class="text-[11px] text-slate-500">Apuração Multianual: Regime de Competência (DRE) e Fluxo de Caixa Real</p>
                 </div>
             </div>
 
-            <div class="flex items-center gap-2.5 no-print flex-wrap">
-                <button onclick="exportToExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 px-4 rounded-xl shadow-sm hover:shadow transition-all flex items-center gap-2 text-xs">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                    Exportar Relatório Excel
+            <div class="flex items-center gap-2 no-print flex-wrap">
+                <button onclick="exportToExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1.5 px-3 rounded-lg shadow-2xs transition-all flex items-center gap-1.5 text-xs">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    Exportar Excel
                 </button>
-                <button onclick="window.print()" class="bg-slate-800 hover:bg-slate-900 text-white font-semibold py-2.5 px-4 rounded-xl shadow-sm hover:shadow transition-all flex items-center gap-2 text-xs">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-                    Imprimir / Salvar PDF
+                <button onclick="window.print()" class="bg-slate-800 hover:bg-slate-900 text-white font-medium py-1.5 px-3 rounded-lg shadow-2xs transition-all flex items-center gap-1.5 text-xs">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                    Imprimir / PDF
                 </button>
             </div>
         </header>
 
-        <!-- KPI Cards Executivos -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80 relative overflow-hidden">
+        <!-- KPI Cards Compactos e Ajustados -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+            <div class="bg-white p-3.5 rounded-xl shadow-2xs border border-slate-200/90 relative">
                 <div class="flex justify-between items-start">
                     <div>
-                        <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block" id="card-total-label">Orçamento Total Projetado (2027)</span>
-                        <div id="total-2027" class="text-2xl font-black text-slate-900 mt-1 font-mono tracking-tight">R$ 0,00</div>
+                        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block" id="card-total-label">Total Orçado (2027)</span>
+                        <div id="total-projecao" class="text-xl font-extrabold text-slate-900 mt-0.5 font-mono tracking-tight">R$ 0,00</div>
                     </div>
-                    <span id="badge-modo-visao" class="text-[10px] font-bold px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200/60">DRE (Competência)</span>
+                    <span id="badge-modo-visao" class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">DRE (Competência)</span>
                 </div>
-                <div class="mt-3 flex items-center gap-1.5 text-xs text-slate-500">
+                <div class="mt-1.5 flex items-center gap-1 text-[11px] text-slate-500">
                     <span class="text-emerald-600 font-bold" id="kpi-var-baseline">+0.0%</span>
                     <span>vs. Custo Base 2026</span>
                 </div>
             </div>
 
-            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80">
-                <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">Média Mensal de Custo (2027)</span>
-                <div id="media-mensal" class="text-2xl font-black text-slate-900 mt-1 font-mono tracking-tight">R$ 0,00</div>
-                <div class="mt-3 text-xs text-slate-500 flex items-center justify-between">
-                    <span>Base 12 competências</span>
-                    <span class="font-semibold text-slate-700" id="media-periodo-tag">100% apropriado</span>
+            <div class="bg-white p-3.5 rounded-xl shadow-2xs border border-slate-200/90">
+                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block" id="card-media-label">Média Mensal OPEX (2027)</span>
+                <div id="media-mensal" class="text-xl font-extrabold text-slate-900 mt-0.5 font-mono tracking-tight">R$ 0,00</div>
+                <div class="mt-1.5 text-[11px] text-slate-500 flex items-center justify-between">
+                    <span id="media-periodo-tag">12 meses completos</span>
+                    <span class="font-medium text-slate-600">Base Ativa</span>
                 </div>
             </div>
 
-            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80">
-                <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">Custo Base 2026 (Baseline Sem Reajuste)</span>
-                <div id="total-2026" class="text-2xl font-black text-slate-900 mt-1 font-mono tracking-tight">R$ 0,00</div>
-                <div class="mt-3 text-xs text-slate-500 flex items-center justify-between">
-                    <span>Parâmetro Contratual Histórico</span>
-                    <span class="font-mono text-[11px] font-bold text-slate-600" id="total-contratos-badge">40 contratos</span>
+            <div class="bg-white p-3.5 rounded-xl shadow-2xs border border-slate-200/90">
+                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Custo Base 2026 (Sem Reajuste)</span>
+                <div id="total-2026" class="text-xl font-extrabold text-slate-900 mt-0.5 font-mono tracking-tight">R$ 0,00</div>
+                <div class="mt-1.5 text-[11px] text-slate-500 flex items-center justify-between">
+                    <span>Baseline Contratual</span>
+                    <span class="font-bold text-slate-700" id="total-contratos-badge">40 contratos</span>
                 </div>
             </div>
 
-            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80">
-                <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">Impacto Financeiro dos Reajustes</span>
-                <div id="total-reajuste-impact" class="text-2xl font-black text-blue-700 mt-1 font-mono tracking-tight">R$ 0,00</div>
-                <div class="mt-3 text-xs text-slate-500 flex items-center justify-between">
-                    <span>IPCA / IGP-M / Dissídio</span>
-                    <span class="font-semibold text-blue-600" id="impacto-pct-badge">+0.0%</span>
+            <div class="bg-white p-3.5 rounded-xl shadow-2xs border border-slate-200/90">
+                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block" id="card-impacto-label">Impacto Reajustes em 2027</span>
+                <div id="total-reajuste-impact" class="text-xl font-extrabold text-blue-700 mt-0.5 font-mono tracking-tight">R$ 0,00</div>
+                <div class="mt-1.5 text-[11px] text-slate-500 flex items-center justify-between">
+                    <span id="reajuste-status-tag">IPCA / IGP-M / Dissídio</span>
+                    <span class="font-bold text-blue-600" id="impacto-pct-badge">+0.0%</span>
                 </div>
             </div>
         </div>
 
-        <!-- Navegação por Abas -->
-        <div class="flex border-b border-slate-200 gap-2 no-print">
-            <button id="tab1-btn" onclick="switchTab('tab1')" class="tab-btn px-6 py-3 text-sm focus:outline-none active transition-all">
-                Painel Orçamentário Mensal (2027)
+        <!-- Abas -->
+        <div class="flex border-b border-slate-200 gap-2 no-print bg-white px-3 pt-1 rounded-t-xl border-t border-x">
+            <button id="tab1-btn" onclick="switchTab('tab1')" class="tab-btn px-4 py-2 text-xs focus:outline-none active transition-all">
+                Painel Orçamentário Mensal
             </button>
-            <button id="tab2-btn" onclick="switchTab('tab2')" class="tab-btn px-6 py-3 text-sm focus:outline-none text-slate-600 hover:text-blue-600 transition-all">
+            <button id="tab2-btn" onclick="switchTab('tab2')" class="tab-btn px-4 py-2 text-xs focus:outline-none text-slate-600 hover:text-blue-600 transition-all">
                 Cadastro de Contratos & Premissas
             </button>
-            <button id="tab3-btn" onclick="switchTab('tab3')" class="tab-btn px-6 py-3 text-sm focus:outline-none text-slate-600 hover:text-blue-600 transition-all">
-                Índices de Reajuste Econômico
+            <button id="tab3-btn" onclick="switchTab('tab3')" class="tab-btn px-4 py-2 text-xs focus:outline-none text-slate-600 hover:text-blue-600 transition-all">
+                Parâmetros & Índices de Reajuste
             </button>
         </div>
 
-        <!-- ABA 1: Relatório de Gestão e Visão Orçamentária -->
-        <div id="tab1" class="tab-content block space-y-4">
+        <!-- ABA 1: Painel Orçamentário Mensal -->
+        <div id="tab1" class="tab-content block space-y-2.5">
             
-            <!-- Barra de Controles e Filtros de Alta Precisão -->
-            <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200/80 flex flex-wrap items-center justify-between gap-4 no-print">
-                <div class="flex items-center gap-3 flex-wrap">
+            <!-- Barra de Filtros com Seletor de Ano + Data de Corte que FUNCIONA -->
+            <div class="bg-white p-2.5 rounded-xl shadow-2xs border border-slate-200 flex flex-wrap items-center justify-between gap-2.5 no-print">
+                <div class="flex items-center gap-2 flex-wrap">
                     
-                    <!-- Campo de Data de Corte / Competência -->
-                    <div class="flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200">
-                        <label for="dataCorteInput" class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-                            <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    <!-- Seletor do Ano de Projeção -->
+                    <div class="flex items-center gap-1 bg-blue-50/80 px-2.5 py-1 rounded-lg border border-blue-200">
+                        <label for="anoProjecaoSelect" class="text-[11px] font-bold text-blue-900">Exercício:</label>
+                        <select id="anoProjecaoSelect" onchange="handleAnoChange(this.value)" class="py-0.5 px-2 border border-blue-300 rounded text-xs font-bold bg-white text-blue-800 outline-none">
+                            <option value="2026">2026 (Base)</option>
+                            <option value="2027" selected>2027 (Oficial)</option>
+                            <option value="2028">2028 (+1 Ciclo)</option>
+                            <option value="2029">2029 (+2 Ciclos)</option>
+                            <option value="2030">2030 (+3 Ciclos)</option>
+                        </select>
+                    </div>
+
+                    <!-- Campo Data de Corte Efetiva -->
+                    <div class="flex items-center gap-1.5 bg-slate-50 px-2.5 py-1 rounded-lg border border-slate-300">
+                        <label for="dataCorteInput" class="text-[11px] font-bold text-slate-700 flex items-center gap-1">
+                            <svg class="w-3 h-3 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                             Data de Corte:
                         </label>
-                        <input type="date" id="dataCorteInput" value="2027-12-31" onchange="recalcular()" class="py-1 px-2.5 border border-slate-300 rounded-lg text-xs font-semibold bg-white outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500">
+                        <input type="date" id="dataCorteInput" value="2027-12-31" onchange="handleDataCorteChange(this.value)" class="py-0.5 px-1.5 border border-slate-300 rounded text-xs font-semibold bg-white outline-none focus:ring-1 focus:ring-blue-500">
+                        <button type="button" onclick="limparCorte()" title="Remover corte e exibir os 12 meses completos" class="text-[10px] text-blue-600 hover:underline font-semibold ml-1">Ver Ano Todo</button>
                     </div>
 
                     <!-- Filtro Empresa -->
-                    <select id="filterEmpresa" onchange="recalcular()" class="py-2 px-3 border border-slate-200 rounded-xl text-xs bg-slate-50 font-semibold text-slate-700 outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500">
-                        <option value="ALL">Todas as Empresas (Consolidado)</option>
+                    <select id="filterEmpresa" onchange="recalcular()" class="py-1 px-2 border border-slate-200 rounded-lg text-xs bg-slate-50 font-medium text-slate-700 outline-none">
+                        <option value="ALL">Todas as Empresas</option>
                         <option value="SOTRAN">SOTRAN</option>
                         <option value="TMOV">TMOV</option>
                     </select>
 
                     <!-- Filtro Prazo de Vigência -->
-                    <select id="filterPrazo" onchange="recalcular()" class="py-2 px-3 border border-slate-200 rounded-xl text-xs bg-slate-50 font-semibold text-slate-700 outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500">
+                    <select id="filterPrazo" onchange="recalcular()" class="py-1 px-2 border border-slate-200 rounded-lg text-xs bg-slate-50 font-medium text-slate-700 outline-none">
                         <option value="ALL">Todas as Vigências</option>
                         <option value="1 Ano">1 Ano (Anual)</option>
                         <option value="2 Anos">2 Anos (Bienal)</option>
                         <option value="3 Anos">3 Anos (Trienal)</option>
                         <option value="5 Anos">5 Anos (Quinquenal)</option>
-                        <option value="Indeterminado">Prazo Indeterminado</option>
+                        <option value="Indeterminado">Indeterminado</option>
                     </select>
 
                     <!-- Filtro Frequência de Pagamento -->
-                    <select id="filterFreq" onchange="recalcular()" class="py-2 px-3 border border-slate-200 rounded-xl text-xs bg-slate-50 font-semibold text-slate-700 outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500">
-                        <option value="ALL">Todas as Frequências de Pagamento</option>
-                        <option value="Mensal">Recorrente Mensal (12x)</option>
-                        <option value="Trimestral">Trimestral (A cada 3 meses)</option>
-                        <option value="Semestral">Semestral (A cada 6 meses)</option>
+                    <select id="filterFreq" onchange="recalcular()" class="py-1 px-2 border border-slate-200 rounded-lg text-xs bg-slate-50 font-medium text-slate-700 outline-none">
+                        <option value="ALL">Todas as Frequências</option>
+                        <option value="Mensal">Mensal (12x)</option>
+                        <option value="Trimestral">Trimestral (4x)</option>
+                        <option value="Semestral">Semestral (2x)</option>
                         <option value="Anual_Unica">Anual (1x no Aniversário)</option>
                     </select>
 
-                    <!-- Campo de Busca -->
+                    <!-- Campo Busca -->
                     <div class="relative">
-                        <input type="text" id="searchReport" onkeyup="recalcular()" placeholder="Buscar fornecedor, clifor..." class="py-2 pl-8 pr-3 border border-slate-200 rounded-xl text-xs bg-slate-50 w-52 focus:bg-white outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all">
-                        <svg class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        <input type="text" id="searchReport" onkeyup="recalcular()" placeholder="Buscar fornecedor, clifor..." class="py-1 pl-7 pr-2 border border-slate-200 rounded-lg text-xs bg-slate-50 w-44 focus:bg-white outline-none">
+                        <svg class="w-3 h-3 text-slate-400 absolute left-2 top-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                     </div>
                 </div>
 
-                <!-- Seletor Exclusivo de Regime Financeiro / Contábil -->
-                <div class="flex items-center bg-slate-100 p-1.5 rounded-xl border border-slate-200">
-                    <button type="button" id="btn-visao-contabil" onclick="setVisaoRegime('contabil')" class="text-xs px-4 py-1.5 rounded-lg font-bold transition-all bg-white text-blue-700 shadow-sm flex items-center gap-1.5">
-                        <span>📊</span> DRE / Contábil (Competência)
+                <!-- Alternador DRE x Caixa -->
+                <div class="flex items-center bg-slate-100 p-1 rounded-lg border border-slate-200">
+                    <button type="button" id="btn-visao-contabil" onclick="setVisaoRegime('contabil')" class="text-xs px-3 py-1 rounded font-bold transition-all bg-white text-blue-700 shadow-2xs flex items-center gap-1">
+                        <span>📊</span> DRE (Competência)
                     </button>
-                    <button type="button" id="btn-visao-financeiro" onclick="setVisaoRegime('financeiro')" class="text-xs px-4 py-1.5 rounded-lg font-semibold transition-all text-slate-600 hover:text-slate-900 flex items-center gap-1.5">
-                        <span>💰</span> Financeiro (Fluxo de Caixa)
+                    <button type="button" id="btn-visao-financeiro" onclick="setVisaoRegime('financeiro')" class="text-xs px-3 py-1 rounded font-semibold transition-all text-slate-600 hover:text-slate-900 flex items-center gap-1">
+                        <span>💰</span> Fluxo de Caixa
                     </button>
                 </div>
             </div>
 
-            <!-- Faixa Informativa Dinâmica -->
-            <div id="info-regime-bar" class="px-5 py-3 bg-blue-50/80 border border-blue-200/70 rounded-xl text-xs text-blue-900 flex items-center justify-between">
-                <span id="info-regime-text" class="flex items-center gap-2">
-                    <svg class="w-4 h-4 text-blue-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    <b>Regime de Competência (DRE):</b> Apropriação linear mensal das despesas (1/12 avos) para espelhar o resultado operacional sem oscilações de fluxo.
+            <!-- Faixa Informativa Dinâmica e Curta -->
+            <div id="info-regime-bar" class="px-4 py-2 bg-blue-50/90 border border-blue-200/80 rounded-lg text-[11px] text-blue-900 flex items-center justify-between">
+                <span id="info-regime-text" class="flex items-center gap-1.5">
+                    <b>Regime de Competência (DRE):</b> Apropriação linear mensal das despesas (1/12 avos) para espelhar o resultado operacional sem distorções sazonais.
                 </span>
-                <span class="text-[11px] font-bold text-blue-700 bg-white px-3 py-1 rounded-full border border-blue-200 shadow-2xs">Padrão Controladoria</span>
+                <span id="corte-alerta-tag" class="font-bold text-blue-800 bg-blue-100/80 px-2 py-0.5 rounded text-[10px]">Corte: 31/12/2027</span>
             </div>
 
-            <!-- Tabela Financeira com Grid Sticky -->
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden">
+            <!-- Tabela Otimizada para Caber na Tela -->
+            <div class="bg-white rounded-xl shadow-2xs border border-slate-200 overflow-hidden">
                 <div class="table-container">
-                    <table id="reportTable" class="w-full text-left border-collapse text-xs table-sticky whitespace-nowrap">
-                        <thead class="text-slate-600 border-b border-slate-200 font-semibold tracking-wider uppercase text-[11px]">
-                            <tr>
-                                <th class="p-3.5 sticky-col-empresa w-24 text-slate-700">Empresa</th>
-                                <th class="p-3.5 sticky-col-fornecedor w-64 text-slate-700">Fornecedor / Contrato</th>
-                                <th class="p-3.5 text-center w-28">Vigência</th>
-                                <th class="p-3.5 text-center w-28">Pagamento</th>
-                                <th class="p-3.5 text-center w-20">Status</th>
-                                <th class="text-right py-3.5 px-3 w-28">Jan</th>
-                                <th class="text-right py-3.5 px-3 w-28">Fev</th>
-                                <th class="text-right py-3.5 px-3 w-28">Mar</th>
-                                <th class="text-right py-3.5 px-3 w-28">Abr</th>
-                                <th class="text-right py-3.5 px-3 w-28">Mai</th>
-                                <th class="text-right py-3.5 px-3 w-28">Jun</th>
-                                <th class="text-right py-3.5 px-3 w-28">Jul</th>
-                                <th class="text-right py-3.5 px-3 w-28">Ago</th>
-                                <th class="text-right py-3.5 px-3 w-28">Set</th>
-                                <th class="text-right py-3.5 px-3 w-28">Out</th>
-                                <th class="text-right py-3.5 px-3 w-28">Nov</th>
-                                <th class="text-right py-3.5 px-3 w-28">Dez</th>
-                                <th class="text-right p-3.5 w-36 bg-slate-100 font-bold text-slate-900 border-l border-slate-200" id="header-total-ano">Total 2027</th>
+                    <table id="reportTable" class="w-full text-left border-collapse text-[11px] table-sticky whitespace-nowrap">
+                        <thead class="text-slate-600 border-b border-slate-200 font-semibold uppercase text-[10px] tracking-wider">
+                            <tr id="tableHeaderRow">
+                                <th class="py-2.5 px-2 sticky-col-empresa w-16 text-slate-700">Empresa</th>
+                                <th class="py-2.5 px-2.5 sticky-col-fornecedor w-56 text-slate-700">Fornecedor / Objeto</th>
+                                <th class="py-2.5 px-1.5 text-center w-20">Vigência</th>
+                                <th class="py-2.5 px-1.5 text-center w-24">Pagamento</th>
+                                <th class="py-2.5 px-1.5 text-center w-16">Status</th>
+                                <th class="text-right py-2.5 px-2 w-24 col-mes" data-m="0">Jan</th>
+                                <th class="text-right py-2.5 px-2 w-24 col-mes" data-m="1">Fev</th>
+                                <th class="text-right py-2.5 px-2 w-24 col-mes" data-m="2">Mar</th>
+                                <th class="text-right py-2.5 px-2 w-24 col-mes" data-m="3">Abr</th>
+                                <th class="text-right py-2.5 px-2 w-24 col-mes" data-m="4">Mai</th>
+                                <th class="text-right py-2.5 px-2 w-24 col-mes" data-m="5">Jun</th>
+                                <th class="text-right py-2.5 px-2 w-24 col-mes" data-m="6">Jul</th>
+                                <th class="text-right py-2.5 px-2 w-24 col-mes" data-m="7">Ago</th>
+                                <th class="text-right py-2.5 px-2 w-24 col-mes" data-m="8">Set</th>
+                                <th class="text-right py-2.5 px-2 w-24 col-mes" data-m="9">Out</th>
+                                <th class="text-right py-2.5 px-2 w-24 col-mes" data-m="10">Nov</th>
+                                <th class="text-right py-2.5 px-2 w-24 col-mes" data-m="11">Dez</th>
+                                <th class="text-right py-2.5 px-3 w-32 bg-slate-100 font-bold text-slate-900 border-l border-slate-200" id="header-total-ano">Total 2027</th>
                             </tr>
                         </thead>
                         <tbody id="reportTableBody" class="divide-y divide-slate-100 font-normal">
@@ -293,31 +305,31 @@
         </div>
 
         <!-- ABA 2: Base de Contratos e Edição de Premissas -->
-        <div id="tab2" class="tab-content hidden space-y-4">
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden">
-                <div class="p-4 bg-slate-50/70 border-b border-slate-200 flex flex-wrap justify-between items-center gap-3">
-                    <input type="text" id="searchCrud" onkeyup="recalcular()" placeholder="🔍 Pesquisar fornecedor, clifor..." class="p-2.5 border border-slate-300 rounded-xl text-xs w-80 outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white">
-                    <button onclick="openModal()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded-xl text-xs transition-colors flex items-center gap-2 shadow-sm">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+        <div id="tab2" class="tab-content hidden space-y-3">
+            <div class="bg-white rounded-xl shadow-2xs border border-slate-200 overflow-hidden">
+                <div class="p-3 bg-slate-50 border-b border-slate-200 flex flex-wrap justify-between items-center gap-2">
+                    <input type="text" id="searchCrud" onkeyup="recalcular()" placeholder="🔍 Pesquisar fornecedor, clifor..." class="p-1.5 border border-slate-300 rounded-lg text-xs w-72 bg-white outline-none">
+                    <button onclick="openModal()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1.5 px-3 rounded-lg text-xs transition-colors flex items-center gap-1 shadow-2xs">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                         Novo Contrato
                     </button>
                 </div>
                 <div class="table-container">
-                    <table id="crudTable" class="w-full text-left border-collapse text-xs table-sticky whitespace-nowrap">
-                        <thead class="bg-slate-100 text-slate-600 font-semibold uppercase text-[11px]">
+                    <table id="crudTable" class="w-full text-left border-collapse text-[11px] table-sticky whitespace-nowrap">
+                        <thead class="bg-slate-100 text-slate-600 font-semibold uppercase text-[10px]">
                             <tr>
-                                <th class="p-3.5">Empresa</th>
-                                <th class="p-3.5">Clifor</th>
-                                <th class="p-3.5">Fornecedor</th>
-                                <th class="p-3.5 text-center">Prazo Contratual</th>
-                                <th class="p-3.5 text-center">Frequência Pagamento</th>
-                                <th class="p-3.5 text-center">Status</th>
-                                <th class="p-3.5">Período de Vigência</th>
-                                <th class="p-3.5 text-center">Mês Reajuste 2027</th>
-                                <th class="text-right p-3.5">Base Mensal Jan</th>
-                                <th class="text-right p-3.5">Base Anual 2026</th>
-                                <th class="text-center p-3.5">Índice</th>
-                                <th class="text-center p-3.5">Ações</th>
+                                <th class="py-2 px-2.5">Empresa</th>
+                                <th class="py-2 px-2.5">Clifor</th>
+                                <th class="py-2 px-2.5">Fornecedor</th>
+                                <th class="py-2 px-2 text-center">Vigência Total</th>
+                                <th class="py-2 px-2 text-center">Pagamento</th>
+                                <th class="py-2 px-2 text-center">Status</th>
+                                <th class="py-2 px-2.5">Período Vigência</th>
+                                <th class="py-2 px-2 text-center">Mês Reajuste</th>
+                                <th class="text-right py-2 px-2.5">Base Mensal 2026</th>
+                                <th class="text-right py-2 px-2.5">Base Anual 2026</th>
+                                <th class="text-center py-2 px-2">Índice</th>
+                                <th class="text-center py-2 px-2">Ações</th>
                             </tr>
                         </thead>
                         <tbody id="crudTableBody" class="divide-y divide-slate-100">
@@ -327,29 +339,29 @@
             </div>
         </div>
 
-        <!-- ABA 3: Gestão de Índices de Reajuste Econômico -->
-        <div id="tab3" class="tab-content hidden space-y-4">
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden max-w-4xl mx-auto p-6">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-200">
+        <!-- ABA 3: Gestão de Índices Econômicos -->
+        <div id="tab3" class="tab-content hidden space-y-3">
+            <div class="bg-white rounded-xl shadow-2xs border border-slate-200 p-5 max-w-4xl mx-auto">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-200">
                     <div>
-                        <h3 class="font-bold text-slate-900 text-lg">Parâmetros & Índices de Reajuste</h3>
-                        <p class="text-xs text-slate-500 mt-0.5">Cadastre e configure alíquotas econômicas aplicadas dinamicamente nas projeções de contratos.</p>
+                        <h3 class="font-bold text-slate-900 text-base">Parâmetros & Índices de Reajuste</h3>
+                        <p class="text-xs text-slate-500">Alíquotas anuais aplicadas dinamicamente na virada do ciclo de cada contrato.</p>
                     </div>
-                    <button onclick="openModalIndice()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded-xl text-xs transition-colors flex items-center gap-1.5 shadow-sm">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                    <button onclick="openModalIndice()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1.5 px-3 rounded-lg text-xs transition-colors flex items-center gap-1 shadow-2xs">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                         Novo Índice
                     </button>
                 </div>
 
-                <div class="overflow-x-auto rounded-xl border border-slate-200">
+                <div class="overflow-x-auto rounded-lg border border-slate-200">
                     <table class="w-full text-left text-xs border-collapse">
                         <thead class="bg-slate-50 text-slate-700 font-semibold border-b border-slate-200">
                             <tr>
-                                <th class="p-3.5">Nome do Índice</th>
-                                <th class="p-3.5">Descrição</th>
-                                <th class="p-3.5 text-center">Taxa Projetada (%)</th>
-                                <th class="p-3.5 text-center">Contratos Vinculados</th>
-                                <th class="p-3.5 text-center">Ações</th>
+                                <th class="p-3">Nome / Sigla</th>
+                                <th class="p-3">Descrição</th>
+                                <th class="p-3 text-center">Taxa Anual (%)</th>
+                                <th class="p-3 text-center">Contratos Vinculados</th>
+                                <th class="p-3 text-center">Ações</th>
                             </tr>
                         </thead>
                         <tbody id="tabelaIndicesBody" class="divide-y divide-slate-100">
@@ -361,51 +373,64 @@
 
     </div>
 
-    <!-- Modal Adicionar / Editar Contrato -->
+    <!-- Modal Editar Premissas do Contrato (Amplo, Limpo e Fácil de Visualizar) -->
     <div id="modalForm" class="modal">
         <div class="modal-content">
-            <div class="p-6 border-b border-slate-200 flex justify-between items-center">
-                <h3 id="modalTitle" class="font-bold text-lg text-slate-900">Editar Premissas do Contrato</h3>
-                <span onclick="closeModal()" class="close text-slate-400 hover:text-slate-800 transition-colors">&times;</span>
+            <div class="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50/80 rounded-t-2xl">
+                <div>
+                    <h3 id="modalTitle" class="font-bold text-base text-slate-900">Editar Premissas do Contrato</h3>
+                    <p class="text-[11px] text-slate-500">Defina o ciclo de vigência, reajuste e desembolso financeiro</p>
+                </div>
+                <span onclick="closeModal()" class="close text-slate-400 hover:text-slate-800 transition-colors text-2xl font-bold cursor-pointer">&times;</span>
             </div>
             <form id="itemForm" onsubmit="handleFormSubmit(event)" class="p-6 space-y-4">
                 <input type="hidden" id="editIndex" value="-1">
                 
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-3 gap-3">
                     <div>
                         <label class="block text-xs font-semibold mb-1 text-slate-700">Empresa</label>
-                        <select id="empresa" class="border border-slate-300 p-2.5 w-full rounded-xl text-xs bg-white outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 font-semibold" required>
+                        <select id="empresa" class="border border-slate-300 p-2 w-full rounded-lg text-xs bg-white font-semibold outline-none focus:ring-1 focus:ring-blue-500" required>
                             <option value="SOTRAN">SOTRAN</option>
                             <option value="TMOV">TMOV</option>
                         </select>
                     </div>
                     <div>
                         <label class="block text-xs font-semibold mb-1 text-slate-700">Código Clifor</label>
-                        <input type="text" id="clifor" class="border border-slate-300 p-2.5 w-full rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500" placeholder="Ex: 1019016">
+                        <input type="text" id="clifor" class="border border-slate-300 p-2 w-full rounded-lg text-xs outline-none focus:ring-1 focus:ring-blue-500" placeholder="Ex: 1019016">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold mb-1 text-slate-700">Status Contrato</label>
+                        <select id="statusManual" class="border border-slate-300 p-2 w-full rounded-lg text-xs bg-white outline-none">
+                            <option value="AUTO">Automático por Data</option>
+                            <option value="Ativo">Forçar Ativo</option>
+                            <option value="Renovar">Atenção / Renovar</option>
+                            <option value="Vencido">Vencido</option>
+                        </select>
                     </div>
                 </div>
 
                 <div>
                     <label class="block text-xs font-semibold mb-1 text-slate-700">Nome do Fornecedor / Objeto</label>
-                    <input type="text" id="fornecedor" class="border border-slate-300 p-2.5 w-full rounded-xl text-xs font-bold outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500" required placeholder="Ex: LBS LOCAL S A">
+                    <input type="text" id="fornecedor" class="border border-slate-300 p-2 w-full rounded-lg text-xs font-bold outline-none focus:ring-1 focus:ring-blue-500" required placeholder="Ex: LBS LOCAL S A">
                 </div>
 
-                <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200/80 space-y-3">
-                    <span class="text-xs font-bold text-blue-900 block border-b pb-1.5">Regras Contratuais de Prazo e Desembolso</span>
+                <!-- Painel de Regras de Vigência e Pagamento -->
+                <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+                    <span class="text-xs font-bold text-blue-900 block border-b border-slate-200 pb-1">1. Vigência e Pagamento</span>
                     <div class="grid grid-cols-2 gap-3">
                         <div>
-                            <label class="block text-xs font-semibold mb-1 text-slate-700">Prazo de Vigência Total</label>
-                            <select id="vigenciaPrazo" class="border border-slate-300 p-2.5 w-full rounded-xl text-xs font-medium bg-white outline-none" required>
+                            <label class="block text-[11px] font-semibold mb-1 text-slate-700">Prazo de Vigência Total</label>
+                            <select id="vigenciaPrazo" class="border border-slate-300 p-2 w-full rounded-lg text-xs font-medium bg-white outline-none" required>
                                 <option value="1 Ano">1 Ano (Anual)</option>
                                 <option value="2 Anos">2 Anos (Bienal)</option>
-                                <option value="3 Anos">3 Anos (Trienal)</option>
-                                <option value="5 Anos">5 Anos (Quinquenal)</option>
+                                <option value="3 Anos">3 Anos (Trienal - ex: Santo Digital)</option>
+                                <option value="5 Anos">5 Anos (Quinquenal - ex: Domínios)</option>
                                 <option value="Indeterminado">Prazo Indeterminado</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold mb-1 text-slate-700">Frequência de Pagamento</label>
-                            <select id="tipoPagamento" class="border border-slate-300 p-2.5 w-full rounded-xl text-xs font-medium bg-white outline-none" required>
+                            <label class="block text-[11px] font-semibold mb-1 text-slate-700">Frequência de Pagamento</label>
+                            <select id="tipoPagamento" class="border border-slate-300 p-2 w-full rounded-lg text-xs font-medium bg-white outline-none" required>
                                 <option value="Mensal">Mensal (12 parcelas ao ano)</option>
                                 <option value="Trimestral">Trimestral (A cada 3 meses - 4 parcelas)</option>
                                 <option value="Semestral">Semestral (A cada 6 meses - 2 parcelas)</option>
@@ -416,59 +441,60 @@
 
                     <div class="grid grid-cols-2 gap-3">
                         <div>
-                            <label class="block text-xs font-semibold mb-1 text-slate-700">Data Início Vigência</label>
-                            <input type="date" id="inicioVigencia" class="border border-slate-300 p-2.5 w-full rounded-xl text-xs bg-white outline-none">
+                            <label class="block text-[11px] font-semibold mb-1 text-slate-700">Data Início Vigência</label>
+                            <input type="date" id="inicioVigencia" class="border border-slate-300 p-2 w-full rounded-lg text-xs bg-white outline-none">
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold mb-1 text-slate-700">Data Término Vigência</label>
-                            <input type="date" id="fimVigencia" class="border border-slate-300 p-2.5 w-full rounded-xl text-xs bg-white outline-none">
+                            <label class="block text-[11px] font-semibold mb-1 text-slate-700">Data Término Vigência</label>
+                            <input type="date" id="fimVigencia" class="border border-slate-300 p-2 w-full rounded-lg text-xs bg-white outline-none">
                         </div>
                     </div>
                 </div>
 
-                <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200/80 space-y-3">
-                    <span class="text-xs font-bold text-slate-800 block border-b pb-1.5">Valores & Premissa de Reajuste em 2027</span>
+                <!-- Painel de Valores e Reajuste -->
+                <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+                    <span class="text-xs font-bold text-slate-800 block border-b border-slate-200 pb-1">2. Valores Base e Regra de Reajuste</span>
                     <div class="grid grid-cols-2 gap-3">
                         <div>
-                            <label class="block text-xs font-semibold mb-1 text-slate-700">Base Mensal Jan 2027 (R$)</label>
-                            <input type="number" step="0.01" id="baseMensal" class="border border-slate-300 p-2.5 w-full rounded-xl text-xs font-bold font-mono text-slate-900 bg-white outline-none" required placeholder="0.00">
+                            <label class="block text-[11px] font-semibold mb-1 text-slate-700">Base Mensal 2026 (R$)</label>
+                            <input type="number" step="0.01" id="baseMensal" class="border border-slate-300 p-2 w-full rounded-lg text-xs font-bold font-mono text-slate-900 bg-white outline-none" required placeholder="0.00">
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold mb-1 text-slate-700">Mês de Aplicação do Reajuste em 2027</label>
-                            <select id="mesReajuste" class="border border-slate-300 p-2.5 w-full rounded-xl text-xs font-medium bg-white outline-none">
+                            <label class="block text-[11px] font-semibold mb-1 text-slate-700">Mês de Aniversário / Reajuste</label>
+                            <select id="mesReajuste" class="border border-slate-300 p-2 w-full rounded-lg text-xs font-medium bg-white outline-none">
                                 <option value="-1">Sem Reajuste em 2027 (Fixo)</option>
-                                <option value="0">Janeiro</option>
-                                <option value="1">Fevereiro</option>
-                                <option value="2">Março</option>
-                                <option value="3">Abril</option>
-                                <option value="4">Maio</option>
-                                <option value="5">Junho</option>
-                                <option value="6">Julho</option>
-                                <option value="7">Agosto</option>
-                                <option value="8">Setembro</option>
-                                <option value="9">Outubro</option>
-                                <option value="10">Novembro</option>
-                                <option value="11">Dezembro</option>
+                                <option value="0">Janeiro (Mês 1)</option>
+                                <option value="1">Fevereiro (Mês 2)</option>
+                                <option value="2">Março (Mês 3)</option>
+                                <option value="3">Abril (Mês 4)</option>
+                                <option value="4">Maio (Mês 5)</option>
+                                <option value="5">Junho (Mês 6)</option>
+                                <option value="6">Julho (Mês 7)</option>
+                                <option value="7">Agosto (Mês 8)</option>
+                                <option value="8">Setembro (Mês 9)</option>
+                                <option value="9">Outubro (Mês 10)</option>
+                                <option value="10">Novembro (Mês 11)</option>
+                                <option value="11">Dezembro (Mês 12)</option>
                             </select>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-2 gap-3">
                         <div>
-                            <label class="block text-xs font-semibold mb-1 text-slate-700">Índice Econômico</label>
-                            <select id="indice" class="border border-slate-300 p-2.5 w-full rounded-xl text-xs bg-white outline-none">
+                            <label class="block text-[11px] font-semibold mb-1 text-slate-700">Índice Econômico</label>
+                            <select id="indice" class="border border-slate-300 p-2 w-full rounded-lg text-xs bg-white outline-none">
                             </select>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold mb-1 text-slate-700">Taxa Customizada (% opcional)</label>
-                            <input type="number" step="0.01" id="customRate" class="border border-slate-300 p-2.5 w-full rounded-xl text-xs bg-white outline-none" placeholder="Ex: 5.0 (Sobrescreve)">
+                            <label class="block text-[11px] font-semibold mb-1 text-slate-700">Taxa Customizada (% sobrescreve)</label>
+                            <input type="number" step="0.01" id="customRate" class="border border-slate-300 p-2 w-full rounded-lg text-xs bg-white outline-none" placeholder="Ex: 5.0">
                         </div>
                     </div>
                 </div>
 
-                <div class="flex justify-end gap-2.5 pt-4 border-t border-slate-200">
-                    <button type="button" onclick="closeModal()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-5 py-2.5 rounded-xl text-xs font-semibold transition-colors">Cancelar</button>
-                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2.5 rounded-xl text-xs shadow-sm transition-colors">Salvar Alterações</button>
+                <div class="flex justify-end gap-2 pt-3 border-t border-slate-200">
+                    <button type="button" onclick="closeModal()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-xs font-semibold transition-colors">Cancelar</button>
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-lg text-xs shadow-2xs transition-colors">Salvar Premissas</button>
                 </div>
             </form>
         </div>
@@ -476,737 +502,737 @@
 
     <!-- Modal Adicionar / Editar Índice -->
     <div id="modalIndice" class="modal">
-        <div class="modal-content" style="width: 460px;">
-            <div class="p-6 border-b border-slate-200 flex justify-between items-center">
-                <h3 id="modalIndiceTitle" class="font-bold text-base text-slate-900">Novo Índice de Reajuste</h3>
-                <span onclick="closeModalIndice()" class="close text-slate-400 hover:text-slate-800 transition-colors">&times;</span>
+        <div class="modal-content" style="width: 440px;">
+            <div class="px-5 py-3.5 border-b border-slate-200 flex justify-between items-center bg-slate-50/80 rounded-t-2xl">
+                <h3 id="modalIndiceTitle" class="font-bold text-sm text-slate-900">Novo Índice de Reajuste</h3>
+                <span onclick="closeModalIndice()" class="close text-slate-400 hover:text-slate-800 transition-colors cursor-pointer text-xl font-bold">&times;</span>
             </div>
-            <form id="indiceForm" onsubmit="handleIndiceSubmit(event)" class="p-6 space-y-4">
+            <form id="indiceForm" onsubmit="handleIndiceSubmit(event)" class="p-5 space-y-3">
                 <input type="hidden" id="editIndiceNomeOriginal" value="">
                 
                 <div>
                     <label class="block text-xs font-semibold mb-1 text-slate-700">Nome / Sigla do Índice</label>
-                    <input type="text" id="novoIndiceNome" class="border border-slate-300 p-2.5 w-full rounded-xl text-xs uppercase font-bold outline-none" required placeholder="Ex: INPC">
+                    <input type="text" id="novoIndiceNome" class="border border-slate-300 p-2 w-full rounded-lg text-xs uppercase font-bold outline-none focus:ring-1 focus:ring-blue-500" required placeholder="Ex: INPC">
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold mb-1 text-slate-700">Descrição / Finalidade</label>
-                    <input type="text" id="novoIndiceDesc" class="border border-slate-300 p-2.5 w-full rounded-xl text-xs outline-none" placeholder="Ex: Índice Nacional de Preços ao Consumidor">
+                    <label class="block text-xs font-semibold mb-1 text-slate-700">Descrição</label>
+                    <input type="text" id="novoIndiceDesc" class="border border-slate-300 p-2 w-full rounded-lg text-xs outline-none focus:ring-1 focus:ring-blue-500" placeholder="Ex: Índice Nacional de Preços ao Consumidor">
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold mb-1 text-slate-700">Taxa Projetada 2027 (%)</label>
-                    <div class="flex items-center gap-2">
-                        <input type="number" step="0.01" id="novoIndiceTaxa" class="border border-slate-300 p-2.5 w-full rounded-xl text-xs font-bold text-blue-700 outline-none" required placeholder="Ex: 4.8">
+                    <label class="block text-xs font-semibold mb-1 text-slate-700">Taxa Anual Projetada (%)</label>
+                    <div class="flex items-center gap-1.5">
+                        <input type="number" step="0.01" id="novoIndiceTaxa" class="border border-slate-300 p-2 w-full rounded-lg text-xs font-bold text-blue-700 outline-none focus:ring-1 focus:ring-blue-500" required placeholder="Ex: 4.8">
                         <span class="text-xs font-bold text-slate-600">%</span>
                     </div>
                 </div>
 
-                <div class="flex justify-end gap-2.5 pt-4 border-t border-slate-200">
-                    <button type="button" onclick="closeModalIndice()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-5 py-2.5 rounded-xl text-xs font-semibold transition-colors">Cancelar</button>
-                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2.5 rounded-xl text-xs shadow-sm transition-colors">Salvar Índice</button>
+                <div class="flex justify-end gap-2 pt-3 border-t border-slate-200">
+                    <button type="button" onclick="closeModalIndice()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-xs font-semibold transition-colors">Cancelar</button>
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-lg text-xs shadow-2xs transition-colors">Salvar Índice</button>
                 </div>
             </form>
         </div>
     </div>
 
     <script>
-        let currentVisaoRegime = 'contabil'; // 'contabil' (DRE) ou 'financeiro' (Caixa)
+        let currentVisaoRegime = 'contabil'; // 'contabil' ou 'financeiro'
+        let currentAnoProjecao = 2027; // 2026, 2027, 2028, 2029, 2030
 
         // Índices Econômicos
         let indicesConfig = [
             { nome: "IPCA", taxa: 4.5, desc: "Índice Nacional de Preços ao Consumidor Amplo (IBGE)" },
             { nome: "IGP-M", taxa: 5.0, desc: "Índice Geral de Preços - Mercado (FGV)" },
             { nome: "DISSIDIO", taxa: 6.0, desc: "Reajuste padrão anual de dissídio sindical" },
-            { nome: "FIXO", taxa: 0.0, desc: "Sem reajuste contratual em 2027 (0.0%)" }
+            { nome: "FIXO", taxa: 0.0, desc: "Sem reajuste contratual (0.0%)" }
         ];
 
-        // Base Oficial Exata dos 40 Contratos
+        // Base Oficial dos 40 Contratos
         const initialData = [
-    {
-        "id": 1,
-        "empresa": "TMOV",
-        "clifor": "1019016",
-        "fornecedor": "LBS LOCAL S A",
-        "ccusto": "DESENVOLVIMENTO",
-        "categoria": "UTILIZAÇÃO SOFTWARES",
-        "vigenciaPrazo": "1 Ano",
-        "tipoPagamento": "Mensal",
-        "inicioVigencia": "2025-05-23",
-        "fimVigencia": "2026-05-23",
-        "mesReajuste": 4,
-        "baseMensal": 45000.0,
-        "indice": "IPCA",
-        "customRate": null,
-        "obs": ""
-    },
-    {
-        "id": 2,
-        "empresa": "SOTRAN",
-        "clifor": "1045233",
-        "fornecedor": "NSTECH IP INSTITUICAO DE PAGAMENTO S.A.",
-        "ccusto": "TI INFRA",
-        "categoria": "UTILIZAÇÃO SOFTWARES",
-        "vigenciaPrazo": "1 Ano",
-        "tipoPagamento": "Mensal",
-        "inicioVigencia": "2024-11-22",
-        "fimVigencia": "2025-11-22",
-        "mesReajuste": 10,
-        "baseMensal": 10183.47,
-        "indice": "IPCA",
-        "customRate": null,
-        "obs": ""
-    },
-    {
-        "id": 3,
-        "empresa": "SOTRAN",
-        "clifor": "",
-        "fornecedor": "IDWALL TECNOLOGIA LTDA",
-        "ccusto": "TI INFRA",
-        "categoria": "UTILIZAÇÃO SOFTWARES",
-        "vigenciaPrazo": "Indeterminado",
-        "tipoPagamento": "Mensal",
-        "inicioVigencia": "",
-        "fimVigencia": "",
-        "mesReajuste": -1,
-        "baseMensal": 22990.0,
-        "indice": "IPCA",
-        "customRate": null,
-        "obs": ""
-    },
-    {
-        "id": 4,
-        "empresa": "SOTRAN",
-        "clifor": "1057270",
-        "fornecedor": "SANTO DIGITAL DISTRIBUICAO E CONSULTORIA EM INFORMATICA LTDA",
-        "ccusto": "TI INFRA",
-        "categoria": "UTILIZAÇÃO SOFTWARES",
-        "vigenciaPrazo": "3 Anos",
-        "tipoPagamento": "Mensal",
-        "inicioVigencia": "2024-11-25",
-        "fimVigencia": "2027-11-25",
-        "mesReajuste": 10,
-        "baseMensal": 24618.5,
-        "indice": "IPCA",
-        "customRate": null,
-        "obs": ""
-    },
-    {
-        "id": 5,
-        "empresa": "SOTRAN",
-        "clifor": "1130261",
-        "fornecedor": "ORACLE BRASIL SISTEMAS LTDA",
-        "ccusto": "TI INFRA",
-        "categoria": "UTILIZAÇÃO SOFTWARES",
-        "vigenciaPrazo": "1 Ano",
-        "tipoPagamento": "Mensal",
-        "inicioVigencia": "2026-09-28",
-        "fimVigencia": "2027-09-28",
-        "mesReajuste": 8,
-        "baseMensal": 26000.0,
-        "indice": "IPCA",
-        "customRate": null,
-        "obs": ""
-    },
-    {
-        "id": 6,
-        "empresa": "SOTRAN",
-        "clifor": "1212275",
-        "fornecedor": "TERAVOZ TELECOM TELECOMUNICACOES LTDA (TWILIO)",
-        "ccusto": "TI INFRA",
-        "categoria": "UTILIZAÇÃO SOFTWARES",
-        "vigenciaPrazo": "5 Anos",
-        "tipoPagamento": "Mensal",
-        "inicioVigencia": "2020-02-09",
-        "fimVigencia": "2026-08-01",
-        "mesReajuste": -1,
-        "baseMensal": 14000.0,
-        "indice": "FIXO",
-        "customRate": null,
-        "obs": ""
-    },
-    {
-        "id": 7,
-        "empresa": "SOTRAN",
-        "clifor": "1335380",
-        "fornecedor": "NDD LOG LTDA",
-        "ccusto": "TI INFRA",
-        "categoria": "UTILIZAÇÃO SOFTWARES",
-        "vigenciaPrazo": "3 Anos",
-        "tipoPagamento": "Mensal",
-        "inicioVigencia": "2022-05-22",
-        "fimVigencia": "2025-05-22",
-        "mesReajuste": 4,
-        "baseMensal": 12470.44,
-        "indice": "IPCA",
-        "customRate": null,
-        "obs": ""
-    },
-    {
-        "id": 8,
-        "empresa": "SOTRAN",
-        "clifor": "1178031",
-        "fornecedor": "CURUPIRA S.A (Blip)",
-        "ccusto": "TI INFRA",
-        "categoria": "UTILIZAÇÃO SOFTWARES",
-        "vigenciaPrazo": "2 Anos",
-        "tipoPagamento": "Mensal",
-        "inicioVigencia": "2024-07-26",
-        "fimVigencia": "2026-07-26",
-        "mesReajuste": 6,
-        "baseMensal": 20000.0,
-        "indice": "IPCA",
-        "customRate": null,
-        "obs": ""
-    },
-    {
-        "id": 9,
-        "empresa": "SOTRAN",
-        "clifor": "1362743",
-        "fornecedor": "M3CORP SOLUÇÕES PERSONALIZADAS EM INTERNET",
-        "ccusto": "TI INFRA",
-        "categoria": "UTILIZAÇÃO SOFTWARES",
-        "vigenciaPrazo": "2 Anos",
-        "tipoPagamento": "Mensal",
-        "inicioVigencia": "2025-03-10",
-        "fimVigencia": "2027-03-10",
-        "mesReajuste": -1,
-        "baseMensal": 2500.0,
-        "indice": "FIXO",
-        "customRate": null,
-        "obs": ""
-    },
-    {
-        "id": 10,
-        "empresa": "SOTRAN",
-        "clifor": "1361414",
-        "fornecedor": "FLOWTI TECNOLOGIA LTDA",
-        "ccusto": "TI INFRA",
-        "categoria": "UTILIZAÇÃO SOFTWARES",
-        "vigenciaPrazo": "1 Ano",
-        "tipoPagamento": "Mensal",
-        "inicioVigencia": "2026-05-16",
-        "fimVigencia": "2027-05-16",
-        "mesReajuste": 4,
-        "baseMensal": 3739.47,
-        "indice": "IPCA",
-        "customRate": null,
-        "obs": ""
-    },
-    {
-        "id": 11,
-        "empresa": "SOTRAN",
-        "clifor": "976283",
-        "fornecedor": "INGRAM MICRO BRASIL LTDA.",
-        "ccusto": "TI INFRA",
-        "categoria": "UTILIZAÇÃO SOFTWARES",
-        "vigenciaPrazo": "1 Ano",
-        "tipoPagamento": "Mensal",
-        "inicioVigencia": "2026-11-30",
-        "fimVigencia": "2027-11-30",
-        "mesReajuste": 10,
-        "baseMensal": 2600.0,
-        "indice": "IPCA",
-        "customRate": null,
-        "obs": ""
-    },
-    {
-        "id": 12,
-        "empresa": "SOTRAN",
-        "clifor": "839036",
-        "fornecedor": "Suporte banco Oracle Maxys Prod",
-        "ccusto": "TI INFRA",
-        "categoria": "UTILIZAÇÃO SOFTWARES",
-        "vigenciaPrazo": "1 Ano",
-        "tipoPagamento": "Mensal",
-        "inicioVigencia": "2026-09-01",
-        "fimVigencia": "2027-09-01",
-        "mesReajuste": 8,
-        "baseMensal": 2100.0,
-        "indice": "IPCA",
-        "customRate": null,
-        "obs": ""
-    },
-    {
-        "id": 13,
-        "empresa": "SOTRAN",
-        "clifor": "1086581",
-        "fornecedor": "ATLASSIAN PTY LTD",
-        "ccusto": "TI INFRA",
-        "categoria": "UTILIZAÇÃO SOFTWARES",
-        "vigenciaPrazo": "Indeterminado",
-        "tipoPagamento": "Mensal",
-        "inicioVigencia": "",
-        "fimVigencia": "",
-        "mesReajuste": -1,
-        "baseMensal": 1367.03,
-        "indice": "IPCA",
-        "customRate": null,
-        "obs": ""
-    },
-    {
-        "id": 14,
-        "empresa": "SOTRAN",
-        "clifor": "1342463",
-        "fornecedor": "APPOENA TECNOLOGIA DA INFORMACAO LTDA",
-        "ccusto": "TI INFRA",
-        "categoria": "UTILIZAÇÃO SOFTWARES",
-        "vigenciaPrazo": "2 Anos",
-        "tipoPagamento": "Mensal",
-        "inicioVigencia": "2025-05-06",
-        "fimVigencia": "2027-05-06",
-        "mesReajuste": 4,
-        "baseMensal": 1600.0,
-        "indice": "IPCA",
-        "customRate": null,
-        "obs": ""
-    },
-    {
-        "id": 15,
-        "empresa": "SOTRAN",
-        "clifor": "1201719",
-        "fornecedor": "A. J. EING",
-        "ccusto": "TI INFRA",
-        "categoria": "UTILIZAÇÃO SOFTWARES",
-        "vigenciaPrazo": "1 Ano",
-        "tipoPagamento": "Mensal",
-        "inicioVigencia": "2026-08-21",
-        "fimVigencia": "2027-08-21",
-        "mesReajuste": 7,
-        "baseMensal": 1028.2,
-        "indice": "IPCA",
-        "customRate": null,
-        "obs": ""
-    },
-    {
-        "id": 16,
-        "empresa": "SOTRAN",
-        "clifor": "1078042",
-        "fornecedor": "TZM INFORMATICA E TELECOMUNICACOES LTDA EPP",
-        "ccusto": "TI INFRA",
-        "categoria": "UTILIZAÇÃO SOFTWARES",
-        "vigenciaPrazo": "1 Ano",
-        "tipoPagamento": "Mensal",
-        "inicioVigencia": "2026-02-23",
-        "fimVigencia": "2027-02-23",
-        "mesReajuste": 1,
-        "baseMensal": 1200.0,
-        "indice": "IPCA",
-        "customRate": null,
-        "obs": ""
-    },
-    {
-        "id": 17,
-        "empresa": "SOTRAN",
-        "clifor": "1223284",
-        "fornecedor": "CNPJA TECNOLOGIA LTDA",
-        "ccusto": "TI INFRA",
-        "categoria": "UTILIZAÇÃO SOFTWARES",
-        "vigenciaPrazo": "1 Ano",
-        "tipoPagamento": "Mensal",
-        "inicioVigencia": "2022-06-25",
-        "fimVigencia": "",
-        "mesReajuste": 5,
-        "baseMensal": 412.5,
-        "indice": "IPCA",
-        "customRate": null,
-        "obs": ""
-    },
-    {
-        "id": 18,
-        "empresa": "SOTRAN",
-        "clifor": "1254587",
-        "fornecedor": "DBT LABS, INC",
-        "ccusto": "TI INFRA",
-        "categoria": "UTILIZAÇÃO SOFTWARES",
-        "vigenciaPrazo": "Indeterminado",
-        "tipoPagamento": "Mensal",
-        "inicioVigencia": "",
-        "fimVigencia": "",
-        "mesReajuste": -1,
-        "baseMensal": 641.0,
-        "indice": "FIXO",
-        "customRate": null,
-        "obs": ""
-    },
-    {
-        "id": 19,
-        "empresa": "SOTRAN",
-        "clifor": "1182957",
-        "fornecedor": "SLACK TECHNOLOGIES LIMITED",
-        "ccusto": "TI INFRA",
-        "categoria": "UTILIZAÇÃO SOFTWARES",
-        "vigenciaPrazo": "1 Ano",
-        "tipoPagamento": "Mensal",
-        "inicioVigencia": "2026-02-13",
-        "fimVigencia": "2027-02-13",
-        "mesReajuste": 1,
-        "baseMensal": 350.0,
-        "indice": "IPCA",
-        "customRate": null,
-        "obs": ""
-    },
-    {
-        "id": 20,
-        "empresa": "SOTRAN",
-        "clifor": "1244233",
-        "fornecedor": "APPLE INC.",
-        "ccusto": "TI INFRA",
-        "categoria": "UTILIZAÇÃO SOFTWARES",
-        "vigenciaPrazo": "1 Ano",
-        "tipoPagamento": "Mensal",
-        "inicioVigencia": "2026-09-29",
-        "fimVigencia": "2027-09-29",
-        "mesReajuste": -1,
-        "baseMensal": 52.0,
-        "indice": "FIXO",
-        "customRate": null,
-        "obs": ""
-    },
-    {
-        "id": 21,
-        "empresa": "SOTRAN",
-        "clifor": "1384800",
-        "fornecedor": "INNOVENT REPRESENTACAO E COMERCIO DE SOFTWARE LTDA",
-        "ccusto": "TI INFRA",
-        "categoria": "UTILIZAÇÃO SOFTWARES",
-        "vigenciaPrazo": "1 Ano",
-        "tipoPagamento": "Mensal",
-        "inicioVigencia": "2025-11-20",
-        "fimVigencia": "2026-11-20",
-        "mesReajuste": 10,
-        "baseMensal": 3800.0,
-        "indice": "IPCA",
-        "customRate": null,
-        "obs": ""
-    },
-    {
-        "id": 22,
-        "empresa": "SOTRAN",
-        "clifor": "1367220",
-        "fornecedor": "GETSCREEN.ME",
-        "ccusto": "TI INFRA",
-        "categoria": "UTILIZAÇÃO SOFTWARES",
-        "vigenciaPrazo": "1 Ano",
-        "tipoPagamento": "Anual_Unica",
-        "inicioVigencia": "2026-10-04",
-        "fimVigencia": "2027-10-04",
-        "mesReajuste": 9,
-        "baseMensal": 345.43,
-        "indice": "IPCA",
-        "customRate": 5.0,
-        "obs": ""
-    },
-    {
-        "id": 23,
-        "empresa": "TMOV",
-        "clifor": "1244901",
-        "fornecedor": "WEBFLOW",
-        "ccusto": "DESENVOLVIMENTO",
-        "categoria": "UTILIZAÇÃO SOFTWARES",
-        "vigenciaPrazo": "1 Ano",
-        "tipoPagamento": "Mensal",
-        "inicioVigencia": "2025-11-06",
-        "fimVigencia": "2026-11-06",
-        "mesReajuste": 10,
-        "baseMensal": 292.0,
-        "indice": "IPCA",
-        "customRate": null,
-        "obs": ""
-    },
-    {
-        "id": 24,
-        "empresa": "SOTRAN",
-        "clifor": "",
-        "fornecedor": "QUALP PORTAL DE INTERNET S.A",
-        "ccusto": "TI INFRA",
-        "categoria": "UTILIZAÇÃO SOFTWARES",
-        "vigenciaPrazo": "Indeterminado",
-        "tipoPagamento": "Mensal",
-        "inicioVigencia": "",
-        "fimVigencia": "",
-        "mesReajuste": -1,
-        "baseMensal": 888.25,
-        "indice": "IPCA",
-        "customRate": null,
-        "obs": ""
-    },
-    {
-        "id": 25,
-        "empresa": "SOTRAN",
-        "clifor": "1384800",
-        "fornecedor": "INNOVENT REPRESENTACAO E COMERCIO DE SOFTWARE LTDA",
-        "ccusto": "TI INFRA",
-        "categoria": "UTILIZAÇÃO SOFTWARES",
-        "vigenciaPrazo": "Indeterminado",
-        "tipoPagamento": "Mensal",
-        "inicioVigencia": "",
-        "fimVigencia": "",
-        "mesReajuste": -1,
-        "baseMensal": 1045.0,
-        "indice": "IPCA",
-        "customRate": null,
-        "obs": ""
-    },
-    {
-        "id": 26,
-        "empresa": "SOTRAN",
-        "clifor": "1122752",
-        "fornecedor": "CHEAPSSLSECURITY COM",
-        "ccusto": "TI INFRA",
-        "categoria": "UTILIZAÇÃO SOFTWARES",
-        "vigenciaPrazo": "2 Anos",
-        "tipoPagamento": "Mensal",
-        "inicioVigencia": "2026-08-29",
-        "fimVigencia": "2028-08-29",
-        "mesReajuste": -1,
-        "baseMensal": 35.0,
-        "indice": "FIXO",
-        "customRate": null,
-        "obs": ""
-    },
-    {
-        "id": 27,
-        "empresa": "SOTRAN",
-        "clifor": "1122752",
-        "fornecedor": "CHEAPSSLSECURITY COM",
-        "ccusto": "TI INFRA",
-        "categoria": "UTILIZAÇÃO SOFTWARES",
-        "vigenciaPrazo": "2 Anos",
-        "tipoPagamento": "Mensal",
-        "inicioVigencia": "2026-08-03",
-        "fimVigencia": "2028-08-03",
-        "mesReajuste": -1,
-        "baseMensal": 35.0,
-        "indice": "FIXO",
-        "customRate": null,
-        "obs": ""
-    },
-    {
-        "id": 28,
-        "empresa": "SOTRAN",
-        "clifor": "1122752",
-        "fornecedor": "CHEAPSSLSECURITY COM",
-        "ccusto": "TI INFRA",
-        "categoria": "UTILIZAÇÃO SOFTWARES",
-        "vigenciaPrazo": "2 Anos",
-        "tipoPagamento": "Mensal",
-        "inicioVigencia": "2026-06-10",
-        "fimVigencia": "2028-06-10",
-        "mesReajuste": -1,
-        "baseMensal": 35.0,
-        "indice": "IPCA",
-        "customRate": 0.0,
-        "obs": ""
-    },
-    {
-        "id": 29,
-        "empresa": "SOTRAN",
-        "clifor": "1061611",
-        "fornecedor": "LOCAWEB SERVICOS DE INTERNET S.A.",
-        "ccusto": "TI INFRA",
-        "categoria": "UTILIZAÇÃO SOFTWARES",
-        "vigenciaPrazo": "1 Ano",
-        "tipoPagamento": "Mensal",
-        "inicioVigencia": "2026-01-19",
-        "fimVigencia": "2027-01-19",
-        "mesReajuste": -1,
-        "baseMensal": 48.5,
-        "indice": "IPCA",
-        "customRate": null,
-        "obs": ""
-    },
-    {
-        "id": 30,
-        "empresa": "SOTRAN",
-        "clifor": "",
-        "fornecedor": "DOMÍNIO SOTRAN.COM.BR",
-        "ccusto": "TI INFRA",
-        "categoria": "UTILIZAÇÃO SOFTWARES",
-        "vigenciaPrazo": "5 Anos",
-        "tipoPagamento": "Anual_Unica",
-        "inicioVigencia": "2023-01-09",
-        "fimVigencia": "2028-01-09",
-        "mesReajuste": -1,
-        "baseMensal": 0.0,
-        "indice": "IPCA",
-        "customRate": null,
-        "obs": ""
-    },
-    {
-        "id": 31,
-        "empresa": "TMOV",
-        "clifor": "",
-        "fornecedor": "DOMÍNIO TMOV.COM.BR",
-        "ccusto": "DESENVOLVIMENTO",
-        "categoria": "UTILIZAÇÃO SOFTWARES",
-        "vigenciaPrazo": "5 Anos",
-        "tipoPagamento": "Anual_Unica",
-        "inicioVigencia": "2023-06-09",
-        "fimVigencia": "2028-06-09",
-        "mesReajuste": -1,
-        "baseMensal": 0.0,
-        "indice": "IPCA",
-        "customRate": null,
-        "obs": ""
-    },
-    {
-        "id": 32,
-        "empresa": "TMOV",
-        "clifor": "",
-        "fornecedor": "DOMÍNIO TMOVPAY.COM.BR",
-        "ccusto": "DESENVOLVIMENTO",
-        "categoria": "UTILIZAÇÃO SOFTWARES",
-        "vigenciaPrazo": "5 Anos",
-        "tipoPagamento": "Anual_Unica",
-        "inicioVigencia": "2023-07-29",
-        "fimVigencia": "2028-07-29",
-        "mesReajuste": -1,
-        "baseMensal": 0.0,
-        "indice": "IPCA",
-        "customRate": null,
-        "obs": ""
-    },
-    {
-        "id": 33,
-        "empresa": "SOTRAN",
-        "clifor": "1391545",
-        "fornecedor": "OPENAI OPCO, LLC",
-        "ccusto": "TI INFRA",
-        "categoria": "UTILIZAÇÃO SOFTWARES",
-        "vigenciaPrazo": "Indeterminado",
-        "tipoPagamento": "Mensal",
-        "inicioVigencia": "",
-        "fimVigencia": "",
-        "mesReajuste": -1,
-        "baseMensal": 1045.0,
-        "indice": "IPCA",
-        "customRate": null,
-        "obs": ""
-    },
-    {
-        "id": 34,
-        "empresa": "SOTRAN",
-        "clifor": "839036",
-        "fornecedor": "MAXICON SISTEMAS",
-        "ccusto": "TI INFRA",
-        "categoria": "UTILIZAÇÃO SOFTWARES",
-        "vigenciaPrazo": "Indeterminado",
-        "tipoPagamento": "Mensal",
-        "inicioVigencia": "",
-        "fimVigencia": "",
-        "mesReajuste": -1,
-        "baseMensal": 36850.15,
-        "indice": "IPCA",
-        "customRate": null,
-        "obs": ""
-    },
-    {
-        "id": 35,
-        "empresa": "SOTRAN",
-        "clifor": "1145746",
-        "fornecedor": "QUALITOR SOFTWARE E SERVIÇOS DE INFORMATICA S/A",
-        "ccusto": "TI INFRA",
-        "categoria": "UTILIZAÇÃO SOFTWARES",
-        "vigenciaPrazo": "1 Ano",
-        "tipoPagamento": "Mensal",
-        "inicioVigencia": "2026-06-12",
-        "fimVigencia": "2027-06-12",
-        "mesReajuste": -1,
-        "baseMensal": 4313.27,
-        "indice": "FIXO",
-        "customRate": null,
-        "obs": ""
-    },
-    {
-        "id": 36,
-        "empresa": "SOTRAN",
-        "clifor": "1145746",
-        "fornecedor": "QUALITOR SOFTWARE E SERVIÇOS DE INFORMATICA S/A",
-        "ccusto": "TI INFRA",
-        "categoria": "UTILIZAÇÃO SOFTWARES",
-        "vigenciaPrazo": "1 Ano",
-        "tipoPagamento": "Mensal",
-        "inicioVigencia": "2026-06-12",
-        "fimVigencia": "2027-06-12",
-        "mesReajuste": 5,
-        "baseMensal": 1450.83,
-        "indice": "IPCA",
-        "customRate": null,
-        "obs": ""
-    },
-    {
-        "id": 37,
-        "empresa": "SOTRAN",
-        "clifor": "",
-        "fornecedor": "BITDEFENDER - Antivirus",
-        "ccusto": "TI INFRA",
-        "categoria": "UTILIZAÇÃO SOFTWARES",
-        "vigenciaPrazo": "Indeterminado",
-        "tipoPagamento": "Mensal",
-        "inicioVigencia": "",
-        "fimVigencia": "",
-        "mesReajuste": -1,
-        "baseMensal": 15625.0,
-        "indice": "FIXO",
-        "customRate": null,
-        "obs": ""
-    },
-    {
-        "id": 38,
-        "empresa": "SOTRAN",
-        "clifor": "",
-        "fornecedor": "PENTEST",
-        "ccusto": "TI INFRA",
-        "categoria": "UTILIZAÇÃO SOFTWARES",
-        "vigenciaPrazo": "Indeterminado",
-        "tipoPagamento": "Mensal",
-        "inicioVigencia": "",
-        "fimVigencia": "",
-        "mesReajuste": -1,
-        "baseMensal": 13062.5,
-        "indice": "IPCA",
-        "customRate": null,
-        "obs": ""
-    },
-    {
-        "id": 39,
-        "empresa": "SOTRAN",
-        "clifor": "",
-        "fornecedor": "VPN",
-        "ccusto": "TI INFRA",
-        "categoria": "UTILIZAÇÃO SOFTWARES",
-        "vigenciaPrazo": "Indeterminado",
-        "tipoPagamento": "Mensal",
-        "inicioVigencia": "",
-        "fimVigencia": "",
-        "mesReajuste": -1,
-        "baseMensal": 5225.0,
-        "indice": "IPCA",
-        "customRate": null,
-        "obs": ""
-    },
-    {
-        "id": 40,
-        "empresa": "SOTRAN",
-        "clifor": "",
-        "fornecedor": "MELHORIAS EM INFRAESTRUTURA",
-        "ccusto": "TI INFRA",
-        "categoria": "UTILIZAÇÃO SOFTWARES",
-        "vigenciaPrazo": "Indeterminado",
-        "tipoPagamento": "Mensal",
-        "inicioVigencia": "",
-        "fimVigencia": "",
-        "mesReajuste": -1,
-        "baseMensal": 1045.0,
-        "indice": "IPCA",
-        "customRate": null,
-        "obs": ""
-    }
+  {
+    "id": 1,
+    "empresa": "TMOV",
+    "clifor": "1019016",
+    "fornecedor": "LBS LOCAL S A",
+    "ccusto": "DESENVOLVIMENTO",
+    "categoria": "UTILIZAÇÃO SOFTWARES",
+    "vigenciaPrazo": "1 Ano",
+    "tipoPagamento": "Mensal",
+    "inicioVigencia": "2025-05-23",
+    "fimVigencia": "2026-05-23",
+    "mesReajuste": 4,
+    "baseMensal": 45000.0,
+    "indice": "IPCA",
+    "customRate": null,
+    "obs": ""
+  },
+  {
+    "id": 2,
+    "empresa": "SOTRAN",
+    "clifor": "1045233",
+    "fornecedor": "NSTECH IP INSTITUICAO DE PAGAMENTO S.A.",
+    "ccusto": "TI INFRA",
+    "categoria": "UTILIZAÇÃO SOFTWARES",
+    "vigenciaPrazo": "1 Ano",
+    "tipoPagamento": "Mensal",
+    "inicioVigencia": "2024-11-22",
+    "fimVigencia": "2025-11-22",
+    "mesReajuste": 10,
+    "baseMensal": 10183.47,
+    "indice": "IPCA",
+    "customRate": null,
+    "obs": ""
+  },
+  {
+    "id": 3,
+    "empresa": "SOTRAN",
+    "clifor": "",
+    "fornecedor": "IDWALL TECNOLOGIA LTDA",
+    "ccusto": "TI INFRA",
+    "categoria": "UTILIZAÇÃO SOFTWARES",
+    "vigenciaPrazo": "Indeterminado",
+    "tipoPagamento": "Mensal",
+    "inicioVigencia": "",
+    "fimVigencia": "",
+    "mesReajuste": -1,
+    "baseMensal": 22990.0,
+    "indice": "IPCA",
+    "customRate": null,
+    "obs": ""
+  },
+  {
+    "id": 4,
+    "empresa": "SOTRAN",
+    "clifor": "1057270",
+    "fornecedor": "SANTO DIGITAL DISTRIBUICAO E CONSULTORIA EM INFORMATICA LTDA",
+    "ccusto": "TI INFRA",
+    "categoria": "UTILIZAÇÃO SOFTWARES",
+    "vigenciaPrazo": "3 Anos",
+    "tipoPagamento": "Mensal",
+    "inicioVigencia": "2024-11-25",
+    "fimVigencia": "2027-11-25",
+    "mesReajuste": 10,
+    "baseMensal": 24618.5,
+    "indice": "IPCA",
+    "customRate": null,
+    "obs": ""
+  },
+  {
+    "id": 5,
+    "empresa": "SOTRAN",
+    "clifor": "1130261",
+    "fornecedor": "ORACLE BRASIL SISTEMAS LTDA",
+    "ccusto": "TI INFRA",
+    "categoria": "UTILIZAÇÃO SOFTWARES",
+    "vigenciaPrazo": "1 Ano",
+    "tipoPagamento": "Mensal",
+    "inicioVigencia": "2026-09-28",
+    "fimVigencia": "2027-09-28",
+    "mesReajuste": 8,
+    "baseMensal": 26000.0,
+    "indice": "IPCA",
+    "customRate": null,
+    "obs": ""
+  },
+  {
+    "id": 6,
+    "empresa": "SOTRAN",
+    "clifor": "1212275",
+    "fornecedor": "TERAVOZ TELECOM TELECOMUNICACOES LTDA (TWILIO)",
+    "ccusto": "TI INFRA",
+    "categoria": "UTILIZAÇÃO SOFTWARES",
+    "vigenciaPrazo": "5 Anos",
+    "tipoPagamento": "Mensal",
+    "inicioVigencia": "2020-02-09",
+    "fimVigencia": "2026-08-01",
+    "mesReajuste": -1,
+    "baseMensal": 14000.0,
+    "indice": "FIXO",
+    "customRate": null,
+    "obs": ""
+  },
+  {
+    "id": 7,
+    "empresa": "SOTRAN",
+    "clifor": "1335380",
+    "fornecedor": "NDD LOG LTDA",
+    "ccusto": "TI INFRA",
+    "categoria": "UTILIZAÇÃO SOFTWARES",
+    "vigenciaPrazo": "3 Anos",
+    "tipoPagamento": "Mensal",
+    "inicioVigencia": "2022-05-22",
+    "fimVigencia": "2025-05-22",
+    "mesReajuste": 4,
+    "baseMensal": 12470.44,
+    "indice": "IPCA",
+    "customRate": null,
+    "obs": ""
+  },
+  {
+    "id": 8,
+    "empresa": "SOTRAN",
+    "clifor": "1178031",
+    "fornecedor": "CURUPIRA S.A (Blip)",
+    "ccusto": "TI INFRA",
+    "categoria": "UTILIZAÇÃO SOFTWARES",
+    "vigenciaPrazo": "2 Anos",
+    "tipoPagamento": "Mensal",
+    "inicioVigencia": "2024-07-26",
+    "fimVigencia": "2026-07-26",
+    "mesReajuste": 6,
+    "baseMensal": 20000.0,
+    "indice": "IPCA",
+    "customRate": null,
+    "obs": ""
+  },
+  {
+    "id": 9,
+    "empresa": "SOTRAN",
+    "clifor": "1362743",
+    "fornecedor": "M3CORP SOLUÇÕES PERSONALIZADAS EM INTERNET",
+    "ccusto": "TI INFRA",
+    "categoria": "UTILIZAÇÃO SOFTWARES",
+    "vigenciaPrazo": "2 Anos",
+    "tipoPagamento": "Mensal",
+    "inicioVigencia": "2025-03-10",
+    "fimVigencia": "2027-03-10",
+    "mesReajuste": -1,
+    "baseMensal": 2500.0,
+    "indice": "FIXO",
+    "customRate": null,
+    "obs": ""
+  },
+  {
+    "id": 10,
+    "empresa": "SOTRAN",
+    "clifor": "1361414",
+    "fornecedor": "FLOWTI TECNOLOGIA LTDA",
+    "ccusto": "TI INFRA",
+    "categoria": "UTILIZAÇÃO SOFTWARES",
+    "vigenciaPrazo": "1 Ano",
+    "tipoPagamento": "Mensal",
+    "inicioVigencia": "2026-05-16",
+    "fimVigencia": "2027-05-16",
+    "mesReajuste": 4,
+    "baseMensal": 3739.47,
+    "indice": "IPCA",
+    "customRate": null,
+    "obs": ""
+  },
+  {
+    "id": 11,
+    "empresa": "SOTRAN",
+    "clifor": "976283",
+    "fornecedor": "INGRAM MICRO BRASIL LTDA.",
+    "ccusto": "TI INFRA",
+    "categoria": "UTILIZAÇÃO SOFTWARES",
+    "vigenciaPrazo": "1 Ano",
+    "tipoPagamento": "Mensal",
+    "inicioVigencia": "2026-11-30",
+    "fimVigencia": "2027-11-30",
+    "mesReajuste": 10,
+    "baseMensal": 2600.0,
+    "indice": "IPCA",
+    "customRate": null,
+    "obs": ""
+  },
+  {
+    "id": 12,
+    "empresa": "SOTRAN",
+    "clifor": "839036",
+    "fornecedor": "Suporte banco Oracle Maxys Prod",
+    "ccusto": "TI INFRA",
+    "categoria": "UTILIZAÇÃO SOFTWARES",
+    "vigenciaPrazo": "1 Ano",
+    "tipoPagamento": "Mensal",
+    "inicioVigencia": "2026-09-01",
+    "fimVigencia": "2027-09-01",
+    "mesReajuste": 8,
+    "baseMensal": 2100.0,
+    "indice": "IPCA",
+    "customRate": null,
+    "obs": ""
+  },
+  {
+    "id": 13,
+    "empresa": "SOTRAN",
+    "clifor": "1086581",
+    "fornecedor": "ATLASSIAN PTY LTD",
+    "ccusto": "TI INFRA",
+    "categoria": "UTILIZAÇÃO SOFTWARES",
+    "vigenciaPrazo": "Indeterminado",
+    "tipoPagamento": "Mensal",
+    "inicioVigencia": "",
+    "fimVigencia": "",
+    "mesReajuste": -1,
+    "baseMensal": 1367.03,
+    "indice": "IPCA",
+    "customRate": null,
+    "obs": ""
+  },
+  {
+    "id": 14,
+    "empresa": "SOTRAN",
+    "clifor": "1342463",
+    "fornecedor": "APPOENA TECNOLOGIA DA INFORMACAO LTDA",
+    "ccusto": "TI INFRA",
+    "categoria": "UTILIZAÇÃO SOFTWARES",
+    "vigenciaPrazo": "2 Anos",
+    "tipoPagamento": "Mensal",
+    "inicioVigencia": "2025-05-06",
+    "fimVigencia": "2027-05-06",
+    "mesReajuste": 4,
+    "baseMensal": 1600.0,
+    "indice": "IPCA",
+    "customRate": null,
+    "obs": ""
+  },
+  {
+    "id": 15,
+    "empresa": "SOTRAN",
+    "clifor": "1201719",
+    "fornecedor": "A. J. EING",
+    "ccusto": "TI INFRA",
+    "categoria": "UTILIZAÇÃO SOFTWARES",
+    "vigenciaPrazo": "1 Ano",
+    "tipoPagamento": "Mensal",
+    "inicioVigencia": "2026-08-21",
+    "fimVigencia": "2027-08-21",
+    "mesReajuste": 7,
+    "baseMensal": 1028.2,
+    "indice": "IPCA",
+    "customRate": null,
+    "obs": ""
+  },
+  {
+    "id": 16,
+    "empresa": "SOTRAN",
+    "clifor": "1078042",
+    "fornecedor": "TZM INFORMATICA E TELECOMUNICACOES LTDA EPP",
+    "ccusto": "TI INFRA",
+    "categoria": "UTILIZAÇÃO SOFTWARES",
+    "vigenciaPrazo": "1 Ano",
+    "tipoPagamento": "Mensal",
+    "inicioVigencia": "2026-02-23",
+    "fimVigencia": "2027-02-23",
+    "mesReajuste": 1,
+    "baseMensal": 1200.0,
+    "indice": "IPCA",
+    "customRate": null,
+    "obs": ""
+  },
+  {
+    "id": 17,
+    "empresa": "SOTRAN",
+    "clifor": "1223284",
+    "fornecedor": "CNPJA TECNOLOGIA LTDA",
+    "ccusto": "TI INFRA",
+    "categoria": "UTILIZAÇÃO SOFTWARES",
+    "vigenciaPrazo": "1 Ano",
+    "tipoPagamento": "Mensal",
+    "inicioVigencia": "2022-06-25",
+    "fimVigencia": "",
+    "mesReajuste": 5,
+    "baseMensal": 412.5,
+    "indice": "IPCA",
+    "customRate": null,
+    "obs": ""
+  },
+  {
+    "id": 18,
+    "empresa": "SOTRAN",
+    "clifor": "1254587",
+    "fornecedor": "DBT LABS, INC",
+    "ccusto": "TI INFRA",
+    "categoria": "UTILIZAÇÃO SOFTWARES",
+    "vigenciaPrazo": "Indeterminado",
+    "tipoPagamento": "Mensal",
+    "inicioVigencia": "",
+    "fimVigencia": "",
+    "mesReajuste": -1,
+    "baseMensal": 641.0,
+    "indice": "FIXO",
+    "customRate": null,
+    "obs": ""
+  },
+  {
+    "id": 19,
+    "empresa": "SOTRAN",
+    "clifor": "1182957",
+    "fornecedor": "SLACK TECHNOLOGIES LIMITED",
+    "ccusto": "TI INFRA",
+    "categoria": "UTILIZAÇÃO SOFTWARES",
+    "vigenciaPrazo": "1 Ano",
+    "tipoPagamento": "Mensal",
+    "inicioVigencia": "2026-02-13",
+    "fimVigencia": "2027-02-13",
+    "mesReajuste": 1,
+    "baseMensal": 350.0,
+    "indice": "IPCA",
+    "customRate": null,
+    "obs": ""
+  },
+  {
+    "id": 20,
+    "empresa": "SOTRAN",
+    "clifor": "1244233",
+    "fornecedor": "APPLE INC.",
+    "ccusto": "TI INFRA",
+    "categoria": "UTILIZAÇÃO SOFTWARES",
+    "vigenciaPrazo": "1 Ano",
+    "tipoPagamento": "Mensal",
+    "inicioVigencia": "2026-09-29",
+    "fimVigencia": "2027-09-29",
+    "mesReajuste": -1,
+    "baseMensal": 52.0,
+    "indice": "FIXO",
+    "customRate": null,
+    "obs": ""
+  },
+  {
+    "id": 21,
+    "empresa": "SOTRAN",
+    "clifor": "1384800",
+    "fornecedor": "INNOVENT REPRESENTACAO E COMERCIO DE SOFTWARE LTDA",
+    "ccusto": "TI INFRA",
+    "categoria": "UTILIZAÇÃO SOFTWARES",
+    "vigenciaPrazo": "1 Ano",
+    "tipoPagamento": "Mensal",
+    "inicioVigencia": "2025-11-20",
+    "fimVigencia": "2026-11-20",
+    "mesReajuste": 10,
+    "baseMensal": 3800.0,
+    "indice": "IPCA",
+    "customRate": null,
+    "obs": ""
+  },
+  {
+    "id": 22,
+    "empresa": "SOTRAN",
+    "clifor": "1367220",
+    "fornecedor": "GETSCREEN.ME",
+    "ccusto": "TI INFRA",
+    "categoria": "UTILIZAÇÃO SOFTWARES",
+    "vigenciaPrazo": "1 Ano",
+    "tipoPagamento": "Anual_Unica",
+    "inicioVigencia": "2026-10-04",
+    "fimVigencia": "2027-10-04",
+    "mesReajuste": 9,
+    "baseMensal": 345.43,
+    "indice": "IPCA",
+    "customRate": 5.0,
+    "obs": ""
+  },
+  {
+    "id": 23,
+    "empresa": "TMOV",
+    "clifor": "1244901",
+    "fornecedor": "WEBFLOW",
+    "ccusto": "DESENVOLVIMENTO",
+    "categoria": "UTILIZAÇÃO SOFTWARES",
+    "vigenciaPrazo": "1 Ano",
+    "tipoPagamento": "Mensal",
+    "inicioVigencia": "2025-11-06",
+    "fimVigencia": "2026-11-06",
+    "mesReajuste": 10,
+    "baseMensal": 292.0,
+    "indice": "IPCA",
+    "customRate": null,
+    "obs": ""
+  },
+  {
+    "id": 24,
+    "empresa": "SOTRAN",
+    "clifor": "",
+    "fornecedor": "QUALP PORTAL DE INTERNET S.A",
+    "ccusto": "TI INFRA",
+    "categoria": "UTILIZAÇÃO SOFTWARES",
+    "vigenciaPrazo": "Indeterminado",
+    "tipoPagamento": "Mensal",
+    "inicioVigencia": "",
+    "fimVigencia": "",
+    "mesReajuste": -1,
+    "baseMensal": 888.25,
+    "indice": "IPCA",
+    "customRate": null,
+    "obs": ""
+  },
+  {
+    "id": 25,
+    "empresa": "SOTRAN",
+    "clifor": "1384800",
+    "fornecedor": "INNOVENT REPRESENTACAO E COMERCIO DE SOFTWARE LTDA",
+    "ccusto": "TI INFRA",
+    "categoria": "UTILIZAÇÃO SOFTWARES",
+    "vigenciaPrazo": "Indeterminado",
+    "tipoPagamento": "Mensal",
+    "inicioVigencia": "",
+    "fimVigencia": "",
+    "mesReajuste": -1,
+    "baseMensal": 1045.0,
+    "indice": "IPCA",
+    "customRate": null,
+    "obs": ""
+  },
+  {
+    "id": 26,
+    "empresa": "SOTRAN",
+    "clifor": "1122752",
+    "fornecedor": "CHEAPSSLSECURITY COM",
+    "ccusto": "TI INFRA",
+    "categoria": "UTILIZAÇÃO SOFTWARES",
+    "vigenciaPrazo": "2 Anos",
+    "tipoPagamento": "Mensal",
+    "inicioVigencia": "2026-08-29",
+    "fimVigencia": "2028-08-29",
+    "mesReajuste": -1,
+    "baseMensal": 35.0,
+    "indice": "FIXO",
+    "customRate": null,
+    "obs": ""
+  },
+  {
+    "id": 27,
+    "empresa": "SOTRAN",
+    "clifor": "1122752",
+    "fornecedor": "CHEAPSSLSECURITY COM",
+    "ccusto": "TI INFRA",
+    "categoria": "UTILIZAÇÃO SOFTWARES",
+    "vigenciaPrazo": "2 Anos",
+    "tipoPagamento": "Mensal",
+    "inicioVigencia": "2026-08-03",
+    "fimVigencia": "2028-08-03",
+    "mesReajuste": -1,
+    "baseMensal": 35.0,
+    "indice": "FIXO",
+    "customRate": null,
+    "obs": ""
+  },
+  {
+    "id": 28,
+    "empresa": "SOTRAN",
+    "clifor": "1122752",
+    "fornecedor": "CHEAPSSLSECURITY COM",
+    "ccusto": "TI INFRA",
+    "categoria": "UTILIZAÇÃO SOFTWARES",
+    "vigenciaPrazo": "2 Anos",
+    "tipoPagamento": "Mensal",
+    "inicioVigencia": "2026-06-10",
+    "fimVigencia": "2028-06-10",
+    "mesReajuste": -1,
+    "baseMensal": 35.0,
+    "indice": "IPCA",
+    "customRate": 0.0,
+    "obs": ""
+  },
+  {
+    "id": 29,
+    "empresa": "SOTRAN",
+    "clifor": "1061611",
+    "fornecedor": "LOCAWEB SERVICOS DE INTERNET S.A.",
+    "ccusto": "TI INFRA",
+    "categoria": "UTILIZAÇÃO SOFTWARES",
+    "vigenciaPrazo": "1 Ano",
+    "tipoPagamento": "Mensal",
+    "inicioVigencia": "2026-01-19",
+    "fimVigencia": "2027-01-19",
+    "mesReajuste": -1,
+    "baseMensal": 48.5,
+    "indice": "IPCA",
+    "customRate": null,
+    "obs": ""
+  },
+  {
+    "id": 30,
+    "empresa": "SOTRAN",
+    "clifor": "",
+    "fornecedor": "DOMÍNIO SOTRAN.COM.BR",
+    "ccusto": "TI INFRA",
+    "categoria": "UTILIZAÇÃO SOFTWARES",
+    "vigenciaPrazo": "5 Anos",
+    "tipoPagamento": "Anual_Unica",
+    "inicioVigencia": "2023-01-09",
+    "fimVigencia": "2028-01-09",
+    "mesReajuste": -1,
+    "baseMensal": 0.0,
+    "indice": "IPCA",
+    "customRate": null,
+    "obs": ""
+  },
+  {
+    "id": 31,
+    "empresa": "TMOV",
+    "clifor": "",
+    "fornecedor": "DOMÍNIO TMOV.COM.BR",
+    "ccusto": "DESENVOLVIMENTO",
+    "categoria": "UTILIZAÇÃO SOFTWARES",
+    "vigenciaPrazo": "5 Anos",
+    "tipoPagamento": "Anual_Unica",
+    "inicioVigencia": "2023-06-09",
+    "fimVigencia": "2028-06-09",
+    "mesReajuste": -1,
+    "baseMensal": 0.0,
+    "indice": "IPCA",
+    "customRate": null,
+    "obs": ""
+  },
+  {
+    "id": 32,
+    "empresa": "TMOV",
+    "clifor": "",
+    "fornecedor": "DOMÍNIO TMOVPAY.COM.BR",
+    "ccusto": "DESENVOLVIMENTO",
+    "categoria": "UTILIZAÇÃO SOFTWARES",
+    "vigenciaPrazo": "5 Anos",
+    "tipoPagamento": "Anual_Unica",
+    "inicioVigencia": "2023-07-29",
+    "fimVigencia": "2028-07-29",
+    "mesReajuste": -1,
+    "baseMensal": 0.0,
+    "indice": "IPCA",
+    "customRate": null,
+    "obs": ""
+  },
+  {
+    "id": 33,
+    "empresa": "SOTRAN",
+    "clifor": "1391545",
+    "fornecedor": "OPENAI OPCO, LLC",
+    "ccusto": "TI INFRA",
+    "categoria": "UTILIZAÇÃO SOFTWARES",
+    "vigenciaPrazo": "Indeterminado",
+    "tipoPagamento": "Mensal",
+    "inicioVigencia": "",
+    "fimVigencia": "",
+    "mesReajuste": -1,
+    "baseMensal": 1045.0,
+    "indice": "IPCA",
+    "customRate": null,
+    "obs": ""
+  },
+  {
+    "id": 34,
+    "empresa": "SOTRAN",
+    "clifor": "839036",
+    "fornecedor": "MAXICON SISTEMAS",
+    "ccusto": "TI INFRA",
+    "categoria": "UTILIZAÇÃO SOFTWARES",
+    "vigenciaPrazo": "Indeterminado",
+    "tipoPagamento": "Mensal",
+    "inicioVigencia": "",
+    "fimVigencia": "",
+    "mesReajuste": -1,
+    "baseMensal": 36850.15,
+    "indice": "IPCA",
+    "customRate": null,
+    "obs": ""
+  },
+  {
+    "id": 35,
+    "empresa": "SOTRAN",
+    "clifor": "1145746",
+    "fornecedor": "QUALITOR SOFTWARE E SERVIÇOS DE INFORMATICA S/A",
+    "ccusto": "TI INFRA",
+    "categoria": "UTILIZAÇÃO SOFTWARES",
+    "vigenciaPrazo": "1 Ano",
+    "tipoPagamento": "Mensal",
+    "inicioVigencia": "2026-06-12",
+    "fimVigencia": "2027-06-12",
+    "mesReajuste": -1,
+    "baseMensal": 4313.27,
+    "indice": "FIXO",
+    "customRate": null,
+    "obs": ""
+  },
+  {
+    "id": 36,
+    "empresa": "SOTRAN",
+    "clifor": "1145746",
+    "fornecedor": "QUALITOR SOFTWARE E SERVIÇOS DE INFORMATICA S/A",
+    "ccusto": "TI INFRA",
+    "categoria": "UTILIZAÇÃO SOFTWARES",
+    "vigenciaPrazo": "1 Ano",
+    "tipoPagamento": "Mensal",
+    "inicioVigencia": "2026-06-12",
+    "fimVigencia": "2027-06-12",
+    "mesReajuste": 5,
+    "baseMensal": 1450.83,
+    "indice": "IPCA",
+    "customRate": null,
+    "obs": ""
+  },
+  {
+    "id": 37,
+    "empresa": "SOTRAN",
+    "clifor": "",
+    "fornecedor": "BITDEFENDER - Antivirus",
+    "ccusto": "TI INFRA",
+    "categoria": "UTILIZAÇÃO SOFTWARES",
+    "vigenciaPrazo": "Indeterminado",
+    "tipoPagamento": "Mensal",
+    "inicioVigencia": "",
+    "fimVigencia": "",
+    "mesReajuste": -1,
+    "baseMensal": 15625.0,
+    "indice": "FIXO",
+    "customRate": null,
+    "obs": ""
+  },
+  {
+    "id": 38,
+    "empresa": "SOTRAN",
+    "clifor": "",
+    "fornecedor": "PENTEST",
+    "ccusto": "TI INFRA",
+    "categoria": "UTILIZAÇÃO SOFTWARES",
+    "vigenciaPrazo": "Indeterminado",
+    "tipoPagamento": "Mensal",
+    "inicioVigencia": "",
+    "fimVigencia": "",
+    "mesReajuste": -1,
+    "baseMensal": 13062.5,
+    "indice": "IPCA",
+    "customRate": null,
+    "obs": ""
+  },
+  {
+    "id": 39,
+    "empresa": "SOTRAN",
+    "clifor": "",
+    "fornecedor": "VPN",
+    "ccusto": "TI INFRA",
+    "categoria": "UTILIZAÇÃO SOFTWARES",
+    "vigenciaPrazo": "Indeterminado",
+    "tipoPagamento": "Mensal",
+    "inicioVigencia": "",
+    "fimVigencia": "",
+    "mesReajuste": -1,
+    "baseMensal": 5225.0,
+    "indice": "IPCA",
+    "customRate": null,
+    "obs": ""
+  },
+  {
+    "id": 40,
+    "empresa": "SOTRAN",
+    "clifor": "",
+    "fornecedor": "MELHORIAS EM INFRAESTRUTURA",
+    "ccusto": "TI INFRA",
+    "categoria": "UTILIZAÇÃO SOFTWARES",
+    "vigenciaPrazo": "Indeterminado",
+    "tipoPagamento": "Mensal",
+    "inicioVigencia": "",
+    "fimVigencia": "",
+    "mesReajuste": -1,
+    "baseMensal": 1045.0,
+    "indice": "IPCA",
+    "customRate": null,
+    "obs": ""
+  }
 ];
 
-        // Persistência elegante com chave isolada
-        const STORAGE_KEY = 'enterprise_it_budget_2027_v1';
+        const STORAGE_KEY = 'it_budget_master_40_v2';
         let db = JSON.parse(localStorage.getItem(STORAGE_KEY)) || JSON.parse(JSON.stringify(initialData));
 
         function saveState() {
@@ -1215,40 +1241,77 @@
             } catch (e) {}
         }
 
+        // Gerenciamento de Anos e Data de Corte
+        function handleAnoChange(novoAno) {
+            currentAnoProjecao = parseInt(novoAno, 10);
+            
+            // Atualiza o input de corte para o final daquele ano por padrão
+            const dataInput = document.getElementById('dataCorteInput');
+            if (dataInput) {
+                dataInput.value = `${currentAnoProjecao}-12-31`;
+            }
+            
+            atualizarLabelsAno();
+            recalcular();
+        }
+
+        function handleDataCorteChange(dataStr) {
+            if (!dataStr) return;
+            const parts = dataStr.split('-');
+            if (parts.length === 3) {
+                const anoDigitado = parseInt(parts[0], 10);
+                if (anoDigitado !== currentAnoProjecao && anoDigitado >= 2026 && anoDigitado <= 2035) {
+                    currentAnoProjecao = anoDigitado;
+                    const anoSel = document.getElementById('anoProjecaoSelect');
+                    if (anoSel) anoSel.value = String(anoDigitado);
+                    atualizarLabelsAno();
+                }
+            }
+            recalcular();
+        }
+
+        function limparCorte() {
+            const dataInput = document.getElementById('dataCorteInput');
+            if (dataInput) {
+                dataInput.value = `${currentAnoProjecao}-12-31`;
+            }
+            recalcular();
+        }
+
+        function atualizarLabelsAno() {
+            document.getElementById('badge-exercicio-ano').innerText = `Exercício ${currentAnoProjecao}`;
+            document.getElementById('card-total-label').innerText = currentVisaoRegime === 'contabil' ? `Custo Total DRE (${currentAnoProjecao})` : `Desembolso Total Caixa (${currentAnoProjecao})`;
+            document.getElementById('card-media-label').innerText = `Média Mensal (${currentAnoProjecao})`;
+            document.getElementById('card-impacto-label').innerText = `Impacto Reajustes em ${currentAnoProjecao}`;
+            document.getElementById('header-total-ano').innerText = `Total ${currentAnoProjecao}`;
+        }
+
         function setVisaoRegime(regime) {
             currentVisaoRegime = regime;
             const btnContabil = document.getElementById('btn-visao-contabil');
             const btnFinanceiro = document.getElementById('btn-visao-financeiro');
             const infoText = document.getElementById('info-regime-text');
             const badgeVisao = document.getElementById('badge-modo-visao');
-            const cardTotalLabel = document.getElementById('card-total-label');
-            const headerTotalAno = document.getElementById('header-total-ano');
 
             if (regime === 'contabil') {
-                btnContabil.className = "text-xs px-4 py-1.5 rounded-lg font-bold transition-all bg-white text-blue-700 shadow-sm flex items-center gap-1.5";
-                btnFinanceiro.className = "text-xs px-4 py-1.5 rounded-lg font-semibold transition-all text-slate-600 hover:text-slate-900 flex items-center gap-1.5";
+                btnContabil.className = "text-xs px-3 py-1 rounded font-bold transition-all bg-white text-blue-700 shadow-2xs flex items-center gap-1";
+                btnFinanceiro.className = "text-xs px-3 py-1 rounded font-semibold transition-all text-slate-600 hover:text-slate-900 flex items-center gap-1";
                 infoText.innerHTML = "<b>Regime de Competência (DRE):</b> Apropriação linear mensal das despesas (1/12 avos) para espelhar o resultado operacional sem oscilações de fluxo.";
                 badgeVisao.innerText = "DRE (Competência)";
-                badgeVisao.className = "text-[10px] font-bold px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200/60";
-                cardTotalLabel.innerText = "Custo Total OPEX (2027)";
-                headerTotalAno.innerText = "Total DRE 2027";
+                badgeVisao.className = "text-[9px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200";
             } else {
-                btnFinanceiro.className = "text-xs px-4 py-1.5 rounded-lg font-bold transition-all bg-white text-emerald-700 shadow-sm flex items-center gap-1.5";
-                btnContabil.className = "text-xs px-4 py-1.5 rounded-lg font-semibold transition-all text-slate-600 hover:text-slate-900 flex items-center gap-1.5";
+                btnFinanceiro.className = "text-xs px-3 py-1 rounded font-bold transition-all bg-white text-emerald-700 shadow-2xs flex items-center gap-1";
+                btnContabil.className = "text-xs px-3 py-1 rounded font-semibold transition-all text-slate-600 hover:text-slate-900 flex items-center gap-1";
                 infoText.innerHTML = "<b>Regime de Caixa (Fluxo Financeiro):</b> Os desembolsos são alocados nos meses exatos de liquidação das faturas para previsão de tesouraria.";
                 badgeVisao.innerText = "Fluxo de Caixa";
-                badgeVisao.className = "text-[10px] font-bold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/60";
-                cardTotalLabel.innerText = "Desembolso Total Caixa (2027)";
-                headerTotalAno.innerText = "Total Caixa 2027";
+                badgeVisao.className = "text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200";
             }
+            atualizarLabelsAno();
             recalcular();
         }
 
-        // Formatação Monetária Rigorosa e Padronizada
         function formatCurrency(val) {
-            if (val === 0 || isNaN(val)) {
-                return "R$ 0,00";
-            }
+            if (val === 0 || isNaN(val)) return "R$ 0,00";
             return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(val);
         }
 
@@ -1256,9 +1319,7 @@
             if (!dateStr || dateStr === '' || dateStr === '-') return '-';
             if (dateStr.includes('/')) return dateStr;
             const parts = dateStr.split('-');
-            if (parts.length === 3) {
-                return `${parts[2]}/${parts[1]}/${parts[0]}`;
-            }
+            if (parts.length === 3) return `${parts[2]}/${parts[1]}/${parts[0]}`;
             return dateStr;
         }
 
@@ -1269,7 +1330,14 @@
             return -1;
         }
 
-        function getContractStatus(endDateStr) {
+        function getContractStatus(row) {
+            if (row.statusManual && row.statusManual !== 'AUTO') {
+                if (row.statusManual === 'Ativo') return { label: 'Ativo', class: 'bg-emerald-50 text-emerald-700 border border-emerald-200' };
+                if (row.statusManual === 'Vencido') return { label: 'Vencido', class: 'bg-red-50 text-red-700 border border-red-200' };
+                if (row.statusManual === 'Renovar') return { label: 'Renovar', class: 'bg-amber-50 text-amber-700 border border-amber-200' };
+            }
+
+            const endDateStr = row.fimVigencia;
             if (!endDateStr || endDateStr === '-' || endDateStr === 'Indeterminado' || endDateStr.includes('indeterminado')) {
                 return { label: 'Ativo', class: 'bg-emerald-50 text-emerald-700 border border-emerald-200' };
             }
@@ -1284,8 +1352,8 @@
                 return { label: 'Ativo', class: 'bg-emerald-50 text-emerald-700 border border-emerald-200' };
             }
 
-            const today = new Date();
-            const diffDays = Math.ceil((endDate - today) / (1000 * 60 * 60 * 24));
+            const refDate = new Date(`${currentAnoProjecao}-06-30`);
+            const diffDays = Math.ceil((endDate - refDate) / (1000 * 60 * 60 * 24));
 
             if (isNaN(diffDays)) return { label: 'Ativo', class: 'bg-emerald-50 text-emerald-700 border border-emerald-200' };
             if (diffDays < 0) return { label: 'Vencido', class: 'bg-red-50 text-red-700 border border-red-200' };
@@ -1300,9 +1368,7 @@
             document.getElementById(tabId).classList.remove('hidden');
             document.getElementById(tabId + '-btn').classList.add('active');
 
-            if (tabId === 'tab3') {
-                renderIndicesTable();
-            }
+            if (tabId === 'tab3') renderIndicesTable();
         }
 
         function getRateForIndice(nomeIndice) {
@@ -1310,6 +1376,7 @@
             return found ? (found.taxa / 100) : 0.045;
         }
 
+        // MOTOR PRINCIPAL DE CÁLCULO E PROJEÇÃO MULTIANUAL (2026, 2027, 2028, 2029...)
         function recalcular() {
             const searchReport = (document.getElementById('searchReport') ? document.getElementById('searchReport').value : '').toLowerCase().trim();
             const searchCrud = (document.getElementById('searchCrud') ? document.getElementById('searchCrud').value : '').toLowerCase().trim();
@@ -1317,21 +1384,30 @@
             const filtroPrazo = document.getElementById('filterPrazo') ? document.getElementById('filterPrazo').value : 'ALL';
             const filtroFreq = document.getElementById('filterFreq') ? document.getElementById('filterFreq').value : 'ALL';
 
-            const dataCorteVal = document.getElementById('dataCorteInput') ? document.getElementById('dataCorteInput').value : '2027-12-31';
+            const dataCorteVal = document.getElementById('dataCorteInput') ? document.getElementById('dataCorteInput').value : `${currentAnoProjecao}-12-31`;
+            
+            // Determina o mês limite da data de corte em relação ao ano projetado
             let mesLimiteCorte = 11;
             if (dataCorteVal) {
                 const parts = dataCorteVal.split('-');
                 if (parts.length === 3) {
                     const y = parseInt(parts[0], 10);
                     const m = parseInt(parts[1], 10) - 1;
-                    if (y === 2027) {
+                    if (y === currentAnoProjecao) {
                         mesLimiteCorte = Math.min(11, Math.max(0, m));
-                    } else if (y < 2027) {
-                        mesLimiteCorte = -1;
+                    } else if (y < currentAnoProjecao) {
+                        mesLimiteCorte = -1; // antes do ano projetado: exibe zerado
                     } else {
-                        mesLimiteCorte = 11;
+                        mesLimiteCorte = 11; // depois do ano projetado: exibe o ano completo
                     }
                 }
+            }
+
+            const alertaTag = document.getElementById('corte-alerta-tag');
+            if (alertaTag) {
+                const parts = dataCorteVal.split('-');
+                const dFormatada = parts.length === 3 ? `${parts[2]}/${parts[1]}/${parts[0]}` : dataCorteVal;
+                alertaTag.innerText = `Data Corte: ${dFormatada} (${mesLimiteCorte >= 0 ? mesLimiteCorte + 1 : 0} meses)`;
             }
 
             let reportBody = document.getElementById('reportTableBody');
@@ -1342,10 +1418,13 @@
             crudBody.innerHTML = '';
 
             let total2026Sum = 0;
-            let total2027Sum = 0;
+            let totalProjecaoSum = 0;
             let monthlyTotals = new Array(12).fill(0);
 
             const mesesNomes = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+
+            // Quantos anos se passaram desde a base de 2026?
+            const anosDiferenca = currentAnoProjecao - 2026; // 2026 = 0, 2027 = 1, 2028 = 2, 2029 = 3...
 
             db.forEach((row, index) => {
                 let rate = getRateForIndice(row.indice);
@@ -1354,72 +1433,85 @@
                     rate = parseFloat(row.customRate) / 100;
                 }
 
-                const startMonth = getAdjustmentMonth(row);
-                const valorBase = parseFloat(row.baseMensal) || 0;
+                const startMonth = getAdjustmentMonth(row); // mês em que reajusta (0 a 11) ou -1 se não reajusta
+                const valorBase2026 = parseFloat(row.baseMensal) || 0;
                 const freq = row.tipoPagamento || 'Mensal';
                 const prazo = row.vigenciaPrazo || '1 Ano';
 
-                const total2026Row = valorBase * 12;
+                const total2026Row = valorBase2026 * 12;
 
-                let monthlyValues2027 = new Array(12).fill(0);
-                let rowTotal2027 = 0;
-
-                // 1. Matriz de custos mensais
+                // 1. CÁLCULO DA BASE MENSAL EVOLUTIVA POR ANO
+                // Se o contrato tem reajuste (startMonth >= 0):
+                // - Em anos anteriores a 2026 não aplica.
+                // - Para 2027 (anosDiferenca = 1): antes do startMonth é base2026, depois é base2026 * (1 + rate)^1
+                // - Para 2028 (anosDiferenca = 2): antes do startMonth é base2026 * (1 + rate)^1, depois é base2026 * (1 + rate)^2
+                // - Para 2029 (anosDiferenca = 3): antes do startMonth é base2026 * (1 + rate)^2, depois é base2026 * (1 + rate)^3
                 let mensalPorMes = [];
+
                 for (let m = 0; m < 12; m++) {
-                    const reajustar = (startMonth >= 0 && m >= startMonth && rate > 0);
-                    mensalPorMes.push(reajustar ? valorBase * (1 + rate) : valorBase);
+                    if (startMonth < 0 || rate <= 0 || anosDiferenca <= 0) {
+                        mensalPorMes.push(valorBase2026);
+                    } else {
+                        // Número de reajustes acumulados até este mês
+                        const reajustesAcumulados = (m >= startMonth) ? anosDiferenca : (anosDiferenca - 1);
+                        const fator = Math.pow(1 + rate, Math.max(0, reajustesAcumulados));
+                        mensalPorMes.push(valorBase2026 * fator);
+                    }
                 }
 
-                // 2. Apuração por Regime
+                // 2. DISTRIBUIÇÃO CONFORME A VISÃO (DRE vs CAIXA)
+                let monthlyValues = new Array(12).fill(0);
+                let rowTotal = 0;
+
                 if (currentVisaoRegime === 'contabil') {
-                    // DRE: Apropriação linear
+                    // DRE / COMPETÊNCIA: Apropriação linear mensal
                     for (let m = 0; m < 12; m++) {
                         if (m <= mesLimiteCorte) {
-                            monthlyValues2027[m] = mensalPorMes[m];
-                            rowTotal2027 += mensalPorMes[m];
+                            monthlyValues[m] = mensalPorMes[m];
+                            rowTotal += mensalPorMes[m];
                         }
                     }
                 } else {
-                    // FLUXO DE CAIXA: Desembolsos reais por ciclo
+                    // FLUXO DE CAIXA: Desembolsos reais nos meses das faturas
                     if (freq === 'Anual_Unica') {
                         const mDesembolso = startMonth >= 0 ? startMonth : 0;
                         const totalAnualReajustado = mensalPorMes.reduce((a, b) => a + b, 0);
                         if (mDesembolso <= mesLimiteCorte) {
-                            monthlyValues2027[mDesembolso] = totalAnualReajustado;
-                            rowTotal2027 = totalAnualReajustado;
+                            monthlyValues[mDesembolso] = totalAnualReajustado;
+                            rowTotal = totalAnualReajustado;
                         }
                     } else if (freq === 'Trimestral') {
                         for (let m = 0; m < 12; m++) {
                             if ((m + 1) % 3 === 0 && m <= mesLimiteCorte) {
-                                const valorTrimestre = mensalPorMes[m - 2] + mensalPorMes[m - 1] + mensalPorMes[m];
-                                monthlyValues2027[m] = valorTrimestre;
-                                rowTotal2027 += valorTrimestre;
+                                const vTri = mensalPorMes[m - 2] + mensalPorMes[m - 1] + mensalPorMes[m];
+                                monthlyValues[m] = vTri;
+                                rowTotal += vTri;
                             }
                         }
                     } else if (freq === 'Semestral') {
                         for (let m = 0; m < 12; m++) {
                             if (m === 5 && m <= mesLimiteCorte) {
-                                const sem1 = mensalPorMes.slice(0, 6).reduce((a, b) => a + b, 0);
-                                monthlyValues2027[m] = sem1;
-                                rowTotal2027 += sem1;
+                                const vSem1 = mensalPorMes.slice(0, 6).reduce((a, b) => a + b, 0);
+                                monthlyValues[m] = vSem1;
+                                rowTotal += vSem1;
                             } else if (m === 11 && m <= mesLimiteCorte) {
-                                const sem2 = mensalPorMes.slice(6, 12).reduce((a, b) => a + b, 0);
-                                monthlyValues2027[m] = sem2;
-                                rowTotal2027 += sem2;
+                                const vSem2 = mensalPorMes.slice(6, 12).reduce((a, b) => a + b, 0);
+                                monthlyValues[m] = vSem2;
+                                rowTotal += vSem2;
                             }
                         }
                     } else {
+                        // Mensal (12 parcelas)
                         for (let m = 0; m < 12; m++) {
                             if (m <= mesLimiteCorte) {
-                                monthlyValues2027[m] = mensalPorMes[m];
-                                rowTotal2027 += mensalPorMes[m];
+                                monthlyValues[m] = mensalPorMes[m];
+                                rowTotal += mensalPorMes[m];
                             }
                         }
                     }
                 }
 
-                const statusObj = getContractStatus(row.fimVigencia);
+                const statusObj = getContractStatus(row);
                 const startFormatted = formatDate(row.inicioVigencia);
                 const endFormatted = formatDate(row.fimVigencia);
                 let vigenciaText = '-';
@@ -1427,6 +1519,7 @@
                     vigenciaText = `${startFormatted} à ${endFormatted}`;
                 }
 
+                // Filtros de busca
                 const matchesEmpresa = (filtroEmpresa === 'ALL' || row.empresa === filtroEmpresa);
                 const matchesPrazo = (filtroPrazo === 'ALL' || prazo === filtroPrazo);
                 const matchesFreq = (filtroFreq === 'ALL' || freq === filtroFreq);
@@ -1436,52 +1529,54 @@
 
                 if (matchesEmpresa && matchesPrazo && matchesFreq && matchesSearch) {
                     total2026Sum += total2026Row;
-                    total2027Sum += rowTotal2027;
+                    totalProjecaoSum += rowTotal;
 
-                    monthlyValues2027.forEach((v, idx) => {
+                    monthlyValues.forEach((v, idx) => {
                         monthlyTotals[idx] += v;
                     });
 
                     let tr = document.createElement('tr');
-                    tr.className = "hover:bg-blue-50/40 transition-colors";
+                    tr.className = "hover:bg-blue-50/50 transition-colors";
 
-                    let monthTds = monthlyValues2027.map((v, i) => {
-                        const opacityClass = i > mesLimiteCorte ? 'opacity-30' : '';
-                        if (v === 0) return `<td class="py-3 px-3 text-right font-mono text-xs text-slate-300 ${opacityClass}">-</td>`;
-                        const isDesembolsoCaixa = currentVisaoRegime === 'financeiro' && v > (mensalPorMes[i] * 1.5);
-                        const cellHighlight = isDesembolsoCaixa ? 'font-bold text-emerald-800 bg-emerald-50' : (startMonth >= 0 && i >= startMonth && rate > 0 ? 'font-medium text-slate-900' : 'text-slate-600');
-                        return `<td class="py-3 px-3 text-right font-mono text-xs ${cellHighlight} ${opacityClass}">${formatCurrency(v)}</td>`;
+                    let monthTds = monthlyValues.map((v, i) => {
+                        const opacityClass = (i > mesLimiteCorte) ? 'opacity-25' : '';
+                        if (v === 0) return `<td class="py-1.5 px-2 text-right font-mono text-[11px] text-slate-300 ${opacityClass}">-</td>`;
+                        const isDesembolsoCaixa = (currentVisaoRegime === 'financeiro' && v > (mensalPorMes[i] * 1.5));
+                        const cellHighlight = isDesembolsoCaixa 
+                            ? 'font-bold text-emerald-800 bg-emerald-50/90' 
+                            : (startMonth >= 0 && i >= startMonth && rate > 0 ? 'font-semibold text-slate-900' : 'text-slate-700');
+                        return `<td class="py-1.5 px-2 text-right font-mono text-[11px] ${cellHighlight} ${opacityClass}">${formatCurrency(v)}</td>`;
                     }).join('');
 
                     let badgeFreqClass = "bg-slate-100 text-slate-700 border border-slate-200";
-                    let freqLabel = "Mensal (12x)";
+                    let freqLabel = "Mensal";
                     if (freq === 'Anual_Unica') {
                         badgeFreqClass = "bg-purple-50 text-purple-700 border border-purple-200";
-                        freqLabel = "Anual (1x)";
+                        freqLabel = "Anual 1x";
                     } else if (freq === 'Trimestral') {
                         badgeFreqClass = "bg-amber-50 text-amber-700 border border-amber-200";
-                        freqLabel = "Trimestral (4x)";
+                        freqLabel = "Trimestral";
                     } else if (freq === 'Semestral') {
                         badgeFreqClass = "bg-sky-50 text-sky-700 border border-sky-200";
-                        freqLabel = "Semestral (2x)";
+                        freqLabel = "Semestral";
                     }
 
                     tr.innerHTML = `
-                        <td class="p-3.5 sticky-col-empresa bg-white font-semibold text-slate-800">${row.empresa}</td>
-                        <td class="p-3.5 sticky-col-fornecedor bg-white">
-                            <span class="font-bold text-slate-900 truncate block max-w-[220px]" title="${row.fornecedor}">${row.fornecedor}</span>
-                            <span class="text-[10px] text-slate-400 font-mono">Clifor: ${row.clifor || '-'}</span>
+                        <td class="py-1.5 px-2 sticky-col-empresa bg-white font-semibold text-slate-800">${row.empresa}</td>
+                        <td class="py-1.5 px-2.5 sticky-col-fornecedor bg-white">
+                            <span class="font-bold text-slate-900 truncate block max-w-[200px]" title="${row.fornecedor}">${row.fornecedor}</span>
+                            <span class="text-[9px] text-slate-400 font-mono">Clifor: ${row.clifor || '-'}</span>
                         </td>
-                        <td class="p-3.5 text-center"><span class="bg-blue-50 text-blue-700 border border-blue-200/80 font-bold px-2.5 py-0.5 rounded-full text-[10px]">${prazo}</span></td>
-                        <td class="p-3.5 text-center"><span class="${badgeFreqClass} font-semibold px-2.5 py-0.5 rounded-full text-[10px]">${freqLabel}</span></td>
-                        <td class="p-3.5 text-center"><span class="${statusObj.class} font-semibold px-2 py-0.5 rounded-full text-[10px]">${statusObj.label}</span></td>
+                        <td class="py-1.5 px-1.5 text-center"><span class="bg-blue-50 text-blue-700 border border-blue-200 font-bold px-1.5 py-0.5 rounded text-[10px]">${prazo}</span></td>
+                        <td class="py-1.5 px-1.5 text-center"><span class="${badgeFreqClass} font-semibold px-1.5 py-0.5 rounded text-[10px]">${freqLabel}</span></td>
+                        <td class="py-1.5 px-1.5 text-center"><span class="${statusObj.class} font-semibold px-1.5 py-0.5 rounded text-[9px]">${statusObj.label}</span></td>
                         ${monthTds}
-                        <td class="p-3.5 text-right font-bold text-slate-900 bg-slate-100 font-mono text-xs border-l border-slate-200">${formatCurrency(rowTotal2027)}</td>
+                        <td class="py-1.5 px-3 text-right font-bold text-slate-900 bg-slate-100 font-mono text-[11px] border-l border-slate-200">${formatCurrency(rowTotal)}</td>
                     `;
                     reportBody.appendChild(tr);
                 }
 
-                // Aba Cadastro & Edição
+                // Aba Edição
                 const matchesCrudFilter = !searchCrud || 
                     (row.fornecedor && row.fornecedor.toLowerCase().includes(searchCrud)) ||
                     (row.clifor && String(row.clifor).toLowerCase().includes(searchCrud));
@@ -1489,28 +1584,28 @@
                 if (matchesCrudFilter) {
                     let trCrud = document.createElement('tr');
                     trCrud.className = "hover:bg-slate-50 transition-colors";
-                    const mesReajusteTxt = startMonth >= 0 ? `${mesesNomes[startMonth]} / 2027` : '<span class="text-slate-400 font-normal">Sem Reajuste</span>';
+                    const mesReajusteTxt = startMonth >= 0 ? `${mesesNomes[startMonth]} (Mês ${startMonth + 1})` : '<span class="text-slate-400 font-normal">Sem Reajuste</span>';
 
                     trCrud.innerHTML = `
-                        <td class="p-3.5 font-semibold text-slate-800">${row.empresa}</td>
-                        <td class="p-3.5 text-xs font-mono text-slate-500">${row.clifor || '-'}</td>
-                        <td class="p-3.5 font-bold text-slate-900 max-w-[220px] truncate" title="${row.fornecedor}">${row.fornecedor}</td>
-                        <td class="p-3.5 text-center"><span class="bg-blue-50 text-blue-700 border border-blue-200 font-bold px-2 py-0.5 rounded-full text-[10px]">${prazo}</span></td>
-                        <td class="p-3.5 text-center"><span class="bg-slate-100 text-slate-700 border border-slate-200 px-2 py-0.5 rounded-full text-[10px] font-semibold">${freq}</span></td>
-                        <td class="p-3.5 text-center"><span class="${statusObj.class} font-semibold px-2 py-0.5 rounded-full text-[10px]">${statusObj.label}</span></td>
-                        <td class="p-3.5 text-xs text-slate-500">${vigenciaText}</td>
-                        <td class="p-3.5 text-center font-bold text-slate-700">${mesReajusteTxt}</td>
-                        <td class="p-3.5 text-right font-mono font-medium">${formatCurrency(valorBase)}</td>
-                        <td class="p-3.5 text-right font-mono font-bold text-slate-900">${formatCurrency(total2026Row)}</td>
-                        <td class="text-center p-3.5">
-                            <span class="inline-block bg-slate-100 text-slate-700 text-[10px] px-2 py-0.5 rounded font-semibold">
+                        <td class="py-1.5 px-2.5 font-semibold text-slate-800">${row.empresa}</td>
+                        <td class="py-1.5 px-2.5 text-xs font-mono text-slate-500">${row.clifor || '-'}</td>
+                        <td class="py-1.5 px-2.5 font-bold text-slate-900 max-w-[220px] truncate" title="${row.fornecedor}">${row.fornecedor}</td>
+                        <td class="py-1.5 px-2 text-center"><span class="bg-blue-50 text-blue-700 border border-blue-200 font-bold px-1.5 py-0.5 rounded text-[10px]">${prazo}</span></td>
+                        <td class="py-1.5 px-2 text-center"><span class="bg-slate-100 text-slate-700 border border-slate-200 px-1.5 py-0.5 rounded text-[10px] font-semibold">${freq}</span></td>
+                        <td class="py-1.5 px-2 text-center"><span class="${statusObj.class} font-semibold px-1.5 py-0.5 rounded text-[9px]">${statusObj.label}</span></td>
+                        <td class="py-1.5 px-2.5 text-xs text-slate-500">${vigenciaText}</td>
+                        <td class="py-1.5 px-2 text-center font-bold text-slate-700">${mesReajusteTxt}</td>
+                        <td class="py-1.5 px-2.5 text-right font-mono font-medium">${formatCurrency(valorBase2026)}</td>
+                        <td class="py-1.5 px-2.5 text-right font-mono font-bold text-slate-900">${formatCurrency(total2026Row)}</td>
+                        <td class="text-center py-1.5 px-2">
+                            <span class="inline-block bg-slate-100 text-slate-700 text-[10px] px-1.5 py-0.5 rounded font-semibold">
                                 ${row.customRate !== null && row.customRate !== undefined && row.customRate !== '' ? row.customRate + '%' : row.indice}
                             </span>
                         </td>
-                        <td class="text-center p-3.5">
-                            <div class="flex items-center justify-center gap-1.5">
-                                <button onclick="openModal(${index})" class="bg-blue-50 hover:bg-blue-100 text-blue-700 p-1.5 rounded-lg transition-colors" title="Editar Premissas">✏️</button>
-                                <button onclick="deleteItem(${index})" class="bg-red-50 hover:bg-red-100 text-red-600 p-1.5 rounded-lg transition-colors" title="Excluir">🗑️</button>
+                        <td class="text-center py-1.5 px-2">
+                            <div class="flex items-center justify-center gap-1">
+                                <button onclick="openModal(${index})" class="bg-blue-50 hover:bg-blue-100 text-blue-700 p-1 rounded transition-colors" title="Editar Premissas">✏️</button>
+                                <button onclick="deleteItem(${index})" class="bg-red-50 hover:bg-red-100 text-red-600 p-1 rounded transition-colors" title="Excluir">🗑️</button>
                             </div>
                         </td>
                     `;
@@ -1518,30 +1613,37 @@
                 }
             });
 
-            // Rodapé com Totais Consolidados
-            let footTds = monthlyTotals.map(t => `<td class="py-3.5 px-3 text-right font-mono text-xs">${formatCurrency(t)}</td>`).join('');
+            // Rodapé da Tabela
+            let footTds = monthlyTotals.map((t, idx) => {
+                const op = idx > mesLimiteCorte ? 'opacity-25' : '';
+                return `<td class="py-2.5 px-2 text-right font-mono text-[11px] ${op}">${formatCurrency(t)}</td>`;
+            }).join('');
+
             reportFoot.innerHTML = `
                 <tr>
-                    <td class="p-3.5 sticky-col-empresa bg-slate-100 uppercase tracking-wider text-[11px]" colspan="2">Consolidado Geral (Total)</td>
-                    <td class="p-3.5 text-center text-slate-400" colspan="3">-</td>
+                    <td class="py-2.5 px-2 sticky-col-empresa bg-slate-100 uppercase tracking-wider text-[10px]" colspan="2">Total Geral do Período</td>
+                    <td class="py-2.5 px-1.5 text-center text-slate-400" colspan="3">-</td>
                     ${footTds}
-                    <td class="p-3.5 text-right font-black text-blue-900 bg-slate-200 font-mono text-xs border-l border-slate-300">${formatCurrency(total2027Sum)}</td>
+                    <td class="py-2.5 px-3 text-right font-black text-blue-900 bg-slate-200 font-mono text-xs border-l border-slate-300">${formatCurrency(totalProjecaoSum)}</td>
                 </tr>
             `;
 
-            // Atualização dos Cards Superiores
+            // Atualiza os Cards Superiores
             document.getElementById('total-2026').innerText = formatCurrency(total2026Sum);
-            document.getElementById('total-2027').innerText = formatCurrency(total2027Sum);
-            document.getElementById('media-mensal').innerText = formatCurrency(total2027Sum / 12);
+            document.getElementById('total-projecao').innerText = formatCurrency(totalProjecaoSum);
+            
+            const mesesAtivos = (mesLimiteCorte >= 0) ? (mesLimiteCorte + 1) : 1;
+            document.getElementById('media-mensal').innerText = formatCurrency(totalProjecaoSum / mesesAtivos);
+            document.getElementById('media-periodo-tag').innerText = `${mesesAtivos} meses no cálculo`;
 
-            const impactReajuste = total2027Sum - total2026Sum;
+            const impactReajuste = totalProjecaoSum - (total2026Sum * (mesesAtivos / 12));
             document.getElementById('total-reajuste-impact').innerText = formatCurrency(impactReajuste);
-            const varPct = total2026Sum > 0 ? ((impactReajuste / total2026Sum) * 100).toFixed(2) : 0;
-            document.getElementById('kpi-var-baseline').innerText = `+${varPct}%`;
-            document.getElementById('impacto-pct-badge').innerText = `+${varPct}%`;
+            const varPct = (total2026Sum > 0) ? ((impactReajuste / (total2026Sum * (mesesAtivos / 12))) * 100).toFixed(2) : 0;
+            document.getElementById('kpi-var-baseline').innerText = `${varPct >= 0 ? '+' : ''}${varPct}%`;
+            document.getElementById('impacto-pct-badge').innerText = `${varPct >= 0 ? '+' : ''}${varPct}%`;
         }
 
-        // Gestão Dinâmica de Índices
+        // Gestão de Índices
         function renderIndicesTable() {
             const tbody = document.getElementById('tabelaIndicesBody');
             if (!tbody) return;
@@ -1550,24 +1652,24 @@
             indicesConfig.forEach((ind, i) => {
                 const count = db.filter(r => (r.indice || '').toUpperCase() === ind.nome.toUpperCase()).length;
                 const tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-50/80 transition-colors";
+                tr.className = "hover:bg-slate-50 transition-colors";
                 tr.innerHTML = `
-                    <td class="p-3.5 font-bold text-slate-900 flex items-center gap-2">
-                        <span class="w-2.5 h-2.5 rounded-full ${ind.nome === 'FIXO' ? 'bg-slate-400' : 'bg-blue-600'}"></span>
+                    <td class="p-3 font-bold text-slate-900 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full ${ind.nome === 'FIXO' ? 'bg-slate-400' : 'bg-blue-600'}"></span>
                         ${ind.nome}
                     </td>
-                    <td class="p-3.5 text-slate-600">${ind.desc || '-'}</td>
-                    <td class="p-3.5 text-center font-bold font-mono text-sm ${ind.taxa > 0 ? 'text-blue-700' : 'text-slate-500'}">
+                    <td class="p-3 text-slate-600">${ind.desc || '-'}</td>
+                    <td class="p-3 text-center font-bold font-mono text-sm ${ind.taxa > 0 ? 'text-blue-700' : 'text-slate-500'}">
                         ${ind.taxa.toFixed(1)}%
                     </td>
-                    <td class="p-3.5 text-center font-semibold text-slate-700">${count} contrato(s)</td>
-                    <td class="p-3.5 text-center">
+                    <td class="p-3 text-center font-semibold text-slate-700">${count} contrato(s)</td>
+                    <td class="p-3 text-center">
                         <div class="flex items-center justify-center gap-1.5">
-                            <button onclick="openModalIndice(${i})" class="bg-amber-50 hover:bg-amber-100 text-amber-700 font-semibold px-2.5 py-1 rounded-lg text-xs transition-colors flex items-center gap-1">
+                            <button onclick="openModalIndice(${i})" class="bg-amber-50 hover:bg-amber-100 text-amber-700 font-semibold px-2 py-1 rounded text-xs transition-colors">
                                 ✏️ Editar
                             </button>
                             ${ind.nome !== 'FIXO' ? `
-                            <button onclick="deleteIndice(${i})" class="bg-red-50 hover:bg-red-100 text-red-600 font-semibold px-2 py-1 rounded-lg text-xs transition-colors" title="Excluir">
+                            <button onclick="deleteIndice(${i})" class="bg-red-50 hover:bg-red-100 text-red-600 font-semibold px-2 py-1 rounded text-xs transition-colors" title="Excluir">
                                 🗑️
                             </button>` : ''}
                         </div>
@@ -1650,11 +1752,8 @@
 
         function deleteIndice(index) {
             const ind = indicesConfig[index];
-            if (ind.nome === 'FIXO') {
-                alert('O índice FIXO não pode ser excluído.');
-                return;
-            }
-            if (confirm(`Deseja realmente excluir o índice ${ind.nome}? Contratos vinculados passarão a usar o índice padrão.`)) {
+            if (ind.nome === 'FIXO') return;
+            if (confirm(`Deseja realmente excluir o índice ${ind.nome}?`)) {
                 indicesConfig.splice(index, 1);
                 db.forEach(r => {
                     if (r.indice === ind.nome) r.indice = 'IPCA';
@@ -1665,7 +1764,7 @@
             }
         }
 
-        // CRUD Fornecedores
+        // CRUD Contratos
         function openModal(index = -1) {
             document.getElementById('editIndex').value = index;
             updateIndicesSelectDropdown();
@@ -1674,6 +1773,7 @@
                 document.getElementById('modalTitle').innerText = 'Editar Premissas do Contrato';
                 document.getElementById('empresa').value = item.empresa;
                 document.getElementById('clifor').value = item.clifor || '';
+                document.getElementById('statusManual').value = item.statusManual || 'AUTO';
                 document.getElementById('fornecedor').value = item.fornecedor;
                 document.getElementById('vigenciaPrazo').value = item.vigenciaPrazo || '1 Ano';
                 document.getElementById('tipoPagamento').value = item.tipoPagamento || 'Mensal';
@@ -1686,6 +1786,7 @@
             } else {
                 document.getElementById('modalTitle').innerText = 'Adicionar Novo Contrato';
                 document.getElementById('itemForm').reset();
+                document.getElementById('statusManual').value = 'AUTO';
                 document.getElementById('vigenciaPrazo').value = '1 Ano';
                 document.getElementById('tipoPagamento').value = 'Mensal';
                 document.getElementById('mesReajuste').value = -1;
@@ -1703,6 +1804,7 @@
             const item = {
                 empresa: document.getElementById('empresa').value,
                 clifor: document.getElementById('clifor').value,
+                statusManual: document.getElementById('statusManual').value,
                 fornecedor: document.getElementById('fornecedor').value,
                 vigenciaPrazo: document.getElementById('vigenciaPrazo').value,
                 tipoPagamento: document.getElementById('tipoPagamento').value,
@@ -1716,9 +1818,9 @@
             };
 
             if (index >= 0) {
-                db[index] = item;
+                db[index] = { ...db[index], ...item };
             } else {
-                db.push(item);
+                db.push({ id: Date.now(), ...item });
             }
 
             recalcular();
@@ -1727,7 +1829,7 @@
         }
 
         function deleteItem(index) {
-            if (confirm("Deseja mesmo remover este contrato do orçamento?")) {
+            if (confirm("Deseja realmente remover este contrato?")) {
                 db.splice(index, 1);
                 recalcular();
                 saveState();
@@ -1737,17 +1839,20 @@
         function exportToExcel() {
             var wb = XLSX.utils.table_to_sheet(document.getElementById("reportTable"));
             var workbook = XLSX.utils.book_new();
-            var sheetName = currentVisaoRegime === 'contabil' ? "DRE_Competencia" : "Fluxo_Caixa";
+            var sheetName = currentVisaoRegime === 'contabil' ? `DRE_${currentAnoProjecao}` : `Caixa_${currentAnoProjecao}`;
             XLSX.utils.book_append_sheet(workbook, wb, sheetName);
-            XLSX.writeFile(workbook, `Relatorio_Custos_TI_2027_${sheetName}.xlsx`);
+            XLSX.writeFile(workbook, `Relatorio_Custos_TI_${currentAnoProjecao}_${sheetName}.xlsx`);
         }
 
+        // Inicialização
         window.onload = function() {
             renderIndicesTable();
+            atualizarLabelsAno();
             recalcular();
         };
         if (document.readyState === 'complete' || document.readyState === 'interactive') {
             renderIndicesTable();
+            atualizarLabelsAno();
             recalcular();
         }
     </script>
