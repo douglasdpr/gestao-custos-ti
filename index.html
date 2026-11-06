@@ -45,7 +45,7 @@
         .modal-content {
             background-color: #ffffff;
             border-radius: 16px;
-            width: 680px;
+            width: 700px;
             max-width: 96%;
             max-height: 94vh;
             overflow-y: auto;
@@ -115,7 +115,7 @@
                         <h1 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight">Controladoria e Gestão Orçamentária de TI</h1>
                         <span id="badge-exercicio-ano" class="bg-blue-50 text-blue-700 text-[10px] font-bold px-2 py-0.5 rounded border border-blue-200">Exercício 2027</span>
                     </div>
-                    <p class="text-[11px] text-slate-500">Apuração Multianual: Regime de Competência (DRE) e Fluxo de Caixa Real</p>
+                    <p class="text-[11px] text-slate-500">Gestão de Contratos, Canais de Pagamento (Cartão, Boleto, Depósito), DRE & Fluxo de Caixa</p>
                 </div>
             </div>
 
@@ -191,7 +191,7 @@
         <!-- ABA 1: Painel Orçamentário Mensal -->
         <div id="tab1" class="tab-content block space-y-2.5">
             
-            <!-- Barra de Filtros com Seletor de Ano + Data de Corte que FUNCIONA -->
+            <!-- Barra de Filtros com Seletor de Ano + Data de Corte + Meio de Pagamento -->
             <div class="bg-white p-2.5 rounded-xl shadow-2xs border border-slate-200 flex flex-wrap items-center justify-between gap-2.5 no-print">
                 <div class="flex items-center gap-2 flex-wrap">
                     
@@ -224,14 +224,14 @@
                         <option value="TMOV">TMOV</option>
                     </select>
 
-                    <!-- Filtro Prazo de Vigência -->
-                    <select id="filterPrazo" onchange="recalcular()" class="py-1 px-2 border border-slate-200 rounded-lg text-xs bg-slate-50 font-medium text-slate-700 outline-none">
-                        <option value="ALL">Todas as Vigências</option>
-                        <option value="1 Ano">1 Ano (Anual)</option>
-                        <option value="2 Anos">2 Anos (Bienal)</option>
-                        <option value="3 Anos">3 Anos (Trienal)</option>
-                        <option value="5 Anos">5 Anos (Quinquenal)</option>
-                        <option value="Indeterminado">Indeterminado</option>
+                    <!-- Filtro Meio / Canal de Pagamento (Boleto, Cartão, Depósito...) -->
+                    <select id="filterMeioPagamento" onchange="recalcular()" class="py-1 px-2.5 border border-blue-200 rounded-lg text-xs bg-blue-50/70 font-semibold text-blue-900 outline-none">
+                        <option value="ALL">Todos os Meios de Pagamento</option>
+                        <option value="Cartão de Crédito">💳 Cartão de Crédito</option>
+                        <option value="Boleto">📄 Boleto Bancário</option>
+                        <option value="Depósito / TED">🏦 Depósito / TED / PIX</option>
+                        <option value="Débito Automático">🔄 Débito Automático</option>
+                        <option value="Faturamento / Invoice">🌐 Faturamento / Invoice</option>
                     </select>
 
                     <!-- Filtro Frequência de Pagamento -->
@@ -243,9 +243,9 @@
                         <option value="Anual_Unica">Anual (1x no Aniversário)</option>
                     </select>
 
-                    <!-- Campo Busca -->
+                    <!-- Campo Busca inteligente (busca fornecedor, clifor, cartão, boleto, etc) -->
                     <div class="relative">
-                        <input type="text" id="searchReport" onkeyup="recalcular()" placeholder="Buscar fornecedor, clifor..." class="py-1 pl-7 pr-2 border border-slate-200 rounded-lg text-xs bg-slate-50 w-44 focus:bg-white outline-none">
+                        <input type="text" id="searchReport" onkeyup="recalcular()" placeholder="🔍 Buscar fornecedor, clifor, cartão, boleto..." class="py-1 pl-7 pr-2 border border-slate-200 rounded-lg text-xs bg-slate-50 w-56 focus:bg-white outline-none">
                         <svg class="w-3 h-3 text-slate-400 absolute left-2 top-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                     </div>
                 </div>
@@ -278,7 +278,7 @@
                                 <th class="py-2.5 px-2 sticky-col-empresa w-16 text-slate-700">Empresa</th>
                                 <th class="py-2.5 px-2.5 sticky-col-fornecedor w-56 text-slate-700">Fornecedor / Objeto</th>
                                 <th class="py-2.5 px-1.5 text-center w-20">Vigência</th>
-                                <th class="py-2.5 px-1.5 text-center w-24">Pagamento</th>
+                                <th class="py-2.5 px-2 text-center w-36">Pagamento & Canal</th>
                                 <th class="py-2.5 px-1.5 text-center w-16">Status</th>
                                 <th class="text-right py-2.5 px-2 w-24 col-mes" data-m="0">Jan</th>
                                 <th class="text-right py-2.5 px-2 w-24 col-mes" data-m="1">Fev</th>
@@ -308,7 +308,7 @@
         <div id="tab2" class="tab-content hidden space-y-3">
             <div class="bg-white rounded-xl shadow-2xs border border-slate-200 overflow-hidden">
                 <div class="p-3 bg-slate-50 border-b border-slate-200 flex flex-wrap justify-between items-center gap-2">
-                    <input type="text" id="searchCrud" onkeyup="recalcular()" placeholder="🔍 Pesquisar fornecedor, clifor..." class="p-1.5 border border-slate-300 rounded-lg text-xs w-72 bg-white outline-none">
+                    <input type="text" id="searchCrud" onkeyup="recalcular()" placeholder="🔍 Pesquisar fornecedor, clifor, canal de pagamento..." class="p-1.5 border border-slate-300 rounded-lg text-xs w-80 bg-white outline-none">
                     <button onclick="openModal()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1.5 px-3 rounded-lg text-xs transition-colors flex items-center gap-1 shadow-2xs">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                         Novo Contrato
@@ -322,7 +322,8 @@
                                 <th class="py-2 px-2.5">Clifor</th>
                                 <th class="py-2 px-2.5">Fornecedor</th>
                                 <th class="py-2 px-2 text-center">Vigência Total</th>
-                                <th class="py-2 px-2 text-center">Pagamento</th>
+                                <th class="py-2 px-2 text-center">Frequência</th>
+                                <th class="py-2 px-2.5 text-center">Canal / Meio de Pagamento</th>
                                 <th class="py-2 px-2 text-center">Status</th>
                                 <th class="py-2 px-2.5">Período Vigência</th>
                                 <th class="py-2 px-2 text-center">Mês Reajuste</th>
@@ -373,13 +374,13 @@
 
     </div>
 
-    <!-- Modal Editar Premissas do Contrato (Amplo, Limpo e Fácil de Visualizar) -->
+    <!-- Modal Editar Premissas do Contrato (Com Meio e Detalhes de Pagamento) -->
     <div id="modalForm" class="modal">
         <div class="modal-content">
             <div class="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50/80 rounded-t-2xl">
                 <div>
                     <h3 id="modalTitle" class="font-bold text-base text-slate-900">Editar Premissas do Contrato</h3>
-                    <p class="text-[11px] text-slate-500">Defina o ciclo de vigência, reajuste e desembolso financeiro</p>
+                    <p class="text-[11px] text-slate-500">Defina vigência, valores e por onde o contrato é pago (Cartão, Boleto, etc.)</p>
                 </div>
                 <span onclick="closeModal()" class="close text-slate-400 hover:text-slate-800 transition-colors text-2xl font-bold cursor-pointer">&times;</span>
             </div>
@@ -411,12 +412,12 @@
 
                 <div>
                     <label class="block text-xs font-semibold mb-1 text-slate-700">Nome do Fornecedor / Objeto</label>
-                    <input type="text" id="fornecedor" class="border border-slate-300 p-2 w-full rounded-lg text-xs font-bold outline-none focus:ring-1 focus:ring-blue-500" required placeholder="Ex: LBS LOCAL S A">
+                    <input type="text" id="fornecedor" class="border border-slate-300 p-2 w-full rounded-lg text-xs font-bold outline-none focus:ring-1 focus:ring-blue-500" required placeholder="Ex: QUALITOR SOFTWARE">
                 </div>
 
-                <!-- Painel de Regras de Vigência e Pagamento -->
+                <!-- Painel de Regras de Vigência e Pagamento / Canal -->
                 <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
-                    <span class="text-xs font-bold text-blue-900 block border-b border-slate-200 pb-1">1. Vigência e Pagamento</span>
+                    <span class="text-xs font-bold text-blue-900 block border-b border-slate-200 pb-1">1. Vigência e Frequência Contratual</span>
                     <div class="grid grid-cols-2 gap-3">
                         <div>
                             <label class="block text-[11px] font-semibold mb-1 text-slate-700">Prazo de Vigência Total</label>
@@ -451,9 +452,30 @@
                     </div>
                 </div>
 
+                <!-- NOVO: Por onde é pago (Canal / Método de Pagamento) -->
+                <div class="p-3.5 bg-blue-50/60 rounded-xl border border-blue-200/80 space-y-3">
+                    <span class="text-xs font-bold text-blue-900 block border-b border-blue-200 pb-1">2. Por Onde é Pago (Tesouraria / Canal)</span>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[11px] font-semibold mb-1 text-slate-700">Meio / Forma de Pagamento</label>
+                            <select id="meioPagamento" class="border border-slate-300 p-2 w-full rounded-lg text-xs font-medium bg-white outline-none" required>
+                                <option value="Boleto">📄 Boleto Bancário</option>
+                                <option value="Cartão de Crédito">💳 Cartão de Crédito</option>
+                                <option value="Depósito / TED">🏦 Depósito Bancário / TED / PIX</option>
+                                <option value="Débito Automático">🔄 Débito Automático</option>
+                                <option value="Faturamento / Invoice">🌐 Faturamento / Invoice Internacional</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold mb-1 text-slate-700">Detalhe do Pagamento (Cartão xxx, Banco, etc.)</label>
+                            <input type="text" id="detalhePagamento" class="border border-slate-300 p-2 w-full rounded-lg text-xs bg-white outline-none focus:ring-1 focus:ring-blue-500" placeholder="Ex: Cartão Corp Final 4021 ou Depósito Bradesco">
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Painel de Valores e Reajuste -->
                 <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
-                    <span class="text-xs font-bold text-slate-800 block border-b border-slate-200 pb-1">2. Valores Base e Regra de Reajuste</span>
+                    <span class="text-xs font-bold text-slate-800 block border-b border-slate-200 pb-1">3. Valores Base e Regra de Reajuste</span>
                     <div class="grid grid-cols-2 gap-3">
                         <div>
                             <label class="block text-[11px] font-semibold mb-1 text-slate-700">Base Mensal 2026 (R$)</label>
@@ -548,7 +570,7 @@
             { nome: "FIXO", taxa: 0.0, desc: "Sem reajuste contratual (0.0%)" }
         ];
 
-        // Base Oficial dos 40 Contratos
+        // Base Oficial dos 40 Contratos com Meios de Pagamento Cadastrados
         const initialData = [
   {
     "id": 1,
@@ -565,7 +587,9 @@
     "baseMensal": 45000.0,
     "indice": "IPCA",
     "customRate": null,
-    "obs": ""
+    "obs": "",
+    "meioPagamento": "Boleto",
+    "detalhePagamento": "Boleto Bancário"
   },
   {
     "id": 2,
@@ -582,7 +606,9 @@
     "baseMensal": 10183.47,
     "indice": "IPCA",
     "customRate": null,
-    "obs": ""
+    "obs": "",
+    "meioPagamento": "Boleto",
+    "detalhePagamento": "Boleto Bancário"
   },
   {
     "id": 3,
@@ -599,7 +625,9 @@
     "baseMensal": 22990.0,
     "indice": "IPCA",
     "customRate": null,
-    "obs": ""
+    "obs": "",
+    "meioPagamento": "Boleto",
+    "detalhePagamento": "Boleto Bancário"
   },
   {
     "id": 4,
@@ -616,7 +644,9 @@
     "baseMensal": 24618.5,
     "indice": "IPCA",
     "customRate": null,
-    "obs": ""
+    "obs": "",
+    "meioPagamento": "Boleto",
+    "detalhePagamento": "Boleto Bancário"
   },
   {
     "id": 5,
@@ -633,7 +663,9 @@
     "baseMensal": 26000.0,
     "indice": "IPCA",
     "customRate": null,
-    "obs": ""
+    "obs": "",
+    "meioPagamento": "Depósito / TED",
+    "detalhePagamento": "Depósito Bancário"
   },
   {
     "id": 6,
@@ -650,7 +682,9 @@
     "baseMensal": 14000.0,
     "indice": "FIXO",
     "customRate": null,
-    "obs": ""
+    "obs": "",
+    "meioPagamento": "Boleto",
+    "detalhePagamento": "Boleto Bancário"
   },
   {
     "id": 7,
@@ -667,7 +701,9 @@
     "baseMensal": 12470.44,
     "indice": "IPCA",
     "customRate": null,
-    "obs": ""
+    "obs": "",
+    "meioPagamento": "Boleto",
+    "detalhePagamento": "Boleto Bancário"
   },
   {
     "id": 8,
@@ -684,7 +720,9 @@
     "baseMensal": 20000.0,
     "indice": "IPCA",
     "customRate": null,
-    "obs": ""
+    "obs": "",
+    "meioPagamento": "Boleto",
+    "detalhePagamento": "Boleto Bancário"
   },
   {
     "id": 9,
@@ -701,7 +739,9 @@
     "baseMensal": 2500.0,
     "indice": "FIXO",
     "customRate": null,
-    "obs": ""
+    "obs": "",
+    "meioPagamento": "Boleto",
+    "detalhePagamento": "Boleto Bancário"
   },
   {
     "id": 10,
@@ -718,7 +758,9 @@
     "baseMensal": 3739.47,
     "indice": "IPCA",
     "customRate": null,
-    "obs": ""
+    "obs": "",
+    "meioPagamento": "Boleto",
+    "detalhePagamento": "Boleto Bancário"
   },
   {
     "id": 11,
@@ -735,7 +777,9 @@
     "baseMensal": 2600.0,
     "indice": "IPCA",
     "customRate": null,
-    "obs": ""
+    "obs": "",
+    "meioPagamento": "Boleto",
+    "detalhePagamento": "Boleto Bancário"
   },
   {
     "id": 12,
@@ -752,7 +796,9 @@
     "baseMensal": 2100.0,
     "indice": "IPCA",
     "customRate": null,
-    "obs": ""
+    "obs": "",
+    "meioPagamento": "Depósito / TED",
+    "detalhePagamento": "Depósito Bancário"
   },
   {
     "id": 13,
@@ -769,7 +815,9 @@
     "baseMensal": 1367.03,
     "indice": "IPCA",
     "customRate": null,
-    "obs": ""
+    "obs": "",
+    "meioPagamento": "Boleto",
+    "detalhePagamento": "Boleto Bancário"
   },
   {
     "id": 14,
@@ -786,7 +834,9 @@
     "baseMensal": 1600.0,
     "indice": "IPCA",
     "customRate": null,
-    "obs": ""
+    "obs": "",
+    "meioPagamento": "Boleto",
+    "detalhePagamento": "Boleto Bancário"
   },
   {
     "id": 15,
@@ -803,7 +853,9 @@
     "baseMensal": 1028.2,
     "indice": "IPCA",
     "customRate": null,
-    "obs": ""
+    "obs": "",
+    "meioPagamento": "Boleto",
+    "detalhePagamento": "Boleto Bancário"
   },
   {
     "id": 16,
@@ -820,7 +872,9 @@
     "baseMensal": 1200.0,
     "indice": "IPCA",
     "customRate": null,
-    "obs": ""
+    "obs": "",
+    "meioPagamento": "Boleto",
+    "detalhePagamento": "Boleto Bancário"
   },
   {
     "id": 17,
@@ -837,7 +891,9 @@
     "baseMensal": 412.5,
     "indice": "IPCA",
     "customRate": null,
-    "obs": ""
+    "obs": "",
+    "meioPagamento": "Boleto",
+    "detalhePagamento": "Boleto Bancário"
   },
   {
     "id": 18,
@@ -854,7 +910,9 @@
     "baseMensal": 641.0,
     "indice": "FIXO",
     "customRate": null,
-    "obs": ""
+    "obs": "",
+    "meioPagamento": "Boleto",
+    "detalhePagamento": "Boleto Bancário"
   },
   {
     "id": 19,
@@ -871,7 +929,9 @@
     "baseMensal": 350.0,
     "indice": "IPCA",
     "customRate": null,
-    "obs": ""
+    "obs": "",
+    "meioPagamento": "Cartão de Crédito",
+    "detalhePagamento": "Cartão Corporativo"
   },
   {
     "id": 20,
@@ -888,7 +948,9 @@
     "baseMensal": 52.0,
     "indice": "FIXO",
     "customRate": null,
-    "obs": ""
+    "obs": "",
+    "meioPagamento": "Cartão de Crédito",
+    "detalhePagamento": "Cartão Corporativo"
   },
   {
     "id": 21,
@@ -905,7 +967,9 @@
     "baseMensal": 3800.0,
     "indice": "IPCA",
     "customRate": null,
-    "obs": ""
+    "obs": "",
+    "meioPagamento": "Boleto",
+    "detalhePagamento": "Boleto Bancário"
   },
   {
     "id": 22,
@@ -922,7 +986,9 @@
     "baseMensal": 345.43,
     "indice": "IPCA",
     "customRate": 5.0,
-    "obs": ""
+    "obs": "",
+    "meioPagamento": "Cartão de Crédito",
+    "detalhePagamento": "Cartão Corporativo"
   },
   {
     "id": 23,
@@ -939,7 +1005,9 @@
     "baseMensal": 292.0,
     "indice": "IPCA",
     "customRate": null,
-    "obs": ""
+    "obs": "",
+    "meioPagamento": "Cartão de Crédito",
+    "detalhePagamento": "Cartão Corporativo"
   },
   {
     "id": 24,
@@ -956,7 +1024,9 @@
     "baseMensal": 888.25,
     "indice": "IPCA",
     "customRate": null,
-    "obs": ""
+    "obs": "",
+    "meioPagamento": "Boleto",
+    "detalhePagamento": "Boleto Bancário"
   },
   {
     "id": 25,
@@ -973,7 +1043,9 @@
     "baseMensal": 1045.0,
     "indice": "IPCA",
     "customRate": null,
-    "obs": ""
+    "obs": "",
+    "meioPagamento": "Boleto",
+    "detalhePagamento": "Boleto Bancário"
   },
   {
     "id": 26,
@@ -990,7 +1062,9 @@
     "baseMensal": 35.0,
     "indice": "FIXO",
     "customRate": null,
-    "obs": ""
+    "obs": "",
+    "meioPagamento": "Boleto",
+    "detalhePagamento": "Boleto Bancário"
   },
   {
     "id": 27,
@@ -1007,7 +1081,9 @@
     "baseMensal": 35.0,
     "indice": "FIXO",
     "customRate": null,
-    "obs": ""
+    "obs": "",
+    "meioPagamento": "Boleto",
+    "detalhePagamento": "Boleto Bancário"
   },
   {
     "id": 28,
@@ -1024,7 +1100,9 @@
     "baseMensal": 35.0,
     "indice": "IPCA",
     "customRate": 0.0,
-    "obs": ""
+    "obs": "",
+    "meioPagamento": "Boleto",
+    "detalhePagamento": "Boleto Bancário"
   },
   {
     "id": 29,
@@ -1041,7 +1119,9 @@
     "baseMensal": 48.5,
     "indice": "IPCA",
     "customRate": null,
-    "obs": ""
+    "obs": "",
+    "meioPagamento": "Boleto",
+    "detalhePagamento": "Boleto Bancário"
   },
   {
     "id": 30,
@@ -1058,7 +1138,9 @@
     "baseMensal": 0.0,
     "indice": "IPCA",
     "customRate": null,
-    "obs": ""
+    "obs": "",
+    "meioPagamento": "Boleto",
+    "detalhePagamento": "Boleto Bancário"
   },
   {
     "id": 31,
@@ -1075,7 +1157,9 @@
     "baseMensal": 0.0,
     "indice": "IPCA",
     "customRate": null,
-    "obs": ""
+    "obs": "",
+    "meioPagamento": "Boleto",
+    "detalhePagamento": "Boleto Bancário"
   },
   {
     "id": 32,
@@ -1092,7 +1176,9 @@
     "baseMensal": 0.0,
     "indice": "IPCA",
     "customRate": null,
-    "obs": ""
+    "obs": "",
+    "meioPagamento": "Boleto",
+    "detalhePagamento": "Boleto Bancário"
   },
   {
     "id": 33,
@@ -1109,7 +1195,9 @@
     "baseMensal": 1045.0,
     "indice": "IPCA",
     "customRate": null,
-    "obs": ""
+    "obs": "",
+    "meioPagamento": "Cartão de Crédito",
+    "detalhePagamento": "Cartão Corporativo"
   },
   {
     "id": 34,
@@ -1126,7 +1214,9 @@
     "baseMensal": 36850.15,
     "indice": "IPCA",
     "customRate": null,
-    "obs": ""
+    "obs": "",
+    "meioPagamento": "Boleto",
+    "detalhePagamento": "Boleto Bancário"
   },
   {
     "id": 35,
@@ -1143,7 +1233,9 @@
     "baseMensal": 4313.27,
     "indice": "FIXO",
     "customRate": null,
-    "obs": ""
+    "obs": "",
+    "meioPagamento": "Cartão de Crédito",
+    "detalhePagamento": "Cartão Corp Final xxx"
   },
   {
     "id": 36,
@@ -1160,7 +1252,9 @@
     "baseMensal": 1450.83,
     "indice": "IPCA",
     "customRate": null,
-    "obs": ""
+    "obs": "",
+    "meioPagamento": "Cartão de Crédito",
+    "detalhePagamento": "Cartão Corp Final xxx"
   },
   {
     "id": 37,
@@ -1177,7 +1271,9 @@
     "baseMensal": 15625.0,
     "indice": "FIXO",
     "customRate": null,
-    "obs": ""
+    "obs": "",
+    "meioPagamento": "Boleto",
+    "detalhePagamento": "Boleto Bancário"
   },
   {
     "id": 38,
@@ -1194,7 +1290,9 @@
     "baseMensal": 13062.5,
     "indice": "IPCA",
     "customRate": null,
-    "obs": ""
+    "obs": "",
+    "meioPagamento": "Boleto",
+    "detalhePagamento": "Boleto Bancário"
   },
   {
     "id": 39,
@@ -1211,7 +1309,9 @@
     "baseMensal": 5225.0,
     "indice": "IPCA",
     "customRate": null,
-    "obs": ""
+    "obs": "",
+    "meioPagamento": "Boleto",
+    "detalhePagamento": "Boleto Bancário"
   },
   {
     "id": 40,
@@ -1228,11 +1328,13 @@
     "baseMensal": 1045.0,
     "indice": "IPCA",
     "customRate": null,
-    "obs": ""
+    "obs": "",
+    "meioPagamento": "Boleto",
+    "detalhePagamento": "Boleto Bancário"
   }
 ];
 
-        const STORAGE_KEY = 'it_budget_master_40_v2';
+        const STORAGE_KEY = 'it_budget_master_40_v3';
         let db = JSON.parse(localStorage.getItem(STORAGE_KEY)) || JSON.parse(JSON.stringify(initialData));
 
         function saveState() {
@@ -1245,7 +1347,6 @@
         function handleAnoChange(novoAno) {
             currentAnoProjecao = parseInt(novoAno, 10);
             
-            // Atualiza o input de corte para o final daquele ano por padrão
             const dataInput = document.getElementById('dataCorteInput');
             if (dataInput) {
                 dataInput.value = `${currentAnoProjecao}-12-31`;
@@ -1302,7 +1403,7 @@
             } else {
                 btnFinanceiro.className = "text-xs px-3 py-1 rounded font-bold transition-all bg-white text-emerald-700 shadow-2xs flex items-center gap-1";
                 btnContabil.className = "text-xs px-3 py-1 rounded font-semibold transition-all text-slate-600 hover:text-slate-900 flex items-center gap-1";
-                infoText.innerHTML = "<b>Regime de Caixa (Fluxo Financeiro):</b> Os desembolsos são alocados nos meses exatos de liquidação das faturas para previsão de tesouraria.";
+                infoText.innerHTML = "<b>Regime de Caixa (Fluxo Financeiro):</b> Os desembolsos são alocados nos meses exatos de liquidação das faturas para previsão de tesouraria conforme o canal (Cartão, Boleto, etc.).";
                 badgeVisao.innerText = "Fluxo de Caixa";
                 badgeVisao.className = "text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200";
             }
@@ -1376,17 +1477,48 @@
             return found ? (found.taxa / 100) : 0.045;
         }
 
+        // Badge estilizada para o Meio de Pagamento
+        function getMeioPagamentoBadge(meio, detalhe) {
+            let icon = "📄";
+            let bgClass = "bg-slate-50 text-slate-700 border-slate-200";
+            
+            if (meio === "Cartão de Crédito") {
+                icon = "💳";
+                bgClass = "bg-amber-50 text-amber-800 border-amber-200";
+            } else if (meio === "Depósito / TED") {
+                icon = "🏦";
+                bgClass = "bg-emerald-50 text-emerald-800 border-emerald-200";
+            } else if (meio === "Débito Automático") {
+                icon = "🔄";
+                bgClass = "bg-sky-50 text-sky-800 border-sky-200";
+            } else if (meio === "Faturamento / Invoice") {
+                icon = "🌐";
+                bgClass = "bg-indigo-50 text-indigo-800 border-indigo-200";
+            }
+
+            const textoDetalhe = detalhe ? `<span class="truncate max-w-[130px] font-mono text-[9px] block text-slate-500">${detalhe}</span>` : '';
+
+            return `
+                <div class="flex flex-col items-center">
+                    <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded border text-[10px] font-semibold ${bgClass}">
+                        <span>${icon}</span> ${meio || 'Boleto'}
+                    </span>
+                    ${textoDetalhe}
+                </div>
+            `;
+        }
+
         // MOTOR PRINCIPAL DE CÁLCULO E PROJEÇÃO MULTIANUAL (2026, 2027, 2028, 2029...)
         function recalcular() {
             const searchReport = (document.getElementById('searchReport') ? document.getElementById('searchReport').value : '').toLowerCase().trim();
             const searchCrud = (document.getElementById('searchCrud') ? document.getElementById('searchCrud').value : '').toLowerCase().trim();
             const filtroEmpresa = document.getElementById('filterEmpresa') ? document.getElementById('filterEmpresa').value : 'ALL';
+            const filtroMeio = document.getElementById('filterMeioPagamento') ? document.getElementById('filterMeioPagamento').value : 'ALL';
             const filtroPrazo = document.getElementById('filterPrazo') ? document.getElementById('filterPrazo').value : 'ALL';
             const filtroFreq = document.getElementById('filterFreq') ? document.getElementById('filterFreq').value : 'ALL';
 
             const dataCorteVal = document.getElementById('dataCorteInput') ? document.getElementById('dataCorteInput').value : `${currentAnoProjecao}-12-31`;
             
-            // Determina o mês limite da data de corte em relação ao ano projetado
             let mesLimiteCorte = 11;
             if (dataCorteVal) {
                 const parts = dataCorteVal.split('-');
@@ -1396,9 +1528,9 @@
                     if (y === currentAnoProjecao) {
                         mesLimiteCorte = Math.min(11, Math.max(0, m));
                     } else if (y < currentAnoProjecao) {
-                        mesLimiteCorte = -1; // antes do ano projetado: exibe zerado
+                        mesLimiteCorte = -1;
                     } else {
-                        mesLimiteCorte = 11; // depois do ano projetado: exibe o ano completo
+                        mesLimiteCorte = 11;
                     }
                 }
             }
@@ -1422,9 +1554,7 @@
             let monthlyTotals = new Array(12).fill(0);
 
             const mesesNomes = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
-
-            // Quantos anos se passaram desde a base de 2026?
-            const anosDiferenca = currentAnoProjecao - 2026; // 2026 = 0, 2027 = 1, 2028 = 2, 2029 = 3...
+            const anosDiferenca = currentAnoProjecao - 2026;
 
             db.forEach((row, index) => {
                 let rate = getRateForIndice(row.indice);
@@ -1433,26 +1563,21 @@
                     rate = parseFloat(row.customRate) / 100;
                 }
 
-                const startMonth = getAdjustmentMonth(row); // mês em que reajusta (0 a 11) ou -1 se não reajusta
+                const startMonth = getAdjustmentMonth(row);
                 const valorBase2026 = parseFloat(row.baseMensal) || 0;
                 const freq = row.tipoPagamento || 'Mensal';
+                const meio = row.meioPagamento || 'Boleto';
+                const detalhe = row.detalhePagamento || '';
                 const prazo = row.vigenciaPrazo || '1 Ano';
 
                 const total2026Row = valorBase2026 * 12;
 
                 // 1. CÁLCULO DA BASE MENSAL EVOLUTIVA POR ANO
-                // Se o contrato tem reajuste (startMonth >= 0):
-                // - Em anos anteriores a 2026 não aplica.
-                // - Para 2027 (anosDiferenca = 1): antes do startMonth é base2026, depois é base2026 * (1 + rate)^1
-                // - Para 2028 (anosDiferenca = 2): antes do startMonth é base2026 * (1 + rate)^1, depois é base2026 * (1 + rate)^2
-                // - Para 2029 (anosDiferenca = 3): antes do startMonth é base2026 * (1 + rate)^2, depois é base2026 * (1 + rate)^3
                 let mensalPorMes = [];
-
                 for (let m = 0; m < 12; m++) {
                     if (startMonth < 0 || rate <= 0 || anosDiferenca <= 0) {
                         mensalPorMes.push(valorBase2026);
                     } else {
-                        // Número de reajustes acumulados até este mês
                         const reajustesAcumulados = (m >= startMonth) ? anosDiferenca : (anosDiferenca - 1);
                         const fator = Math.pow(1 + rate, Math.max(0, reajustesAcumulados));
                         mensalPorMes.push(valorBase2026 * fator);
@@ -1501,7 +1626,6 @@
                             }
                         }
                     } else {
-                        // Mensal (12 parcelas)
                         for (let m = 0; m < 12; m++) {
                             if (m <= mesLimiteCorte) {
                                 monthlyValues[m] = mensalPorMes[m];
@@ -1519,15 +1643,18 @@
                     vigenciaText = `${startFormatted} à ${endFormatted}`;
                 }
 
-                // Filtros de busca
+                // Filtros de busca (Incluindo meioPagamento e detalhePagamento)
                 const matchesEmpresa = (filtroEmpresa === 'ALL' || row.empresa === filtroEmpresa);
+                const matchesMeio = (filtroMeio === 'ALL' || meio === filtroMeio);
                 const matchesPrazo = (filtroPrazo === 'ALL' || prazo === filtroPrazo);
                 const matchesFreq = (filtroFreq === 'ALL' || freq === filtroFreq);
                 const matchesSearch = !searchReport || 
                      (row.fornecedor && row.fornecedor.toLowerCase().includes(searchReport)) ||
-                     (row.clifor && String(row.clifor).toLowerCase().includes(searchReport));
+                     (row.clifor && String(row.clifor).toLowerCase().includes(searchReport)) ||
+                     (meio && meio.toLowerCase().includes(searchReport)) ||
+                     (detalhe && detalhe.toLowerCase().includes(searchReport));
 
-                if (matchesEmpresa && matchesPrazo && matchesFreq && matchesSearch) {
+                if (matchesEmpresa && matchesMeio && matchesPrazo && matchesFreq && matchesSearch) {
                     total2026Sum += total2026Row;
                     totalProjecaoSum += rowTotal;
 
@@ -1561,6 +1688,14 @@
                         freqLabel = "Semestral";
                     }
 
+                    // Coluna Pagamento & Canal
+                    const pagamentoColunaHtml = `
+                        <div class="flex flex-col items-center gap-1">
+                            <span class="${badgeFreqClass} font-semibold px-1.5 py-0.5 rounded text-[10px]">${freqLabel}</span>
+                            ${getMeioPagamentoBadge(meio, detalhe)}
+                        </div>
+                    `;
+
                     tr.innerHTML = `
                         <td class="py-1.5 px-2 sticky-col-empresa bg-white font-semibold text-slate-800">${row.empresa}</td>
                         <td class="py-1.5 px-2.5 sticky-col-fornecedor bg-white">
@@ -1568,7 +1703,7 @@
                             <span class="text-[9px] text-slate-400 font-mono">Clifor: ${row.clifor || '-'}</span>
                         </td>
                         <td class="py-1.5 px-1.5 text-center"><span class="bg-blue-50 text-blue-700 border border-blue-200 font-bold px-1.5 py-0.5 rounded text-[10px]">${prazo}</span></td>
-                        <td class="py-1.5 px-1.5 text-center"><span class="${badgeFreqClass} font-semibold px-1.5 py-0.5 rounded text-[10px]">${freqLabel}</span></td>
+                        <td class="py-1.5 px-2 text-center">${pagamentoColunaHtml}</td>
                         <td class="py-1.5 px-1.5 text-center"><span class="${statusObj.class} font-semibold px-1.5 py-0.5 rounded text-[9px]">${statusObj.label}</span></td>
                         ${monthTds}
                         <td class="py-1.5 px-3 text-right font-bold text-slate-900 bg-slate-100 font-mono text-[11px] border-l border-slate-200">${formatCurrency(rowTotal)}</td>
@@ -1579,7 +1714,9 @@
                 // Aba Edição
                 const matchesCrudFilter = !searchCrud || 
                     (row.fornecedor && row.fornecedor.toLowerCase().includes(searchCrud)) ||
-                    (row.clifor && String(row.clifor).toLowerCase().includes(searchCrud));
+                    (row.clifor && String(row.clifor).toLowerCase().includes(searchCrud)) ||
+                    (meio && meio.toLowerCase().includes(searchCrud)) ||
+                    (detalhe && detalhe.toLowerCase().includes(searchCrud));
 
                 if (matchesCrudFilter) {
                     let trCrud = document.createElement('tr');
@@ -1592,6 +1729,7 @@
                         <td class="py-1.5 px-2.5 font-bold text-slate-900 max-w-[220px] truncate" title="${row.fornecedor}">${row.fornecedor}</td>
                         <td class="py-1.5 px-2 text-center"><span class="bg-blue-50 text-blue-700 border border-blue-200 font-bold px-1.5 py-0.5 rounded text-[10px]">${prazo}</span></td>
                         <td class="py-1.5 px-2 text-center"><span class="bg-slate-100 text-slate-700 border border-slate-200 px-1.5 py-0.5 rounded text-[10px] font-semibold">${freq}</span></td>
+                        <td class="py-1.5 px-2.5 text-center">${getMeioPagamentoBadge(meio, detalhe)}</td>
                         <td class="py-1.5 px-2 text-center"><span class="${statusObj.class} font-semibold px-1.5 py-0.5 rounded text-[9px]">${statusObj.label}</span></td>
                         <td class="py-1.5 px-2.5 text-xs text-slate-500">${vigenciaText}</td>
                         <td class="py-1.5 px-2 text-center font-bold text-slate-700">${mesReajusteTxt}</td>
@@ -1777,6 +1915,8 @@
                 document.getElementById('fornecedor').value = item.fornecedor;
                 document.getElementById('vigenciaPrazo').value = item.vigenciaPrazo || '1 Ano';
                 document.getElementById('tipoPagamento').value = item.tipoPagamento || 'Mensal';
+                document.getElementById('meioPagamento').value = item.meioPagamento || 'Boleto';
+                document.getElementById('detalhePagamento').value = item.detalhePagamento || '';
                 document.getElementById('inicioVigencia').value = item.inicioVigencia || '';
                 document.getElementById('fimVigencia').value = item.fimVigencia || '';
                 document.getElementById('mesReajuste').value = item.mesReajuste !== undefined ? item.mesReajuste : -1;
@@ -1789,6 +1929,8 @@
                 document.getElementById('statusManual').value = 'AUTO';
                 document.getElementById('vigenciaPrazo').value = '1 Ano';
                 document.getElementById('tipoPagamento').value = 'Mensal';
+                document.getElementById('meioPagamento').value = 'Boleto';
+                document.getElementById('detalhePagamento').value = '';
                 document.getElementById('mesReajuste').value = -1;
             }
             document.getElementById('modalForm').style.display = 'flex';
@@ -1808,6 +1950,8 @@
                 fornecedor: document.getElementById('fornecedor').value,
                 vigenciaPrazo: document.getElementById('vigenciaPrazo').value,
                 tipoPagamento: document.getElementById('tipoPagamento').value,
+                meioPagamento: document.getElementById('meioPagamento').value,
+                detalhePagamento: document.getElementById('detalhePagamento').value.trim(),
                 inicioVigencia: document.getElementById("inicioVigencia").value,
                 fimVigencia: document.getElementById("fimVigencia").value,
                 mesReajuste: parseInt(document.getElementById("mesReajuste").value, 10),
@@ -1844,7 +1988,7 @@
             XLSX.writeFile(workbook, `Relatorio_Custos_TI_${currentAnoProjecao}_${sheetName}.xlsx`);
         }
 
-        // Inicialização
+        // Inicialização garantida
         window.onload = function() {
             renderIndicesTable();
             atualizarLabelsAno();
