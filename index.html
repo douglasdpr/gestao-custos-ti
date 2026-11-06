@@ -115,7 +115,7 @@
                         <h1 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight">Controladoria e Gestão Orçamentária de TI</h1>
                         <span id="badge-exercicio-ano" class="bg-blue-50 text-blue-700 text-[10px] font-bold px-2 py-0.5 rounded border border-blue-200">Exercício 2027</span>
                     </div>
-                    <p class="text-[11px] text-slate-500">Gestão de Contratos, Canais de Pagamento (Cartão, Boleto, Depósito), DRE & Fluxo de Caixa</p>
+                    <p class="text-[11px] text-slate-500">Gestão de Contratos, Catálogo de Serviços, Canais de Pagamento (Fluxo de Caixa) & DRE</p>
                 </div>
             </div>
 
@@ -180,6 +180,9 @@
             <button id="tab1-btn" onclick="switchTab('tab1')" class="tab-btn px-4 py-2 text-xs focus:outline-none active transition-all">
                 Painel Orçamentário Mensal
             </button>
+            <button id="tab-desc-btn" onclick="switchTab('tab-desc')" class="tab-btn px-4 py-2 text-xs focus:outline-none text-slate-600 hover:text-blue-600 transition-all flex items-center gap-1.5">
+                <span>📝</span> Descrição dos Serviços Prestados
+            </button>
             <button id="tab2-btn" onclick="switchTab('tab2')" class="tab-btn px-4 py-2 text-xs focus:outline-none text-slate-600 hover:text-blue-600 transition-all">
                 Cadastro de Contratos & Premissas
             </button>
@@ -191,7 +194,7 @@
         <!-- ABA 1: Painel Orçamentário Mensal -->
         <div id="tab1" class="tab-content block space-y-2.5">
             
-            <!-- Barra de Filtros com Seletor de Ano + Data de Corte + Meio de Pagamento -->
+            <!-- Barra de Filtros -->
             <div class="bg-white p-2.5 rounded-xl shadow-2xs border border-slate-200 flex flex-wrap items-center justify-between gap-2.5 no-print">
                 <div class="flex items-center gap-2 flex-wrap">
                     
@@ -224,15 +227,17 @@
                         <option value="TMOV">TMOV</option>
                     </select>
 
-                    <!-- Filtro Meio / Canal de Pagamento (Boleto, Cartão, Depósito...) -->
-                    <select id="filterMeioPagamento" onchange="recalcular()" class="py-1 px-2.5 border border-blue-200 rounded-lg text-xs bg-blue-50/70 font-semibold text-blue-900 outline-none">
-                        <option value="ALL">Todos os Meios de Pagamento</option>
-                        <option value="Cartão de Crédito">💳 Cartão de Crédito</option>
-                        <option value="Boleto">📄 Boleto Bancário</option>
-                        <option value="Depósito / TED">🏦 Depósito / TED / PIX</option>
-                        <option value="Débito Automático">🔄 Débito Automático</option>
-                        <option value="Faturamento / Invoice">🌐 Faturamento / Invoice</option>
-                    </select>
+                    <!-- Filtro Meio / Canal de Pagamento (Exibido ativamente no Fluxo de Caixa) -->
+                    <div id="containerFiltroMeioPagamento">
+                        <select id="filterMeioPagamento" onchange="recalcular()" class="py-1 px-2.5 border border-blue-200 rounded-lg text-xs bg-blue-50/70 font-semibold text-blue-900 outline-none">
+                            <option value="ALL">Todos os Meios de Pagamento</option>
+                            <option value="Cartão de Crédito">💳 Cartão de Crédito</option>
+                            <option value="Boleto">📄 Boleto Bancário</option>
+                            <option value="Depósito / TED">🏦 Depósito / TED / PIX</option>
+                            <option value="Débito Automático">🔄 Débito Automático</option>
+                            <option value="Faturamento / Invoice">🌐 Faturamento / Invoice</option>
+                        </select>
+                    </div>
 
                     <!-- Filtro Frequência de Pagamento -->
                     <select id="filterFreq" onchange="recalcular()" class="py-1 px-2 border border-slate-200 rounded-lg text-xs bg-slate-50 font-medium text-slate-700 outline-none">
@@ -243,9 +248,9 @@
                         <option value="Anual_Unica">Anual (1x no Aniversário)</option>
                     </select>
 
-                    <!-- Campo Busca inteligente (busca fornecedor, clifor, cartão, boleto, etc) -->
+                    <!-- Campo Busca inteligente -->
                     <div class="relative">
-                        <input type="text" id="searchReport" onkeyup="recalcular()" placeholder="🔍 Buscar fornecedor, clifor, cartão, boleto..." class="py-1 pl-7 pr-2 border border-slate-200 rounded-lg text-xs bg-slate-50 w-56 focus:bg-white outline-none">
+                        <input type="text" id="searchReport" onkeyup="recalcular()" placeholder="🔍 Buscar fornecedor, serviço, canal..." class="py-1 pl-7 pr-2 border border-slate-200 rounded-lg text-xs bg-slate-50 w-52 focus:bg-white outline-none">
                         <svg class="w-3 h-3 text-slate-400 absolute left-2 top-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                     </div>
                 </div>
@@ -261,7 +266,7 @@
                 </div>
             </div>
 
-            <!-- Faixa Informativa Dinâmica e Curta -->
+            <!-- Faixa Informativa Dinâmica -->
             <div id="info-regime-bar" class="px-4 py-2 bg-blue-50/90 border border-blue-200/80 rounded-lg text-[11px] text-blue-900 flex items-center justify-between">
                 <span id="info-regime-text" class="flex items-center gap-1.5">
                     <b>Regime de Competência (DRE):</b> Apropriação linear mensal das despesas (1/12 avos) para espelhar o resultado operacional sem distorções sazonais.
@@ -269,16 +274,16 @@
                 <span id="corte-alerta-tag" class="font-bold text-blue-800 bg-blue-100/80 px-2 py-0.5 rounded text-[10px]">Corte: 31/12/2027</span>
             </div>
 
-            <!-- Tabela Otimizada para Caber na Tela -->
+            <!-- Tabela Otimizada -->
             <div class="bg-white rounded-xl shadow-2xs border border-slate-200 overflow-hidden">
                 <div class="table-container">
                     <table id="reportTable" class="w-full text-left border-collapse text-[11px] table-sticky whitespace-nowrap">
                         <thead class="text-slate-600 border-b border-slate-200 font-semibold uppercase text-[10px] tracking-wider">
                             <tr id="tableHeaderRow">
                                 <th class="py-2.5 px-2 sticky-col-empresa w-16 text-slate-700">Empresa</th>
-                                <th class="py-2.5 px-2.5 sticky-col-fornecedor w-56 text-slate-700">Fornecedor / Objeto</th>
+                                <th class="py-2.5 px-2.5 sticky-col-fornecedor w-60 text-slate-700">Fornecedor / Objeto</th>
                                 <th class="py-2.5 px-1.5 text-center w-20">Vigência</th>
-                                <th class="py-2.5 px-2 text-center w-36">Pagamento & Canal</th>
+                                <th class="py-2.5 px-2 text-center w-36" id="th-pagamento-col">Pagamento</th>
                                 <th class="py-2.5 px-1.5 text-center w-16">Status</th>
                                 <th class="text-right py-2.5 px-2 w-24 col-mes" data-m="0">Jan</th>
                                 <th class="text-right py-2.5 px-2 w-24 col-mes" data-m="1">Fev</th>
@@ -299,6 +304,39 @@
                         </tbody>
                         <tfoot class="bg-slate-50 font-bold text-slate-900 border-t-2 border-slate-300" id="reportTableFoot">
                         </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ABA NOVA: Catálogo de Descrição dos Serviços Prestados -->
+        <div id="tab-desc" class="tab-content hidden space-y-3">
+            <div class="bg-white rounded-xl shadow-2xs border border-slate-200 overflow-hidden">
+                <div class="p-4 bg-slate-50/80 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+                            <span>📝</span> Catálogo & Descrição dos Serviços Prestados de TI
+                        </h3>
+                        <p class="text-[11px] text-slate-500 mt-0.5">Informe a finalidade, objeto ou utilidade técnica de cada contrato para a operação e auditoria.</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <input type="text" id="searchDescricao" onkeyup="renderDescricaoTable()" placeholder="🔍 Filtrar fornecedor, descrição, produto..." class="p-2 border border-slate-300 rounded-lg text-xs w-72 bg-white outline-none focus:ring-1 focus:ring-blue-500">
+                    </div>
+                </div>
+
+                <div class="table-container" style="max-height: 650px;">
+                    <table class="w-full text-left border-collapse text-xs table-sticky">
+                        <thead class="bg-slate-100 text-slate-600 font-semibold uppercase text-[10px] tracking-wider">
+                            <tr>
+                                <th class="py-2.5 px-3 w-20 text-slate-700">Empresa</th>
+                                <th class="py-2.5 px-3 w-20 text-slate-700">Clifor</th>
+                                <th class="py-2.5 px-3.5 w-64 text-slate-700">Fornecedor / Produto</th>
+                                <th class="py-2.5 px-4 text-slate-700">Descrição Detalhada do Serviço Prestado / Objeto</th>
+                                <th class="py-2.5 px-3 text-center w-28 text-slate-700">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="descricaoTableBody" class="divide-y divide-slate-100">
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -374,13 +412,13 @@
 
     </div>
 
-    <!-- Modal Editar Premissas do Contrato (Com Meio e Detalhes de Pagamento) -->
+    <!-- Modal Editar Premissas do Contrato Completo -->
     <div id="modalForm" class="modal">
         <div class="modal-content">
             <div class="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50/80 rounded-t-2xl">
                 <div>
                     <h3 id="modalTitle" class="font-bold text-base text-slate-900">Editar Premissas do Contrato</h3>
-                    <p class="text-[11px] text-slate-500">Defina vigência, valores e por onde o contrato é pago (Cartão, Boleto, etc.)</p>
+                    <p class="text-[11px] text-slate-500">Defina vigência, valores e por onde o contrato é pago</p>
                 </div>
                 <span onclick="closeModal()" class="close text-slate-400 hover:text-slate-800 transition-colors text-2xl font-bold cursor-pointer">&times;</span>
             </div>
@@ -413,6 +451,12 @@
                 <div>
                     <label class="block text-xs font-semibold mb-1 text-slate-700">Nome do Fornecedor / Objeto</label>
                     <input type="text" id="fornecedor" class="border border-slate-300 p-2 w-full rounded-lg text-xs font-bold outline-none focus:ring-1 focus:ring-blue-500" required placeholder="Ex: QUALITOR SOFTWARE">
+                </div>
+
+                <!-- Campo Descrição do Serviço no Modal Principal -->
+                <div>
+                    <label class="block text-xs font-semibold mb-1 text-slate-700">Descrição do Serviço Prestado / Objeto</label>
+                    <textarea id="modalDescricaoServico" rows="2" class="border border-slate-300 p-2 w-full rounded-lg text-xs outline-none focus:ring-1 focus:ring-blue-500" placeholder="Ex: Produto utilizado para comunicação entre os Desenvolvedores"></textarea>
                 </div>
 
                 <!-- Painel de Regras de Vigência e Pagamento / Canal -->
@@ -452,7 +496,7 @@
                     </div>
                 </div>
 
-                <!-- NOVO: Por onde é pago (Canal / Método de Pagamento) -->
+                <!-- Por onde é pago (Canal / Método de Pagamento) -->
                 <div class="p-3.5 bg-blue-50/60 rounded-xl border border-blue-200/80 space-y-3">
                     <span class="text-xs font-bold text-blue-900 block border-b border-blue-200 pb-1">2. Por Onde é Pago (Tesouraria / Canal)</span>
                     <div class="grid grid-cols-2 gap-3">
@@ -522,6 +566,32 @@
         </div>
     </div>
 
+    <!-- Modal Específico para Edição Rápida da Descrição do Serviço -->
+    <div id="modalDescricao" class="modal">
+        <div class="modal-content" style="width: 520px;">
+            <div class="px-5 py-3.5 border-b border-slate-200 flex justify-between items-center bg-slate-50/80 rounded-t-2xl">
+                <div>
+                    <h3 class="font-bold text-sm text-slate-900">Editar Descrição do Serviço</h3>
+                    <p id="modalDescricaoFornecedorNome" class="text-[11px] text-blue-700 font-semibold mt-0.5">-</p>
+                </div>
+                <span onclick="closeModalDescricao()" class="close text-slate-400 hover:text-slate-800 transition-colors cursor-pointer text-xl font-bold">&times;</span>
+            </div>
+            <form onsubmit="handleDescricaoSubmit(event)" class="p-5 space-y-3">
+                <input type="hidden" id="editDescricaoIndex" value="-1">
+                
+                <div>
+                    <label class="block text-xs font-semibold mb-1 text-slate-700">Descrição / Objeto do Serviço Prestado:</label>
+                    <textarea id="editDescricaoTexto" rows="4" class="border border-slate-300 p-2.5 w-full rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500" required placeholder="Descreva a utilidade, escopo ou finalidade do software/serviço..."></textarea>
+                </div>
+
+                <div class="flex justify-end gap-2 pt-3 border-t border-slate-200">
+                    <button type="button" onclick="closeModalDescricao()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-xs font-semibold transition-colors">Cancelar</button>
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-lg text-xs shadow-2xs transition-colors">Salvar Descrição</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Modal Adicionar / Editar Índice -->
     <div id="modalIndice" class="modal">
         <div class="modal-content" style="width: 440px;">
@@ -559,10 +629,9 @@
     </div>
 
     <script>
-        let currentVisaoRegime = 'contabil'; // 'contabil' ou 'financeiro'
-        let currentAnoProjecao = 2027; // 2026, 2027, 2028, 2029, 2030
+        let currentVisaoRegime = 'contabil'; // 'contabil' (DRE) ou 'financeiro' (Caixa)
+        let currentAnoProjecao = 2027;
 
-        // Índices Econômicos
         let indicesConfig = [
             { nome: "IPCA", taxa: 4.5, desc: "Índice Nacional de Preços ao Consumidor Amplo (IBGE)" },
             { nome: "IGP-M", taxa: 5.0, desc: "Índice Geral de Preços - Mercado (FGV)" },
@@ -570,7 +639,7 @@
             { nome: "FIXO", taxa: 0.0, desc: "Sem reajuste contratual (0.0%)" }
         ];
 
-        // Base Oficial dos 40 Contratos com Meios de Pagamento Cadastrados
+        // Base Oficial dos 40 Contratos com Descrição Completa e Meios de Pagamento
         const initialData = [
   {
     "id": 1,
@@ -589,7 +658,8 @@
     "customRate": null,
     "obs": "",
     "meioPagamento": "Boleto",
-    "detalhePagamento": "Boleto Bancário"
+    "detalhePagamento": "Boleto Bancário",
+    "descricaoServico": "Software e licenciamento para gestão logística e transporte"
   },
   {
     "id": 2,
@@ -608,7 +678,8 @@
     "customRate": null,
     "obs": "",
     "meioPagamento": "Boleto",
-    "detalhePagamento": "Boleto Bancário"
+    "detalhePagamento": "Boleto Bancário",
+    "descricaoServico": "Plataforma de instituição de pagamento e gestão de fretes"
   },
   {
     "id": 3,
@@ -627,7 +698,8 @@
     "customRate": null,
     "obs": "",
     "meioPagamento": "Boleto",
-    "detalhePagamento": "Boleto Bancário"
+    "detalhePagamento": "Boleto Bancário",
+    "descricaoServico": "Validação de identidade, compliance e gerenciamento de risco cadastral"
   },
   {
     "id": 4,
@@ -646,7 +718,8 @@
     "customRate": null,
     "obs": "",
     "meioPagamento": "Boleto",
-    "detalhePagamento": "Boleto Bancário"
+    "detalhePagamento": "Boleto Bancário",
+    "descricaoServico": "Licenciamento e suporte em nuvem / Google Workspace e infraestrutura"
   },
   {
     "id": 5,
@@ -665,7 +738,8 @@
     "customRate": null,
     "obs": "",
     "meioPagamento": "Depósito / TED",
-    "detalhePagamento": "Depósito Bancário"
+    "detalhePagamento": "Depósito Bancário",
+    "descricaoServico": "Banco de dados em nuvem e suporte de infraestrutura crítica"
   },
   {
     "id": 6,
@@ -684,7 +758,8 @@
     "customRate": null,
     "obs": "",
     "meioPagamento": "Boleto",
-    "detalhePagamento": "Boleto Bancário"
+    "detalhePagamento": "Boleto Bancário",
+    "descricaoServico": "Serviços de telecomunicação, telefonia em nuvem e APIs de comunicação"
   },
   {
     "id": 7,
@@ -703,7 +778,8 @@
     "customRate": null,
     "obs": "",
     "meioPagamento": "Boleto",
-    "detalhePagamento": "Boleto Bancário"
+    "detalhePagamento": "Boleto Bancário",
+    "descricaoServico": "Software de mensageria fiscal e monitoramento logístico"
   },
   {
     "id": 8,
@@ -722,7 +798,8 @@
     "customRate": null,
     "obs": "",
     "meioPagamento": "Boleto",
-    "detalhePagamento": "Boleto Bancário"
+    "detalhePagamento": "Boleto Bancário",
+    "descricaoServico": "Plataforma de chatbots, atendimento automatizado e SAC inteligente"
   },
   {
     "id": 9,
@@ -741,7 +818,8 @@
     "customRate": null,
     "obs": "",
     "meioPagamento": "Boleto",
-    "detalhePagamento": "Boleto Bancário"
+    "detalhePagamento": "Boleto Bancário",
+    "descricaoServico": "Segurança cibernética, firewall gerenciado e links de internet"
   },
   {
     "id": 10,
@@ -760,7 +838,8 @@
     "customRate": null,
     "obs": "",
     "meioPagamento": "Boleto",
-    "detalhePagamento": "Boleto Bancário"
+    "detalhePagamento": "Boleto Bancário",
+    "descricaoServico": "Soluções de tecnologia e sustentação de desenvolvimento"
   },
   {
     "id": 11,
@@ -779,7 +858,8 @@
     "customRate": null,
     "obs": "",
     "meioPagamento": "Boleto",
-    "detalhePagamento": "Boleto Bancário"
+    "detalhePagamento": "Boleto Bancário",
+    "descricaoServico": "Distribuição de licenças Microsoft e suporte a banco SQL Server"
   },
   {
     "id": 12,
@@ -798,7 +878,8 @@
     "customRate": null,
     "obs": "",
     "meioPagamento": "Depósito / TED",
-    "detalhePagamento": "Depósito Bancário"
+    "detalhePagamento": "Depósito Bancário",
+    "descricaoServico": "Suporte e sustentação especializada ao banco Oracle Maxys Produção"
   },
   {
     "id": 13,
@@ -817,7 +898,8 @@
     "customRate": null,
     "obs": "",
     "meioPagamento": "Boleto",
-    "detalhePagamento": "Boleto Bancário"
+    "detalhePagamento": "Boleto Bancário",
+    "descricaoServico": "Licenças Jira e Confluence para gestão ágil de projetos e documentação de TI"
   },
   {
     "id": 14,
@@ -836,7 +918,8 @@
     "customRate": null,
     "obs": "",
     "meioPagamento": "Boleto",
-    "detalhePagamento": "Boleto Bancário"
+    "detalhePagamento": "Boleto Bancário",
+    "descricaoServico": "Licenciamento e suporte técnico de ferramentas de desenvolvimento"
   },
   {
     "id": 15,
@@ -855,7 +938,8 @@
     "customRate": null,
     "obs": "",
     "meioPagamento": "Boleto",
-    "detalhePagamento": "Boleto Bancário"
+    "detalhePagamento": "Boleto Bancário",
+    "descricaoServico": "Software de suporte aos processos centralizados de operação"
   },
   {
     "id": 16,
@@ -874,7 +958,8 @@
     "customRate": null,
     "obs": "",
     "meioPagamento": "Boleto",
-    "detalhePagamento": "Boleto Bancário"
+    "detalhePagamento": "Boleto Bancário",
+    "descricaoServico": "Serviços especializados de infraestrutura e telecomunicações"
   },
   {
     "id": 17,
@@ -893,7 +978,8 @@
     "customRate": null,
     "obs": "",
     "meioPagamento": "Boleto",
-    "detalhePagamento": "Boleto Bancário"
+    "detalhePagamento": "Boleto Bancário",
+    "descricaoServico": "API de consulta automatizada de dados de CNPJ para cadastro"
   },
   {
     "id": 18,
@@ -912,7 +998,8 @@
     "customRate": null,
     "obs": "",
     "meioPagamento": "Boleto",
-    "detalhePagamento": "Boleto Bancário"
+    "detalhePagamento": "Boleto Bancário",
+    "descricaoServico": "Plataforma de engenharia e modelagem de dados para BI/Analytics"
   },
   {
     "id": 19,
@@ -931,7 +1018,8 @@
     "customRate": null,
     "obs": "",
     "meioPagamento": "Cartão de Crédito",
-    "detalhePagamento": "Cartão Corporativo"
+    "detalhePagamento": "Cartão Corporativo",
+    "descricaoServico": "Produto utilizado para comunicação entre os Desenvolvedores"
   },
   {
     "id": 20,
@@ -950,7 +1038,8 @@
     "customRate": null,
     "obs": "",
     "meioPagamento": "Cartão de Crédito",
-    "detalhePagamento": "Cartão Corporativo"
+    "detalhePagamento": "Cartão Corporativo",
+    "descricaoServico": "Conta e certificação Apple Developer para publicação de aplicativos mobile"
   },
   {
     "id": 21,
@@ -969,7 +1058,8 @@
     "customRate": null,
     "obs": "",
     "meioPagamento": "Boleto",
-    "detalhePagamento": "Boleto Bancário"
+    "detalhePagamento": "Boleto Bancário",
+    "descricaoServico": "Representação e licenciamento de softwares corporativos"
   },
   {
     "id": 22,
@@ -988,7 +1078,8 @@
     "customRate": 5.0,
     "obs": "",
     "meioPagamento": "Cartão de Crédito",
-    "detalhePagamento": "Cartão Corporativo"
+    "detalhePagamento": "Cartão Corporativo",
+    "descricaoServico": "Ferramenta de suporte remoto e acesso a computadores à distância"
   },
   {
     "id": 23,
@@ -1007,7 +1098,8 @@
     "customRate": null,
     "obs": "",
     "meioPagamento": "Cartão de Crédito",
-    "detalhePagamento": "Cartão Corporativo"
+    "detalhePagamento": "Cartão Corporativo",
+    "descricaoServico": "Plataforma de hospedagem e desenvolvimento de sites (Tmov e Tmov Pay)"
   },
   {
     "id": 24,
@@ -1026,7 +1118,8 @@
     "customRate": null,
     "obs": "",
     "meioPagamento": "Boleto",
-    "detalhePagamento": "Boleto Bancário"
+    "detalhePagamento": "Boleto Bancário",
+    "descricaoServico": "Portal de cálculo de pedágios e roteirização logística"
   },
   {
     "id": 25,
@@ -1045,7 +1138,8 @@
     "customRate": null,
     "obs": "",
     "meioPagamento": "Boleto",
-    "detalhePagamento": "Boleto Bancário"
+    "detalhePagamento": "Boleto Bancário",
+    "descricaoServico": "Representação e licenciamento de softwares corporativos"
   },
   {
     "id": 26,
@@ -1064,7 +1158,8 @@
     "customRate": null,
     "obs": "",
     "meioPagamento": "Boleto",
-    "detalhePagamento": "Boleto Bancário"
+    "detalhePagamento": "Boleto Bancário",
+    "descricaoServico": "Certificados digitais SSL/TLS para segurança e criptografia de domínios"
   },
   {
     "id": 27,
@@ -1083,7 +1178,8 @@
     "customRate": null,
     "obs": "",
     "meioPagamento": "Boleto",
-    "detalhePagamento": "Boleto Bancário"
+    "detalhePagamento": "Boleto Bancário",
+    "descricaoServico": "Certificados digitais SSL/TLS para segurança e criptografia de domínios"
   },
   {
     "id": 28,
@@ -1102,7 +1198,8 @@
     "customRate": 0.0,
     "obs": "",
     "meioPagamento": "Boleto",
-    "detalhePagamento": "Boleto Bancário"
+    "detalhePagamento": "Boleto Bancário",
+    "descricaoServico": "Certificados digitais SSL/TLS para segurança e criptografia de domínios"
   },
   {
     "id": 29,
@@ -1121,7 +1218,8 @@
     "customRate": null,
     "obs": "",
     "meioPagamento": "Boleto",
-    "detalhePagamento": "Boleto Bancário"
+    "detalhePagamento": "Boleto Bancário",
+    "descricaoServico": "Serviços de hospedagem e servidores web"
   },
   {
     "id": 30,
@@ -1140,7 +1238,8 @@
     "customRate": null,
     "obs": "",
     "meioPagamento": "Boleto",
-    "detalhePagamento": "Boleto Bancário"
+    "detalhePagamento": "Boleto Bancário",
+    "descricaoServico": "Registro e manutenção de domínios corporativos na internet"
   },
   {
     "id": 31,
@@ -1159,7 +1258,8 @@
     "customRate": null,
     "obs": "",
     "meioPagamento": "Boleto",
-    "detalhePagamento": "Boleto Bancário"
+    "detalhePagamento": "Boleto Bancário",
+    "descricaoServico": "Registro e manutenção de domínios corporativos na internet"
   },
   {
     "id": 32,
@@ -1178,7 +1278,8 @@
     "customRate": null,
     "obs": "",
     "meioPagamento": "Boleto",
-    "detalhePagamento": "Boleto Bancário"
+    "detalhePagamento": "Boleto Bancário",
+    "descricaoServico": "Registro e manutenção de domínios corporativos na internet"
   },
   {
     "id": 33,
@@ -1197,7 +1298,8 @@
     "customRate": null,
     "obs": "",
     "meioPagamento": "Cartão de Crédito",
-    "detalhePagamento": "Cartão Corporativo"
+    "detalhePagamento": "Cartão Corporativo",
+    "descricaoServico": "APIs de inteligência artificial generativa integradas aos sistemas"
   },
   {
     "id": 34,
@@ -1216,7 +1318,8 @@
     "customRate": null,
     "obs": "",
     "meioPagamento": "Boleto",
-    "detalhePagamento": "Boleto Bancário"
+    "detalhePagamento": "Boleto Bancário",
+    "descricaoServico": "Sistema ERP e soluções de gestão para o agronegócio"
   },
   {
     "id": 35,
@@ -1235,7 +1338,8 @@
     "customRate": null,
     "obs": "",
     "meioPagamento": "Cartão de Crédito",
-    "detalhePagamento": "Cartão Corp Final xxx"
+    "detalhePagamento": "Cartão Corp Final xxx",
+    "descricaoServico": "Software de Helpdesk, Service Desk e gestão de chamados de TI"
   },
   {
     "id": 36,
@@ -1254,7 +1358,8 @@
     "customRate": null,
     "obs": "",
     "meioPagamento": "Cartão de Crédito",
-    "detalhePagamento": "Cartão Corp Final xxx"
+    "detalhePagamento": "Cartão Corp Final xxx",
+    "descricaoServico": "Software de Helpdesk, Service Desk e gestão de chamados de TI"
   },
   {
     "id": 37,
@@ -1273,7 +1378,8 @@
     "customRate": null,
     "obs": "",
     "meioPagamento": "Boleto",
-    "detalhePagamento": "Boleto Bancário"
+    "detalhePagamento": "Boleto Bancário",
+    "descricaoServico": "Solução de segurança antivírus endpoint corporativo para servidores e estações"
   },
   {
     "id": 38,
@@ -1292,7 +1398,8 @@
     "customRate": null,
     "obs": "",
     "meioPagamento": "Boleto",
-    "detalhePagamento": "Boleto Bancário"
+    "detalhePagamento": "Boleto Bancário",
+    "descricaoServico": "Testes de intrusão, auditoria de vulnerabilidades e segurança da informação"
   },
   {
     "id": 39,
@@ -1311,7 +1418,8 @@
     "customRate": null,
     "obs": "",
     "meioPagamento": "Boleto",
-    "detalhePagamento": "Boleto Bancário"
+    "detalhePagamento": "Boleto Bancário",
+    "descricaoServico": "Rede privada virtual segura para acesso remoto dos colaboradores à rede interna"
   },
   {
     "id": 40,
@@ -1330,11 +1438,12 @@
     "customRate": null,
     "obs": "",
     "meioPagamento": "Boleto",
-    "detalhePagamento": "Boleto Bancário"
+    "detalhePagamento": "Boleto Bancário",
+    "descricaoServico": "Serviços pontuais e melhorias na infraestrutura tecnológica"
   }
 ];
 
-        const STORAGE_KEY = 'it_budget_master_40_v3';
+        const STORAGE_KEY = 'it_budget_master_40_v4';
         let db = JSON.parse(localStorage.getItem(STORAGE_KEY)) || JSON.parse(JSON.stringify(initialData));
 
         function saveState() {
@@ -1343,15 +1452,12 @@
             } catch (e) {}
         }
 
-        // Gerenciamento de Anos e Data de Corte
         function handleAnoChange(novoAno) {
             currentAnoProjecao = parseInt(novoAno, 10);
-            
             const dataInput = document.getElementById('dataCorteInput');
             if (dataInput) {
                 dataInput.value = `${currentAnoProjecao}-12-31`;
             }
-            
             atualizarLabelsAno();
             recalcular();
         }
@@ -1393,19 +1499,29 @@
             const btnFinanceiro = document.getElementById('btn-visao-financeiro');
             const infoText = document.getElementById('info-regime-text');
             const badgeVisao = document.getElementById('badge-modo-visao');
+            const thPagamento = document.getElementById('th-pagamento-col');
+            const containerFiltroMeio = document.getElementById('containerFiltroMeioPagamento');
 
             if (regime === 'contabil') {
                 btnContabil.className = "text-xs px-3 py-1 rounded font-bold transition-all bg-white text-blue-700 shadow-2xs flex items-center gap-1";
                 btnFinanceiro.className = "text-xs px-3 py-1 rounded font-semibold transition-all text-slate-600 hover:text-slate-900 flex items-center gap-1";
-                infoText.innerHTML = "<b>Regime de Competência (DRE):</b> Apropriação linear mensal das despesas (1/12 avos) para espelhar o resultado operacional sem oscilações de fluxo.";
+                infoText.innerHTML = "<b>Regime de Competência (DRE):</b> Apropriação linear mensal das despesas (1/12 avos) para espelhar o resultado operacional sem oscilações de fluxo. <i>(Canais de pagamento como Cartão/Boleto são exclusivos da visão Caixa).</i>";
                 badgeVisao.innerText = "DRE (Competência)";
                 badgeVisao.className = "text-[9px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200";
+                
+                // Na DRE, cabeçalho exibe apenas "Frequência Contábil" e oculta o dropdown de meio de pagamento
+                if (thPagamento) thPagamento.innerText = "Frequência Contábil";
+                if (containerFiltroMeio) containerFiltroMeio.style.display = 'none';
             } else {
                 btnFinanceiro.className = "text-xs px-3 py-1 rounded font-bold transition-all bg-white text-emerald-700 shadow-2xs flex items-center gap-1";
                 btnContabil.className = "text-xs px-3 py-1 rounded font-semibold transition-all text-slate-600 hover:text-slate-900 flex items-center gap-1";
-                infoText.innerHTML = "<b>Regime de Caixa (Fluxo Financeiro):</b> Os desembolsos são alocados nos meses exatos de liquidação das faturas para previsão de tesouraria conforme o canal (Cartão, Boleto, etc.).";
+                infoText.innerHTML = "<b>Regime de Caixa (Fluxo Financeiro):</b> Os desembolsos são alocados nos meses exatos de liquidação das faturas conforme o canal configurado (Cartão Corp, Boleto, Depósito, etc.).";
                 badgeVisao.innerText = "Fluxo de Caixa";
                 badgeVisao.className = "text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200";
+                
+                // No Fluxo de Caixa, exibe "Pagamento & Canal" e ativa o dropdown de filtros por meio
+                if (thPagamento) thPagamento.innerText = "Pagamento & Canal";
+                if (containerFiltroMeio) containerFiltroMeio.style.display = 'block';
             }
             atualizarLabelsAno();
             recalcular();
@@ -1470,6 +1586,7 @@
             document.getElementById(tabId + '-btn').classList.add('active');
 
             if (tabId === 'tab3') renderIndicesTable();
+            if (tabId === 'tab-desc') renderDescricaoTable();
         }
 
         function getRateForIndice(nomeIndice) {
@@ -1477,7 +1594,6 @@
             return found ? (found.taxa / 100) : 0.045;
         }
 
-        // Badge estilizada para o Meio de Pagamento
         function getMeioPagamentoBadge(meio, detalhe) {
             let icon = "📄";
             let bgClass = "bg-slate-50 text-slate-700 border-slate-200";
@@ -1508,7 +1624,6 @@
             `;
         }
 
-        // MOTOR PRINCIPAL DE CÁLCULO E PROJEÇÃO MULTIANUAL (2026, 2027, 2028, 2029...)
         function recalcular() {
             const searchReport = (document.getElementById('searchReport') ? document.getElementById('searchReport').value : '').toLowerCase().trim();
             const searchCrud = (document.getElementById('searchCrud') ? document.getElementById('searchCrud').value : '').toLowerCase().trim();
@@ -1569,10 +1684,10 @@
                 const meio = row.meioPagamento || 'Boleto';
                 const detalhe = row.detalhePagamento || '';
                 const prazo = row.vigenciaPrazo || '1 Ano';
+                const desc = row.descricaoServico || '';
 
                 const total2026Row = valorBase2026 * 12;
 
-                // 1. CÁLCULO DA BASE MENSAL EVOLUTIVA POR ANO
                 let mensalPorMes = [];
                 for (let m = 0; m < 12; m++) {
                     if (startMonth < 0 || rate <= 0 || anosDiferenca <= 0) {
@@ -1584,12 +1699,10 @@
                     }
                 }
 
-                // 2. DISTRIBUIÇÃO CONFORME A VISÃO (DRE vs CAIXA)
                 let monthlyValues = new Array(12).fill(0);
                 let rowTotal = 0;
 
                 if (currentVisaoRegime === 'contabil') {
-                    // DRE / COMPETÊNCIA: Apropriação linear mensal
                     for (let m = 0; m < 12; m++) {
                         if (m <= mesLimiteCorte) {
                             monthlyValues[m] = mensalPorMes[m];
@@ -1597,7 +1710,6 @@
                         }
                     }
                 } else {
-                    // FLUXO DE CAIXA: Desembolsos reais nos meses das faturas
                     if (freq === 'Anual_Unica') {
                         const mDesembolso = startMonth >= 0 ? startMonth : 0;
                         const totalAnualReajustado = mensalPorMes.reduce((a, b) => a + b, 0);
@@ -1643,14 +1755,15 @@
                     vigenciaText = `${startFormatted} à ${endFormatted}`;
                 }
 
-                // Filtros de busca (Incluindo meioPagamento e detalhePagamento)
                 const matchesEmpresa = (filtroEmpresa === 'ALL' || row.empresa === filtroEmpresa);
-                const matchesMeio = (filtroMeio === 'ALL' || meio === filtroMeio);
+                // Filtro de Meio de Pagamento só é restritivo no Fluxo de Caixa (conforme solicitado pelo usuário)
+                const matchesMeio = (currentVisaoRegime === 'contabil' || filtroMeio === 'ALL' || meio === filtroMeio);
                 const matchesPrazo = (filtroPrazo === 'ALL' || prazo === filtroPrazo);
                 const matchesFreq = (filtroFreq === 'ALL' || freq === filtroFreq);
                 const matchesSearch = !searchReport || 
                      (row.fornecedor && row.fornecedor.toLowerCase().includes(searchReport)) ||
                      (row.clifor && String(row.clifor).toLowerCase().includes(searchReport)) ||
+                     (desc && desc.toLowerCase().includes(searchReport)) ||
                      (meio && meio.toLowerCase().includes(searchReport)) ||
                      (detalhe && detalhe.toLowerCase().includes(searchReport));
 
@@ -1676,34 +1789,47 @@
                     }).join('');
 
                     let badgeFreqClass = "bg-slate-100 text-slate-700 border border-slate-200";
-                    let freqLabel = "Mensal";
+                    let freqLabel = "Mensal (12x)";
                     if (freq === 'Anual_Unica') {
                         badgeFreqClass = "bg-purple-50 text-purple-700 border border-purple-200";
-                        freqLabel = "Anual 1x";
+                        freqLabel = "Anual (1x)";
                     } else if (freq === 'Trimestral') {
                         badgeFreqClass = "bg-amber-50 text-amber-700 border border-amber-200";
-                        freqLabel = "Trimestral";
+                        freqLabel = "Trimestral (4x)";
                     } else if (freq === 'Semestral') {
                         badgeFreqClass = "bg-sky-50 text-sky-700 border border-sky-200";
-                        freqLabel = "Semestral";
+                        freqLabel = "Semestral (2x)";
                     }
 
-                    // Coluna Pagamento & Canal
-                    const pagamentoColunaHtml = `
-                        <div class="flex flex-col items-center gap-1">
-                            <span class="${badgeFreqClass} font-semibold px-1.5 py-0.5 rounded text-[10px]">${freqLabel}</span>
-                            ${getMeioPagamentoBadge(meio, detalhe)}
-                        </div>
-                    `;
+                    // DEFINIÇÃO DA COLUNA PAGAMENTO:
+                    // Se for DRE: Mostra APENAS a frequência contábil (sem canal de pagamento)
+                    // Se for FLUXO DE CAIXA: Mostra Frequência + Badge com Meio e Canal de pagamento
+                    let colunaPagamentoHtml = '';
+                    if (currentVisaoRegime === 'contabil') {
+                        colunaPagamentoHtml = `<span class="${badgeFreqClass} font-semibold px-2 py-0.5 rounded-full text-[10px]">${freqLabel}</span>`;
+                    } else {
+                        colunaPagamentoHtml = `
+                            <div class="flex flex-col items-center gap-1">
+                                <span class="${badgeFreqClass} font-semibold px-1.5 py-0.5 rounded text-[10px]">${freqLabel}</span>
+                                ${getMeioPagamentoBadge(meio, detalhe)}
+                            </div>
+                        `;
+                    }
+
+                    // Subtítulo da descrição resumida abaixo do nome do fornecedor
+                    const descResumida = desc ? `<span class="text-[9.5px] text-slate-400 block truncate max-w-[200px]" title="${desc}">${desc}</span>` : '';
 
                     tr.innerHTML = `
                         <td class="py-1.5 px-2 sticky-col-empresa bg-white font-semibold text-slate-800">${row.empresa}</td>
                         <td class="py-1.5 px-2.5 sticky-col-fornecedor bg-white">
                             <span class="font-bold text-slate-900 truncate block max-w-[200px]" title="${row.fornecedor}">${row.fornecedor}</span>
-                            <span class="text-[9px] text-slate-400 font-mono">Clifor: ${row.clifor || '-'}</span>
+                            <div class="flex items-center gap-1.5 mt-0.5">
+                                <span class="text-[9px] text-slate-400 font-mono">Cod: ${row.clifor || '-'}</span>
+                                ${descResumida}
+                            </div>
                         </td>
                         <td class="py-1.5 px-1.5 text-center"><span class="bg-blue-50 text-blue-700 border border-blue-200 font-bold px-1.5 py-0.5 rounded text-[10px]">${prazo}</span></td>
-                        <td class="py-1.5 px-2 text-center">${pagamentoColunaHtml}</td>
+                        <td class="py-1.5 px-2 text-center">${colunaPagamentoHtml}</td>
                         <td class="py-1.5 px-1.5 text-center"><span class="${statusObj.class} font-semibold px-1.5 py-0.5 rounded text-[9px]">${statusObj.label}</span></td>
                         ${monthTds}
                         <td class="py-1.5 px-3 text-right font-bold text-slate-900 bg-slate-100 font-mono text-[11px] border-l border-slate-200">${formatCurrency(rowTotal)}</td>
@@ -1716,6 +1842,7 @@
                     (row.fornecedor && row.fornecedor.toLowerCase().includes(searchCrud)) ||
                     (row.clifor && String(row.clifor).toLowerCase().includes(searchCrud)) ||
                     (meio && meio.toLowerCase().includes(searchCrud)) ||
+                    (desc && desc.toLowerCase().includes(searchCrud)) ||
                     (detalhe && detalhe.toLowerCase().includes(searchCrud));
 
                 if (matchesCrudFilter) {
@@ -1726,7 +1853,10 @@
                     trCrud.innerHTML = `
                         <td class="py-1.5 px-2.5 font-semibold text-slate-800">${row.empresa}</td>
                         <td class="py-1.5 px-2.5 text-xs font-mono text-slate-500">${row.clifor || '-'}</td>
-                        <td class="py-1.5 px-2.5 font-bold text-slate-900 max-w-[220px] truncate" title="${row.fornecedor}">${row.fornecedor}</td>
+                        <td class="py-1.5 px-2.5 font-bold text-slate-900 max-w-[220px] truncate" title="${row.fornecedor}">
+                            ${row.fornecedor}
+                            <span class="block font-normal text-[10px] text-slate-500 truncate">${desc}</span>
+                        </td>
                         <td class="py-1.5 px-2 text-center"><span class="bg-blue-50 text-blue-700 border border-blue-200 font-bold px-1.5 py-0.5 rounded text-[10px]">${prazo}</span></td>
                         <td class="py-1.5 px-2 text-center"><span class="bg-slate-100 text-slate-700 border border-slate-200 px-1.5 py-0.5 rounded text-[10px] font-semibold">${freq}</span></td>
                         <td class="py-1.5 px-2.5 text-center">${getMeioPagamentoBadge(meio, detalhe)}</td>
@@ -1751,7 +1881,6 @@
                 }
             });
 
-            // Rodapé da Tabela
             let footTds = monthlyTotals.map((t, idx) => {
                 const op = idx > mesLimiteCorte ? 'opacity-25' : '';
                 return `<td class="py-2.5 px-2 text-right font-mono text-[11px] ${op}">${formatCurrency(t)}</td>`;
@@ -1766,7 +1895,6 @@
                 </tr>
             `;
 
-            // Atualiza os Cards Superiores
             document.getElementById('total-2026').innerText = formatCurrency(total2026Sum);
             document.getElementById('total-projecao').innerText = formatCurrency(totalProjecaoSum);
             
@@ -1779,6 +1907,69 @@
             const varPct = (total2026Sum > 0) ? ((impactReajuste / (total2026Sum * (mesesAtivos / 12))) * 100).toFixed(2) : 0;
             document.getElementById('kpi-var-baseline').innerText = `${varPct >= 0 ? '+' : ''}${varPct}%`;
             document.getElementById('impacto-pct-badge').innerText = `${varPct >= 0 ? '+' : ''}${varPct}%`;
+        }
+
+        // RENDERIZAÇÃO DA TABELA DA NOVA ABA: DESCRIÇÃO DOS SERVIÇOS
+        function renderDescricaoTable() {
+            const tbody = document.getElementById('descricaoTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            const term = (document.getElementById('searchDescricao') ? document.getElementById('searchDescricao').value : '').toLowerCase().trim();
+
+            db.forEach((row, index) => {
+                const forn = row.fornecedor || '';
+                const clifor = String(row.clifor || '');
+                const desc = row.descricaoServico || '';
+
+                if (term && !forn.toLowerCase().includes(term) && !clifor.toLowerCase().includes(term) && !desc.toLowerCase().includes(term)) {
+                    return;
+                }
+
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition-colors";
+
+                tr.innerHTML = `
+                    <td class="py-2.5 px-3 font-semibold text-slate-800">${row.empresa}</td>
+                    <td class="py-2.5 px-3 text-xs font-mono text-slate-500">${clifor || '-'}</td>
+                    <td class="py-2.5 px-3.5 font-bold text-slate-900">${forn}</td>
+                    <td class="py-2.5 px-4 text-slate-700 leading-relaxed font-medium">
+                        ${desc ? `<span class="bg-blue-50/60 px-2.5 py-1 rounded-lg border border-blue-100 block text-slate-800">${desc}</span>` : '<span class="text-slate-400 italic">Nenhuma descrição informada</span>'}
+                    </td>
+                    <td class="py-2.5 px-3 text-center">
+                        <button onclick="openModalDescricao(${index})" class="bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold px-2.5 py-1 rounded-lg text-xs transition-colors flex items-center gap-1 mx-auto shadow-2xs">
+                            ✏️ Editar Descrição
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function openModalDescricao(index) {
+            const item = db[index];
+            document.getElementById('editDescricaoIndex').value = index;
+            document.getElementById('modalDescricaoFornecedorNome').innerText = `${item.fornecedor} (${item.empresa})`;
+            document.getElementById('editDescricaoTexto').value = item.descricaoServico || '';
+            document.getElementById('modalDescricao').style.display = 'flex';
+        }
+
+        function closeModalDescricao() {
+            document.getElementById('modalDescricao').style.display = 'none';
+        }
+
+        function handleDescricaoSubmit(e) {
+            e.preventDefault();
+            const index = parseInt(document.getElementById('editDescricaoIndex').value);
+            const novaDesc = document.getElementById('editDescricaoTexto').value.trim();
+
+            if (index >= 0 && index < db.length) {
+                db[index].descricaoServico = novaDesc;
+                saveState();
+                closeModalDescricao();
+                renderDescricaoTable();
+                recalcular();
+            }
         }
 
         // Gestão de Índices
@@ -1913,6 +2104,7 @@
                 document.getElementById('clifor').value = item.clifor || '';
                 document.getElementById('statusManual').value = item.statusManual || 'AUTO';
                 document.getElementById('fornecedor').value = item.fornecedor;
+                document.getElementById('modalDescricaoServico').value = item.descricaoServico || '';
                 document.getElementById('vigenciaPrazo').value = item.vigenciaPrazo || '1 Ano';
                 document.getElementById('tipoPagamento').value = item.tipoPagamento || 'Mensal';
                 document.getElementById('meioPagamento').value = item.meioPagamento || 'Boleto';
@@ -1927,6 +2119,7 @@
                 document.getElementById('modalTitle').innerText = 'Adicionar Novo Contrato';
                 document.getElementById('itemForm').reset();
                 document.getElementById('statusManual').value = 'AUTO';
+                document.getElementById('modalDescricaoServico').value = '';
                 document.getElementById('vigenciaPrazo').value = '1 Ano';
                 document.getElementById('tipoPagamento').value = 'Mensal';
                 document.getElementById('meioPagamento').value = 'Boleto';
@@ -1948,6 +2141,7 @@
                 clifor: document.getElementById('clifor').value,
                 statusManual: document.getElementById('statusManual').value,
                 fornecedor: document.getElementById('fornecedor').value,
+                descricaoServico: document.getElementById('modalDescricaoServico').value.trim(),
                 vigenciaPrazo: document.getElementById('vigenciaPrazo').value,
                 tipoPagamento: document.getElementById('tipoPagamento').value,
                 meioPagamento: document.getElementById('meioPagamento').value,
@@ -1992,12 +2186,12 @@
         window.onload = function() {
             renderIndicesTable();
             atualizarLabelsAno();
-            recalcular();
+            setVisaoRegime('contabil');
         };
         if (document.readyState === 'complete' || document.readyState === 'interactive') {
             renderIndicesTable();
             atualizarLabelsAno();
-            recalcular();
+            setVisaoRegime('contabil');
         }
     </script>
 </body>
